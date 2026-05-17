@@ -52,7 +52,6 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 30;
       padding: 14px 40px;
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
       background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
     }
     .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
@@ -63,15 +62,15 @@
       letter-spacing: 0.06em; color: rgba(200,200,200,0.48); transition: color 0.22s;
     }
     .nav-logo:hover .logo-word { color: rgba(200,200,200,0.82); }
-    .nav-right { display: flex; align-items: center; gap: 30px; }
+    .nav-right { display: none; align-items: center; gap: 30px; }
     .nav-right a {
-      font-family: 'Switzer', sans-serif; font-size: 9.5px; font-weight: 400;
+      font-family: 'Switzer', sans-serif; font-size: 12px; font-weight: 400;
       letter-spacing: 0.2em; text-transform: uppercase;
       color: rgba(160,160,160,0.48); text-decoration: none; transition: color 0.18s;
     }
     .nav-right a:hover { color: rgba(160,160,160,0.82); }
     #hamburger {
-      display: none; background: none; border: none; cursor: pointer;
+      display: flex; background: none; border: none; cursor: pointer;
       padding: 5px; align-items: center; justify-content: center; transition: opacity 0.18s;
     }
     #hamburger:hover { opacity: 0.7; }
@@ -86,7 +85,7 @@
     #mobile-menu.is-open { opacity: 1; visibility: visible; pointer-events: all; }
     .mm-header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+      padding: 14px 0; flex-shrink: 0;
     }
     #mm-close {
       background: none; border: none; cursor: pointer; padding: 5px;
@@ -116,7 +115,7 @@
     .mm-foot a {
       font-family: 'Switzer', sans-serif; font-size: 9px; font-weight: 400;
       letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(160,160,160,0.4); text-decoration: none; transition: color 0.18s;
+      color: rgba(160,160,160,0.6); text-decoration: none; transition: color 0.18s;
     }
     .mm-foot a:hover { color: rgba(160,160,160,0.8); }
     #mobile-menu.is-open .mm-link { animation: mm-link-in 0.38s ease both; }
@@ -131,17 +130,21 @@
     /* ── Footer ── */
     #site-footer {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 5;
-      padding: 11px 40px; border-top: 1px solid rgba(160,160,160,0.18);
-      display: flex; justify-content: flex-end; align-items: center;
-      pointer-events: none; background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+      background: rgba(10,10,10,0.88); backdrop-filter: blur(12px); border-top: 1px solid rgba(160,160,160,0.18);
+      height: 44px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; pointer-events: all;
     }
-    .footer-nav { display: flex; align-items: center; gap: 28px; pointer-events: all; }
+    .footer-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase; color: rgba(160,160,160,0.55);
+    }
+    .footer-nav { display: flex; align-items: center; gap: 24px; }
     .footer-nav a {
-      font-family: 'Switzer', sans-serif; font-size: 9.5px; font-weight: 400;
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
       letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(160,160,160,0.48); text-decoration: none; transition: color 0.18s;
+      color: rgba(160,160,160,0.6); text-decoration: none; transition: color 0.18s;
     }
-    .footer-nav a:hover { color: rgba(160,160,160,0.82); }
+    .footer-nav a:hover { color: rgba(160,160,160,0.85); }
 
     /* ── Entrance ── */
     .will-animate { opacity: 0; transform: translateY(12px); }
@@ -322,7 +325,8 @@
       #hamburger { display: flex; }
       .nav-right { display: none; }
       .logo-word { display: none; }
-      #site-footer { padding: 9px 16px; }
+      #site-footer { padding: 0 20px; height: 40px; }
+      .footer-label { display: none; }
       .footer-nav { flex-wrap: wrap; gap: 10px 16px; }
       .footer-nav a { font-size: 8px; letter-spacing: 0.12em; }
       :root { --gutter: 20px; }
@@ -356,18 +360,17 @@
         <rect x="0"  y="30" width="5" height="5"/>
         <rect x="0"  y="36" width="5" height="5"/>
       </svg>
-      <span class="logo-word">pixelandprompt</span>
     </a>
     <div class="nav-right">
       <a href="projects.html">Work</a>
       <a href="#">About</a>
-      <a href="#">Contact</a>
+      <a href="mailto:azadielshan@gmail.com">Contact</a>
     </div>
     <button id="hamburger" aria-label="Open navigation" aria-expanded="false">
-      <svg width="20" height="13" viewBox="0 0 20 13" fill="none">
-        <rect width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
-        <rect y="5.75" width="13" height="1.5" fill="rgba(160,160,160,0.65)"/>
-        <rect y="11.5" width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+      <svg width="5" height="17" viewBox="0 0 5 17" fill="none">
+        <rect width="5" height="5" fill="#b6f23b"/>
+        <rect y="6" width="5" height="5" fill="#b6f23b"/>
+        <rect y="12" width="5" height="5" fill="#b6f23b"/>
       </svg>
     </button>
   </nav>
@@ -386,7 +389,6 @@
           <rect x="0"  y="24" width="5" height="5"/><rect x="0"  y="30" width="5" height="5"/>
           <rect x="0"  y="36" width="5" height="5"/>
         </svg>
-        <span class="logo-word">pixelandprompt</span>
       </a>
       <button id="mm-close" aria-label="Close navigation">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -401,8 +403,8 @@
       <a href="#" class="mm-link"><span class="mm-idx">03</span><span class="mm-label">Contact</span></a>
     </nav>
     <div class="mm-foot">
-      <a href="#">LinkedIn ↗</a>
-      <a href="#">Email ↗</a>
+      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
+      <a href="mailto:azadielshan@gmail.com">Email ↗</a>
     </div>
   </div>
 
@@ -700,11 +702,11 @@
 
   <!-- ── Footer ── -->
   <footer id="site-footer" class="will-animate">
+    <span class="footer-label">Elshan Azadi</span>
     <nav class="footer-nav">
-      <a href="#">Contact</a>
-      <a href="#">Design Archive</a>
-      <a href="#">LinkedIn ↗</a>
-      <a href="#">Email ↗</a>
+      <a href="mailto:azadielshan@gmail.com">Contact</a>
+      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
+      <a href="mailto:azadielshan@gmail.com">Email ↗</a>
     </nav>
   </footer>
 

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet" />
   <title>Portfolio</title>
   <style>
     @font-face {
@@ -33,12 +33,32 @@
       font-family: 'Switzer', sans-serif;
       overflow: hidden;
     }
-    #binaryCanvas {
+    #projects-cta {
       position: fixed;
-      bottom: 48px;
+      bottom: 52px;
       right: 0;
+      font-family: 'Pixelify Sans', monospace;
+      font-size: 148px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 2px;
+      color: rgba(210,210,210,0.2);
+      text-decoration: none;
       cursor: pointer;
+      z-index: 10;
+      padding: 0 8px 0 0;
+      display: inline-flex;
+      align-items: stretch;
+      transition: color 0.3s ease;
     }
+    #projects-cta:hover { color: rgba(210,210,210,0.44); }
+    .px-block {
+      background: rgba(210,210,210,0.22);
+      padding: 0 6px;
+      color: #0a0a0a;
+      transition: background 0.3s ease;
+    }
+    #projects-cta:hover .px-block { background: rgba(210,210,210,0.38); color: #0a0a0a; }
 
     /* ── Project Cards ──────────────────────────────────────────── */
     #feat-wrap {
@@ -266,7 +286,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
       background: rgba(10,10,10,0.88);
       backdrop-filter: blur(12px);
     }
@@ -293,13 +312,11 @@
     }
     .nav-logo:hover .logo-word { color: rgba(200,200,200,0.82); }
     .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 30px;
+      display: none;
     }
     .nav-right a {
       font-family: 'Switzer', sans-serif;
-      font-size: 9.5px;
+      font-size: 12px;
       font-weight: 400;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -312,38 +329,46 @@
     /* ── Footer ─────────────────────────────────────── */
     #site-footer {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       z-index: 5;
-      padding: 11px 40px 11px;
-      border-top: 1px solid rgba(160, 160, 160, 0.18);
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(160,160,160,0.18);
+      height: 44px;
       display: flex;
-      justify-content: flex-end;
       align-items: center;
-      pointer-events: none;
+      justify-content: space-between;
+      padding: 0 40px;
+      pointer-events: all;
+    }
+    .footer-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.55);
     }
     .footer-nav {
       display: flex;
       align-items: center;
-      gap: 28px;
-      pointer-events: all;
+      gap: 24px;
     }
     .footer-nav a {
-      font-family: 'Switzer', sans-serif;
-      font-size: 9.5px;
-      font-weight: 400;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(160, 160, 160, 0.48);
+      color: rgba(160,160,160,0.6);
       text-decoration: none;
       transition: color 0.18s ease;
     }
-    .footer-nav a:hover { color: rgba(160, 160, 160, 0.82); }
+    .footer-nav a:hover { color: rgba(160,160,160,0.85); }
 
     /* ── Hamburger button ───────────────────────────────────────── */
     #hamburger {
-      display: none;
+      display: flex;
       background: none;
       border: none;
       cursor: pointer;
@@ -447,7 +472,7 @@
       font-weight: 400;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(160,160,160,0.4);
+      color: rgba(160,160,160,0.6);
       text-decoration: none;
       transition: color 0.18s;
     }
@@ -478,14 +503,30 @@
         min-height: 100vh;
         overflow-y: auto;
         overflow-x: hidden;
-        align-items: flex-start;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
       }
 
-      #binaryCanvas { display: none; }
+      #projects-cta {
+        display: block;
+        position: relative;
+        bottom: auto;
+        right: auto;
+        z-index: auto;
+        order: 2;
+        font-size: clamp(64px, 13vw, 120px);
+        text-align: right;
+        padding: 0 24px;
+        margin-bottom: 64px;
+        margin-top: 24px;
+      }
 
       #feat-wrap {
+        order: 1;
         position: relative;
         inset: auto;
+        z-index: auto;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -568,29 +609,16 @@
 
     /* ── Mobile ─────────────────────────────────────────────────── */
     @media (max-width: 599px) {
-      /* Stack canvas below cards in the flex column */
-      body {
-        flex-direction: column;
-        justify-content: flex-start;
-      }
-
       #feat-wrap {
-        order: 1;
-        width: 100%;
-        padding: 72px 16px 20px;
+        padding: 72px 16px 0;
         gap: 14px;
       }
 
-      /* Binary canvas: pull out of fixed, flow after cards */
-      #binaryCanvas {
-        display: block;
-        position: relative;
-        order: 2;
-        width: 100%;
-        aspect-ratio: 860 / 114;
-        margin-bottom: 56px; /* clears fixed footer */
-        cursor: pointer;
-        opacity: 0.9;
+      #projects-cta {
+        font-size: clamp(42px, 14vw, 88px);
+        padding: 0 16px;
+        margin-top: 16px;
+        margin-bottom: 56px;
       }
 
       .nc.card-h { width: calc(100vw - 32px); }
@@ -609,17 +637,16 @@
         display: inline; /* restore */
         font-size: 9px;
       }
-      /* Nav links move into overlay; show hamburger instead */
-      .nav-right { display: none; }
-      #hamburger { display: flex; }
+      /* Nav links already hidden globally; hamburger always visible */
 
-      /* Footer: restore, compact */
+      /* Footer: mobile compact */
       #site-footer {
-        display: flex;
-        padding: 9px 16px;
+        padding: 0 20px;
+        height: 40px;
       }
+      .footer-label { display: none; }
       .footer-nav {
-        gap: 14px;
+        gap: 16px;
         flex-wrap: wrap;
         justify-content: flex-end;
       }
@@ -652,18 +679,17 @@
         <rect x="0"  y="30" width="5" height="5"/>
         <rect x="0"  y="36" width="5" height="5"/>
       </svg>
-      <span class="logo-word">pixelandprompt</span>
     </a>
     <div class="nav-right">
-      <a href="#">Work</a>
+      <a href="projects.html">Work</a>
       <a href="#">About</a>
-      <a href="#">Contact</a>
+      <a href="mailto:azadielshan@gmail.com">Contact</a>
     </div>
     <button id="hamburger" aria-label="Open navigation" aria-expanded="false">
-      <svg width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
-        <rect y="5.75" width="13" height="1.5" fill="rgba(160,160,160,0.65)"/>
-        <rect y="11.5" width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+      <svg width="5" height="17" viewBox="0 0 5 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="5" height="5" fill="#b6f23b"/>
+        <rect y="6" width="5" height="5" fill="#b6f23b"/>
+        <rect y="12" width="5" height="5" fill="#b6f23b"/>
       </svg>
     </button>
   </nav>
@@ -689,7 +715,6 @@
           <rect x="0"  y="30" width="5" height="5"/>
           <rect x="0"  y="36" width="5" height="5"/>
         </svg>
-        <span class="logo-word">pixelandprompt</span>
       </a>
       <button id="mm-close" aria-label="Close navigation">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -699,7 +724,7 @@
       </button>
     </div>
     <nav class="mm-links">
-      <a href="#" class="mm-link">
+      <a href="projects.html" class="mm-link">
         <span class="mm-idx">01</span>
         <span class="mm-label">Work</span>
       </a>
@@ -707,18 +732,18 @@
         <span class="mm-idx">02</span>
         <span class="mm-label">About</span>
       </a>
-      <a href="#" class="mm-link">
+      <a href="mailto:azadielshan@gmail.com" class="mm-link">
         <span class="mm-idx">03</span>
         <span class="mm-label">Contact</span>
       </a>
     </nav>
     <div class="mm-foot">
-      <a href="#">LinkedIn ↗</a>
-      <a href="#">Email ↗</a>
+      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
+      <a href="mailto:azadielshan@gmail.com">Email ↗</a>
     </div>
   </div>
 
-  <canvas id="binaryCanvas"></canvas>
+  <a id="projects-cta" href="projects.html">WO<span class="px-block">RK</span></a>
 
   <!-- ── Project Cards ── -->
   <div id="feat-wrap">
@@ -883,387 +908,15 @@
   </script>
 
   <footer id="site-footer">
+    <span class="footer-label">Elshan Azadi</span>
     <nav class="footer-nav">
-      <a href="#">Contact</a>
-      <a href="#">Design Archive</a>
-      <a href="#">LinkedIn ↗</a>
-      <a href="#">Email ↗</a>
+      <a href="mailto:azadielshan@gmail.com">Contact</a>
+      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
+      <a href="mailto:azadielshan@gmail.com">Email ↗</a>
     </nav>
   </footer>
 
-  <script>
-    /* ── v5: PROJECTS — grey stroke idle, physics push + T/S pop on hover ── */
-    (() => {
-      const canvas = document.getElementById('binaryCanvas');
-      const ctx    = canvas.getContext('2d');
 
-      const FONT_SZ = 132;
-      const LSPC    = -6;
-      const PAD_X   = 20;
-      const PAD_Y   = 8;
-      const word    = 'PROJECTS';
-      const GREY    = 'rgba(70,70,70,0.85)';
-
-      let active = false;
-      canvas.addEventListener('click', () => {
-        if (active) return;
-        active = true;
-        startTransition();
-      });
-
-      document.fonts.ready.then(() => {
-        const fontStr = `800 ${FONT_SZ}px "Switzer","Helvetica Neue",Helvetica,sans-serif`;
-
-        /* measure full word with letter-spacing for canvas sizing */
-        const probe  = document.createElement('canvas');
-        probe.width  = 2400; probe.height = FONT_SZ * 2;
-        const pc = probe.getContext('2d');
-        pc.font          = fontStr;
-        pc.letterSpacing = `${LSPC}px`;
-        const m   = pc.measureText(word);
-        const tw  = Math.ceil(m.width);
-        const asc = Math.ceil(m.actualBoundingBoxAscent);
-        const dsc = Math.ceil(m.actualBoundingBoxDescent);
-
-        const textW = tw + PAD_X * 2;
-        const textH = asc + dsc + PAD_Y * 2;
-        canvas.width  = textW;
-        canvas.height = textH;
-
-        /* per-letter x positions (cumulative measureText with -6px spacing) */
-        const letterX = word.split('').map((_, i) =>
-          PAD_X + (i === 0 ? 0 : Math.ceil(pc.measureText(word.slice(0, i)).width))
-        );
-
-        /* individual glyph advance widths at 0 spacing — used for tight packing */
-        const widths = (() => {
-          const p2 = document.createElement('canvas');
-          p2.width = 600; p2.height = FONT_SZ * 2;
-          const c2 = p2.getContext('2d');
-          c2.font          = fontStr;
-          c2.letterSpacing = '0px';
-          return word.split('').map(ch => Math.ceil(c2.measureText(ch).width));
-        })();
-
-        function drawIdle() {
-          ctx.clearRect(0, 0, textW, textH);
-          ctx.save();
-          ctx.font          = fontStr;
-          ctx.letterSpacing = `${LSPC}px`;
-          ctx.textBaseline  = 'alphabetic';
-          ctx.strokeStyle   = GREY;
-          ctx.lineWidth     = 0.8;
-          ctx.lineJoin      = 'round';
-          ctx.strokeText(word, PAD_X, PAD_Y + asc);
-          ctx.restore();
-        }
-
-        drawIdle();
-
-        let hovered = false;
-        let rafId   = null;
-        let overlay = null;
-
-        canvas.addEventListener('mouseenter', () => {
-          if (hovered) return;
-          hovered = true;
-          startHover();
-        });
-
-        canvas.addEventListener('mouseleave', () => {
-          hovered = false;
-          if (rafId)   { cancelAnimationFrame(rafId); rafId = null; }
-          if (overlay) { overlay.remove(); overlay = null; }
-          drawIdle();
-        });
-
-        function easeOut3(t) { return 1 - Math.pow(1 - t, 3); }
-
-        function startHover() {
-          const VW = window.innerWidth;
-          const VH = window.innerHeight - 48;
-
-          overlay = document.createElement('canvas');
-          overlay.width  = VW;
-          overlay.height = VH;
-          Object.assign(overlay.style, {
-            position: 'fixed', top: '0', left: '0',
-            width: VW + 'px', height: VH + 'px',
-            pointerEvents: 'none', zIndex: '10',
-          });
-          document.body.appendChild(overlay);
-          const oc = overlay.getContext('2d');
-          ctx.clearRect(0, 0, textW, textH);
-
-          /* letter positions in overlay coordinate space */
-          const baseX  = VW - textW;
-          const baseY  = VH - textH + PAD_Y + asc;
-          const startX = word.split('').map((_, i) => baseX + letterX[i]);
-
-          /* P moves right by PUSH, dragging R–C with it via a stagger wave.
-             T and S hit the viewport wall and can't go right — they pop upward. */
-          const PUSH     = 88;   /* px each base letter (P–C) travels right */
-          const STAGGER  = 48;   /* ms cascade delay between letters          */
-          const PUSH_DUR = 520;  /* ms for each base letter to complete push  */
-          const POP_DUR  = 540;  /* ms for T and S to pop up                  */
-
-          const letterH = asc + dsc;
-
-          /* T (i=6): wave arrives at 6×STAGGER, pops up then — higher, more tilt
-             S (i=7): wave arrives at 7×STAGGER, pops up with even more tilt    */
-          const T_POP_START = 6 * STAGGER; /* 288ms */
-          const S_POP_START = 7 * STAGGER; /* 336ms */
-
-          /* final elevated y — T goes ~65% of letter height above baseline,
-             S goes ~90% so it reads as higher / more chaotic                  */
-          const popY_T = baseY - letterH * 0.65;
-          const popY_S = baseY - letterH * 0.90;
-
-          /* CCW tilt (negative): top of letter falls leftward over the others */
-          const TILT_T = -0.40; /* ~−23° */
-          const TILT_S = -0.62; /* ~−36° */
-
-          const t0 = performance.now();
-
-          function frame(now) {
-            if (!hovered) return;
-            const elapsed = now - t0;
-
-            oc.clearRect(0, 0, VW, VH);
-            oc.save();
-            oc.font          = fontStr;
-            oc.letterSpacing = '0px';
-            oc.textBaseline  = 'alphabetic';
-            oc.strokeStyle   = GREY;
-            oc.lineWidth     = 0.8;
-            oc.lineJoin      = 'round';
-
-            for (let i = 0; i < 8; i++) {
-              let x = startX[i];
-              let y = baseY;
-              let tilt = 0;
-
-              if (i <= 5) {
-                /* P through C: cascade push rightward, all motion forward */
-                const lt = elapsed - i * STAGGER;
-                if (lt > 0) {
-                  x += PUSH * easeOut3(Math.min(lt / PUSH_DUR, 1));
-                }
-              } else {
-                /* T and S: wall stops rightward travel — they pop straight up
-                   with a CCW tilt, falling back over the compressed letters   */
-                const popStart = i === 6 ? T_POP_START : S_POP_START;
-                const finalY   = i === 6 ? popY_T : popY_S;
-                const finalT   = i === 6 ? TILT_T  : TILT_S;
-                const lt = elapsed - popStart;
-                if (lt > 0) {
-                  const e = easeOut3(Math.min(lt / POP_DUR, 1));
-                  y    = baseY + (finalY - baseY) * e;
-                  tilt = finalT * e;
-                }
-              }
-
-              if (tilt !== 0) {
-                oc.save();
-                oc.translate(x, y);
-                oc.rotate(tilt);
-                oc.strokeText(word[i], 0, 0);
-                oc.restore();
-              } else {
-                oc.strokeText(word[i], x, y);
-              }
-            }
-
-            oc.restore();
-            rafId = requestAnimationFrame(frame);
-          }
-
-          rafId = requestAnimationFrame(frame);
-        }
-      });
-
-      function startTransition() {
-        const SW = window.innerWidth, SH = window.innerHeight;
-        const fc = document.createElement('canvas');
-        fc.width = SW; fc.height = SH;
-        Object.assign(fc.style, {
-          position: 'fixed', top: '0', left: '0', zIndex: '100', pointerEvents: 'none',
-        });
-        document.body.appendChild(fc);
-        const fctx = fc.getContext('2d');
-
-        /* sparse pixel grid for scan texture */
-        const FS = 4, FST = 8;
-        const cells = [];
-        for (let y = 0; y <= SH + FST; y += FST)
-          for (let x = 0; x <= SW + FST; x += FST)
-            cells.push({ x, y, a: 0.07 + Math.random() * 0.16 });
-
-        /* project names that appear as scan sweeps past their Y position */
-        const listX  = Math.round(SW * 0.10);
-        const listY0 = Math.round(SH * 0.16);
-        const lineH  = 100;
-        const names  = [
-          'Verity',
-          'But.tons',
-          'Design System',
-          'Global Encounters',
-          'Onboarding',
-          'Café Puschkin',
-        ];
-
-        const DURATION = 4400;
-        const t0 = performance.now();
-        let done = false;
-
-        function step(now) {
-          if (done) return;
-          const prog  = Math.min((now - t0) / DURATION, 1);
-          const scanY = prog * (SH + 80);
-
-          fctx.fillStyle = '#0a0a0a';
-          fctx.fillRect(0, 0, SW, SH);
-
-          /* dim pixel fill above the scan line */
-          for (const c of cells) {
-            if (c.y > scanY) continue;
-            const a = c.a * Math.min((scanY - c.y) / 28, 1);
-            if (a < 0.005) continue;
-            fctx.fillStyle = `rgba(70,70,70,${a.toFixed(2)})`;
-            fctx.fillRect(c.x, c.y, FS, FS);
-          }
-
-          /* faint leading-edge streak */
-          if (scanY > 0 && scanY < SH + 20) {
-            const g = fctx.createLinearGradient(0, scanY - 12, 0, scanY + 2);
-            g.addColorStop(0, 'rgba(200,200,200,0.08)');
-            g.addColorStop(1, 'rgba(200,200,200,0)');
-            fctx.fillStyle = g;
-            fctx.fillRect(0, Math.max(0, scanY - 12), SW, 14);
-          }
-
-          /* names fade in as scan sweeps past each one */
-          fctx.font         = '300 16px "Switzer", sans-serif';
-          fctx.textAlign    = 'left';
-          fctx.textBaseline = 'alphabetic';
-          for (let i = 0; i < names.length; i++) {
-            const ny = listY0 + i * lineH;
-            if (scanY < ny - 8) continue;
-            const fa = Math.min((scanY - (ny - 8)) / 36, 1) * 0.62;
-            fctx.globalAlpha = fa;
-            fctx.fillStyle   = 'rgba(168,168,168,1)';
-            fctx.fillText(names[i], listX, ny);
-          }
-          fctx.globalAlpha = 1;
-
-          if (prog >= 1) {
-            done = true;
-            setTimeout(() => { window.location.href = 'projects.html'; }, 500);
-          } else {
-            requestAnimationFrame(step);
-          }
-        }
-
-        requestAnimationFrame(step);
-      }
-    })();
-
-    /* ── v1: binary text (uncomment to revert) ──────────────────────
-    (() => {
-      const canvas = document.getElementById('binaryCanvas');
-      const ctx    = canvas.getContext('2d');
-      const CHAR = 10;
-      const W = 950, H = 220;
-      canvas.width  = W;
-      canvas.height = H;
-      const COLS = Math.floor(W / CHAR);
-      const ROWS = Math.floor(H / CHAR);
-      const tOff = document.createElement('canvas');
-      tOff.width = W; tOff.height = H;
-      const tc = tOff.getContext('2d');
-      tc.fillStyle = '#fff'; tc.textAlign = 'right'; tc.textBaseline = 'top';
-      tc.font = 'bold 120px "Consolas", monospace';
-      tc.fillText('PROJECTS', W - 40, 65);
-      tc.strokeStyle = '#fff'; tc.lineWidth = 7;
-      tc.strokeText('PROJECTS', W - 40, 65);
-      const tPix = tc.getImageData(0, 0, W, H).data;
-      const textMask = Array.from({ length: ROWS }, (_, r) =>
-        Array.from({ length: COLS }, (_, col) => {
-          const px = Math.min(col * CHAR + 5, W - 1);
-          const py = Math.min(r   * CHAR + 5, H - 1);
-          return tPix[(py * W + px) * 4 + 3] > 60;
-        })
-      );
-      const cells = Array.from({ length: ROWS }, () =>
-        Array.from({ length: COLS }, () => ({
-          char:  Math.random() > 0.5 ? '1' : '0',
-          timer: Math.floor(Math.random() * 120)
-        }))
-      );
-      let mode = 'idle', hovered = false, frame = 0;
-      function drawText(boost) {
-        const a = (0.50 + boost).toFixed(2);
-        ctx.fillStyle = `rgba(160,160,160,${a})`;
-        for (let r = 0; r < ROWS; r++) {
-          for (let c = 0; c < COLS; c++) {
-            if (!textMask[r][c]) continue;
-            const cell = cells[r][c];
-            if (hovered) {
-              cell.timer--;
-              if (cell.timer <= 0) {
-                cell.char  = Math.random() > 0.5 ? '1' : '0';
-                cell.timer = 80 + Math.floor(Math.random() * 160);
-              }
-            }
-            ctx.fillText(cell.char, c * CHAR, (r + 1) * CHAR);
-          }
-        }
-      }
-      canvas.addEventListener('mouseenter', () => { hovered = true; for (const row of cells) for (const cell of row) cell.timer = 0; });
-      canvas.addEventListener('mouseleave', () => { hovered = false; });
-      canvas.addEventListener('click', () => { if (mode !== 'idle') return; mode = 'transitioning'; startFill(); });
-      function startFill() {
-        const SW = window.innerWidth, SH = window.innerHeight;
-        const fc = document.createElement('canvas');
-        fc.width = SW; fc.height = SH;
-        Object.assign(fc.style, { position:'fixed', top:'0', left:'0', zIndex:'100', pointerEvents:'none' });
-        document.body.appendChild(fc);
-        const fctx = fc.getContext('2d');
-        const FC = 12, fCols = Math.ceil(SW/FC), fRows = Math.ceil(SH/FC);
-        const cLeft = SW-W, cTop = SH-H, srcY = cTop+65+45;
-        const src1 = { x: cLeft+W-540, y: srcY }, src2 = { x: cLeft+W-60, y: srcY };
-        const grid = Array.from({ length: fRows }, (_, r) => Array.from({ length: fCols }, (_, c) => {
-          const cx = c*FC+6, cy = r*FC+6;
-          const d1 = Math.max(Math.abs(cx-src1.x), Math.abs(cy-src1.y));
-          const d2 = Math.max(Math.abs(cx-src2.x), Math.abs(cy-src2.y));
-          return { char: Math.random()>0.5?'1':'0', dist: Math.min(d1,d2), phase: Math.random()*Math.PI*2, spd: 0.15+Math.random()*0.25, timer: 60+Math.floor(Math.random()*120) };
-        }));
-        const corners = [{x:0,y:0},{x:SW,y:0},{x:0,y:SH},{x:SW,y:SH}];
-        const maxMinDist = Math.max(...corners.map(k => Math.min(Math.max(Math.abs(k.x-src1.x),Math.abs(k.y-src1.y)),Math.max(Math.abs(k.x-src2.x),Math.abs(k.y-src2.y)))));
-        const SPEED = 18; let radius = 0, ff = 0, done = false;
-        function fillTick() {
-          if (done) return;
-          radius += SPEED; ff++;
-          fctx.fillStyle = '#0a0a0a'; fctx.fillRect(0,0,SW,SH);
-          fctx.font = `${FC-2}px "Consolas",monospace`;
-          for (let r=0; r<fRows; r++) for (let c=0; c<fCols; c++) {
-            const cell = grid[r][c];
-            if (cell.dist > radius) continue;
-            cell.timer--; if (cell.timer<=0) { cell.char = Math.random()>0.5?'1':'0'; cell.timer=80+Math.floor(Math.random()*160); }
-            const front = radius-cell.dist;
-            const a = front < SPEED*3 ? 0.62+0.22*Math.sin(ff*0.015*cell.spd+cell.phase) : 0.30+0.13*Math.sin(ff*0.010*cell.spd+cell.phase);
-            fctx.fillStyle = `rgba(155,155,155,${a.toFixed(2)})`; fctx.fillText(cell.char,c*FC,(r+1)*FC);
-          }
-          if (radius > maxMinDist+SPEED) { done=true; setTimeout(()=>{ window.location.href='projects.html'; },320); }
-          else requestAnimationFrame(fillTick);
-        }
-        requestAnimationFrame(fillTick);
-      }
-      function tick() { requestAnimationFrame(tick); ctx.clearRect(0,0,W,H); ctx.font=`${CHAR-1}px "Consolas",monospace`; frame++; if (mode==='idle') drawText(hovered?0.18:0); }
-      tick();
-    })();
-    ─────────────────────────────────────────────────────────────── */
-  </script>
 
   <script>
     document.fonts.ready.then(() => {

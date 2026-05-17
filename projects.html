@@ -65,7 +65,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
       background: rgba(10,10,10,0.88);
       backdrop-filter: blur(12px);
     }
@@ -90,13 +89,13 @@
     }
     .nav-logo:hover .logo-word { color: rgba(200,200,200,0.82); }
     .nav-right {
-      display: flex;
+      display: none;
       align-items: center;
       gap: 30px;
     }
     .nav-right a {
       font-family: 'Switzer', sans-serif;
-      font-size: 9.5px;
+      font-size: 12px;
       font-weight: 400;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -108,7 +107,7 @@
 
     /* ── Hamburger button ───────────────────────────────────────── */
     #hamburger {
-      display: none;
+      display: flex;
       background: none;
       border: none;
       cursor: pointer;
@@ -143,7 +142,6 @@
       justify-content: space-between;
       align-items: center;
       padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
       flex-shrink: 0;
     }
     #mm-close {
@@ -205,7 +203,7 @@
       font-weight: 400;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(160,160,160,0.4);
+      color: rgba(160,160,160,0.6);
       text-decoration: none;
       transition: color 0.18s;
     }
@@ -224,32 +222,40 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
       z-index: 5;
-      padding: 11px 40px;
-      border-top: 1px solid rgba(160,160,160,0.18);
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      pointer-events: none;
       background: rgba(10,10,10,0.88);
       backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(160,160,160,0.18);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      pointer-events: all;
+    }
+    .footer-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.55);
     }
     .footer-nav {
       display: flex;
       align-items: center;
-      gap: 28px;
-      pointer-events: all;
+      gap: 24px;
     }
     .footer-nav a {
-      font-family: 'Switzer', sans-serif;
-      font-size: 9.5px;
-      font-weight: 400;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(160,160,160,0.48);
+      color: rgba(160,160,160,0.6);
       text-decoration: none;
       transition: color 0.18s ease;
     }
-    .footer-nav a:hover { color: rgba(160,160,160,0.82); }
+    .footer-nav a:hover { color: rgba(160,160,160,0.85); }
 
     /* ── Project list ───────────────────────────────────────────── */
     .projects { list-style: none; padding-top: 70px; padding-bottom: 60px; }
@@ -359,10 +365,8 @@
       .nav-right  { display: none; }
       #hamburger  { display: flex; }
 
-      #site-footer {
-        display: flex;
-        padding: 9px 16px;
-      }
+      #site-footer { padding: 0 20px; height: 40px; }
+      .footer-label { display: none; }
       .footer-nav { gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
       .footer-nav a { font-size: 8px; letter-spacing: 0.12em; }
 
@@ -430,18 +434,17 @@
         <rect x="0"  y="30" width="5" height="5"/>
         <rect x="0"  y="36" width="5" height="5"/>
       </svg>
-      <span class="logo-word">pixelandprompt</span>
     </a>
     <div class="nav-right">
-      <a href="#">Work</a>
+      <a href="projects.html">Work</a>
       <a href="#">About</a>
-      <a href="#">Contact</a>
+      <a href="mailto:azadielshan@gmail.com">Contact</a>
     </div>
     <button id="hamburger" aria-label="Open navigation" aria-expanded="false">
-      <svg width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
-        <rect y="5.75" width="13" height="1.5" fill="rgba(160,160,160,0.65)"/>
-        <rect y="11.5" width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+      <svg width="5" height="17" viewBox="0 0 5 17" fill="none">
+        <rect width="5" height="5" fill="#b6f23b"/>
+        <rect y="6" width="5" height="5" fill="#b6f23b"/>
+        <rect y="12" width="5" height="5" fill="#b6f23b"/>
       </svg>
     </button>
   </nav>
@@ -467,7 +470,6 @@
           <rect x="0"  y="30" width="5" height="5"/>
           <rect x="0"  y="36" width="5" height="5"/>
         </svg>
-        <span class="logo-word">pixelandprompt</span>
       </a>
       <button id="mm-close" aria-label="Close navigation">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -477,7 +479,7 @@
       </button>
     </div>
     <nav class="mm-links">
-      <a href="#" class="mm-link">
+      <a href="projects.html" class="mm-link">
         <span class="mm-idx">01</span>
         <span class="mm-label">Work</span>
       </a>
@@ -485,14 +487,14 @@
         <span class="mm-idx">02</span>
         <span class="mm-label">About</span>
       </a>
-      <a href="#" class="mm-link">
+      <a href="mailto:azadielshan@gmail.com" class="mm-link">
         <span class="mm-idx">03</span>
         <span class="mm-label">Contact</span>
       </a>
     </nav>
     <div class="mm-foot">
-      <a href="#">LinkedIn ↗</a>
-      <a href="#">Email ↗</a>
+      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
+      <a href="mailto:azadielshan@gmail.com">Email ↗</a>
     </div>
   </div>
 
@@ -588,25 +590,15 @@
       </a>
     </li>
 
-    <li>
-      <a class="project-row will-animate" href="#">
-        <span class="proj-index">10</span>
-        <span class="proj-name">Fieldnotes</span>
-        <span class="proj-desc">Structured note-taking software built around how researchers actually think in the field.</span>
-        <span class="proj-type">Product</span>
-        <span class="proj-year">2021</span>
-      </a>
-    </li>
-
   </ol>
 
   <!-- ── Footer (global component) ── -->
   <footer id="site-footer">
+    <span class="footer-label">Elshan Azadi</span>
     <nav class="footer-nav">
-      <a href="#">Contact</a>
-      <a href="#">Design Archive</a>
-      <a href="#">LinkedIn ↗</a>
-      <a href="#">Email ↗</a>
+      <a href="mailto:azadielshan@gmail.com">Contact</a>
+      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
+      <a href="mailto:azadielshan@gmail.com">Email ↗</a>
     </nav>
   </footer>
 
