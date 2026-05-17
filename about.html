@@ -24,34 +24,33 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg:      #0a0a0a;
-      --green:   #b6f23b;
-      --gutter:  clamp(24px, 5vw, 72px);
+      --bg:     #0a0a0a;
+      --green:  #b6f23b;
+      --g:      clamp(24px, 5vw, 72px);
     }
 
-    html { background: var(--bg); scroll-behavior: smooth; }
+    html { background: var(--bg); }
     body {
       background: var(--bg);
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
       font-family: 'Switzer', sans-serif;
-      color: rgba(160,160,160,0.7);
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
     }
 
     #veil {
       position: fixed; inset: 0; background: var(--bg);
-      z-index: 999; transition: opacity 0.9s ease; pointer-events: none;
+      z-index: 999; transition: opacity 0.7s ease; pointer-events: none;
     }
 
-    /* ── Nav ── */
+    /* ── Nav ─────────────────────────────────────────── */
     #site-nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 30;
       padding: 14px 40px;
       display: flex; justify-content: space-between; align-items: center;
       background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
     }
-    .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
     .logo-mark rect { fill: #b6f23b; transition: fill 0.22s; }
     .nav-logo:hover .logo-mark rect { fill: rgba(182,242,59,0.5); }
     .nav-right { display: none; }
@@ -61,7 +60,7 @@
     }
     #hamburger:hover { opacity: 0.7; }
 
-    /* ── Mobile overlay ── */
+    /* ── Overlay ─────────────────────────────────────── */
     #mobile-menu {
       display: flex; flex-direction: column; position: fixed; inset: 0;
       z-index: 50; background: #0a0a0a; padding: 0 32px 36px;
@@ -104,16 +103,16 @@
       color: rgba(160,160,160,0.4); text-decoration: none; transition: color 0.18s;
     }
     .mm-foot a:hover { color: rgba(160,160,160,0.8); }
-    #mobile-menu.is-open .mm-link { animation: mm-link-in 0.38s ease both; }
+    #mobile-menu.is-open .mm-link { animation: mm-in 0.38s ease both; }
     #mobile-menu.is-open .mm-link:nth-child(1) { animation-delay: 0.10s; }
     #mobile-menu.is-open .mm-link:nth-child(2) { animation-delay: 0.16s; }
     #mobile-menu.is-open .mm-link:nth-child(3) { animation-delay: 0.22s; }
-    @keyframes mm-link-in {
+    @keyframes mm-in {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── Footer ── */
+    /* ── Footer ─────────────────────────────────────── */
     #site-footer {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 5;
       background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
@@ -133,84 +132,86 @@
     }
     .footer-nav a:hover { color: rgba(160,160,160,0.85); }
 
-    /* ── Page layout ── */
+    /* ── Page ────────────────────────────────────────── */
     .about-wrap {
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding-top: clamp(110px, 14vw, 160px);
-      padding-bottom: 80px;
-      padding-left: var(--gutter);
-      padding-right: var(--gutter);
-      max-width: 1400px;
-      margin: 0 auto;
+      padding: clamp(96px, 12vw, 140px) var(--g) 80px;
     }
 
-    /* ── Intro text ── */
-    .about-intro { max-width: 960px; }
-
+    /* Headline */
     .about-headline {
       font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
-      font-size: clamp(38px, 5.2vw, 88px);
+      font-size: clamp(48px, 7.2vw, 116px);
       font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.06;
+      letter-spacing: -0.035em;
+      line-height: 1.04;
       color: rgba(218,218,218,0.92);
-      margin-bottom: clamp(20px, 2.5vw, 36px);
+    }
+
+    /* Bottom row: body + lists */
+    .about-bottom {
+      display: flex;
+      align-items: flex-end;
+      gap: clamp(48px, 8vw, 120px);
     }
 
     .about-body {
-      font-size: clamp(15px, 1.3vw, 19px);
+      flex: 0 0 clamp(260px, 34vw, 520px);
+      font-size: clamp(14px, 1.2vw, 18px);
       font-weight: 400;
       line-height: 1.78;
-      color: rgba(160,160,160,0.72);
-      max-width: 560px;
+      color: rgba(160,160,160,0.68);
     }
 
-    /* ── Services / Tools grid ── */
-    .about-grid {
+    .about-lists {
+      flex: 1;
       display: flex;
-      gap: clamp(48px, 8vw, 140px);
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding-top: clamp(28px, 3vw, 44px);
-      margin-top: clamp(56px, 7vw, 96px);
+      gap: clamp(40px, 6vw, 100px);
+      border-left: 1px solid rgba(255,255,255,0.07);
+      padding-left: clamp(40px, 6vw, 100px);
     }
 
     .about-col-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(182,242,59,0.6);
-      margin-bottom: 18px;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(182,242,59,0.55);
+      margin-bottom: 16px;
     }
 
     .about-col ul { list-style: none; }
     .about-col ul li {
       font-family: 'Switzer', sans-serif;
-      font-size: clamp(12px, 1vw, 14px);
+      font-size: clamp(12px, 0.9vw, 14px);
       font-weight: 400;
-      color: rgba(160,160,160,0.55);
-      line-height: 2.1;
-      letter-spacing: 0.01em;
+      color: rgba(160,160,160,0.5);
+      line-height: 2.2;
     }
 
-    /* ── Entrance animation ── */
-    .will-fade { opacity: 0; transform: translateY(16px); }
-    .fade-in { animation: fade-up 0.8s cubic-bezier(0.22,1,0.36,1) forwards; }
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ── Staggered entrance ──────────────────────────── */
+    .a { opacity: 0; transform: translateY(22px); }
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .a.go {
+      animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    /* ── Mobile ── */
-    @media (max-width: 599px) {
+    /* ── Mobile ─────────────────────────────────────── */
+    @media (max-width: 767px) {
+      body { height: auto; overflow: auto; }
+      .about-wrap { height: auto; min-height: 100vh; padding-bottom: 72px; }
+      .about-bottom { flex-direction: column; align-items: flex-start; gap: 40px; }
+      .about-lists { border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 32px; }
       #site-nav { padding: 12px 20px; }
-      .about-wrap { padding-bottom: 64px; }
-      .about-grid { flex-direction: column; gap: 32px; }
       #site-footer { padding: 0 20px; }
+    }
+
+    @media (max-width: 479px) {
+      .about-lists { flex-direction: column; gap: 32px; }
     }
   </style>
 </head>
@@ -281,38 +282,41 @@
   </div>
 
   <main class="about-wrap">
-    <div class="about-intro">
-      <h1 class="about-headline will-fade">
-        I'm Elshan, a product<br>designer based in Berlin.
-      </h1>
-      <p class="about-body will-fade" style="animation-delay:0.1s">
-        I design with intention, shaping products that feel clear, modern, and human.
-        My approach is iterative: I prototype quickly, observe how information flows
-        in real use, and refine based on behavior.
+
+    <h1 class="about-headline a" data-delay="80">
+      I'm Elshan, a product<br>designer based in Berlin.
+    </h1>
+
+    <div class="about-bottom">
+      <p class="about-body a" data-delay="200">
+        I design with intention, shaping products that feel clear, modern,
+        and human. My approach is iterative: I prototype quickly, observe
+        how information flows in real use, and refine based on behavior.
       </p>
+
+      <div class="about-lists">
+        <div class="about-col a" data-delay="300">
+          <div class="about-col-label">Services</div>
+          <ul>
+            <li>Product Design &amp; UX</li>
+            <li>Web Design</li>
+            <li>Branding</li>
+            <li>Rapid Prototyping</li>
+            <li>System Design</li>
+          </ul>
+        </div>
+        <div class="about-col a" data-delay="380">
+          <div class="about-col-label">Tools &amp; Methods</div>
+          <ul>
+            <li>Figma, Framer</li>
+            <li>AI-Assisted Development</li>
+            <li>Design Systems &amp; Component Libraries</li>
+            <li>Prototyping &amp; Usability Testing</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="about-grid will-fade" style="animation-delay:0.2s">
-      <div class="about-col">
-        <div class="about-col-label">Services</div>
-        <ul>
-          <li>Product Design &amp; UX</li>
-          <li>Web Design</li>
-          <li>Branding</li>
-          <li>Rapid Prototyping</li>
-          <li>System Design</li>
-        </ul>
-      </div>
-      <div class="about-col">
-        <div class="about-col-label">Tools &amp; Methods</div>
-        <ul>
-          <li>Figma, Framer</li>
-          <li>AI-Assisted Development</li>
-          <li>Design Systems &amp; Component Libraries</li>
-          <li>Prototyping &amp; Usability Testing</li>
-        </ul>
-      </div>
-    </div>
   </main>
 
   <footer id="site-footer">
@@ -325,27 +329,22 @@
   </footer>
 
   <script>
-    // Veil fade
+    // Veil
+    const veil = document.getElementById('veil');
     window.addEventListener('load', () => {
-      const v = document.getElementById('veil');
-      v.style.opacity = '0';
-      setTimeout(() => v.style.display = 'none', 950);
+      veil.style.opacity = '0';
+      setTimeout(() => { veil.style.display = 'none'; }, 750);
     });
 
-    // Entrance animations
-    (() => {
-      const obs = new IntersectionObserver(entries => {
-        entries.forEach((e, i) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('fade-in');
-            obs.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.1 });
-      document.querySelectorAll('.will-fade').forEach(el => obs.observe(el));
-    })();
+    // Staggered entrance — fires after veil clears
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.a[data-delay]').forEach(el => {
+        const delay = parseInt(el.dataset.delay, 10);
+        setTimeout(() => el.classList.add('go'), delay);
+      });
+    });
 
-    // Hamburger overlay
+    // Hamburger
     (() => {
       const btn   = document.getElementById('hamburger');
       const menu  = document.getElementById('mobile-menu');
