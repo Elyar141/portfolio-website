@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
+  <title>Onboarding – Studio UX Redesign</title>
+  <style>
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-Variable.woff2') format('woff2'),
+           url('fonts/Switzer-Variable.woff')  format('woff');
+      font-weight: 100 900; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-VariableItalic.woff2') format('woff2'),
+           url('fonts/Switzer-VariableItalic.woff')  format('woff');
+      font-weight: 100 900; font-style: italic;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #0a0a0a;
+      --line:    #2a2a2a;
+      --mute:    #6c6c6c;
+      --dim:     #999;
+      --white:   #f2f2f2;
+      --green:   #b6f23b;
+      --gutter:  clamp(24px, 5vw, 72px);
+      --label-w: clamp(100px, 11vw, 160px);
+      --col-gap: clamp(32px, 4vw, 80px);
+    }
+
+    html { background: var(--bg); scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      background: var(--bg); min-height: 100vh;
+      font-family: 'Switzer', sans-serif; color: var(--dim);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+
+    #veil {
+      position: fixed; inset: 0; background: var(--bg);
+      z-index: 999; transition: opacity 0.9s ease; pointer-events: none;
+    }
+
+    /* ── Nav ── */
+    #site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+      padding: 14px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+    .logo-mark rect { fill: #b6f23b; transition: fill 0.22s; }
+    .nav-logo:hover .logo-mark rect { fill: rgba(182,242,59,0.5); }
+    .logo-word {
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.06em; color: rgba(200,200,200,0.48); transition: color 0.22s;
+    }
+    .nav-logo:hover .logo-word { color: rgba(200,200,200,0.82); }
+    .nav-right { display: flex; align-items: center; gap: 30px; }
+    .nav-right a {
+      font-family: 'Switzer', sans-serif; font-size: 9.5px; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(160,160,160,0.48); text-decoration: none; transition: color 0.18s;
+    }
+    .nav-right a:hover { color: rgba(160,160,160,0.82); }
+    #hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      padding: 5px; align-items: center; justify-content: center; transition: opacity 0.18s;
+    }
+    #hamburger:hover { opacity: 0.7; }
+
+    /* ── Mobile overlay ── */
+    #mobile-menu {
+      display: flex; flex-direction: column; position: fixed; inset: 0;
+      z-index: 50; background: #0a0a0a; padding: 0 32px 36px;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+    #mobile-menu.is-open { opacity: 1; visibility: visible; pointer-events: all; }
+    .mm-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+    }
+    #mm-close {
+      background: none; border: none; cursor: pointer; padding: 5px;
+      display: flex; align-items: center; justify-content: center; transition: opacity 0.18s;
+    }
+    #mm-close:hover { opacity: 0.6; }
+    .mm-links { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .mm-link {
+      display: flex; align-items: baseline; gap: 14px; text-decoration: none;
+      padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .mm-link:last-child { border-bottom: none; }
+    .mm-link:hover .mm-label { color: #b6f23b; }
+    .mm-idx {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.08em; color: rgba(182,242,59,0.5); flex-shrink: 0; width: 18px;
+    }
+    .mm-label {
+      font-family: 'Switzer', sans-serif; font-size: clamp(40px,13vw,68px);
+      font-weight: 700; letter-spacing: -0.02em; color: rgba(235,235,235,0.9);
+      line-height: 1; transition: color 0.2s ease; -webkit-font-smoothing: antialiased;
+    }
+    .mm-foot {
+      display: flex; gap: 24px; padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+    }
+    .mm-foot a {
+      font-family: 'Switzer', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(160,160,160,0.4); text-decoration: none; transition: color 0.18s;
+    }
+    .mm-foot a:hover { color: rgba(160,160,160,0.8); }
+    #mobile-menu.is-open .mm-link { animation: mm-link-in 0.38s ease both; }
+    #mobile-menu.is-open .mm-link:nth-child(1) { animation-delay: 0.10s; }
+    #mobile-menu.is-open .mm-link:nth-child(2) { animation-delay: 0.16s; }
+    #mobile-menu.is-open .mm-link:nth-child(3) { animation-delay: 0.22s; }
+    @keyframes mm-link-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Footer ── */
+    #site-footer {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 5;
+      padding: 11px 40px; border-top: 1px solid rgba(160,160,160,0.18);
+      display: flex; justify-content: flex-end; align-items: center;
+      pointer-events: none; background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+    }
+    .footer-nav { display: flex; align-items: center; gap: 28px; pointer-events: all; }
+    .footer-nav a {
+      font-family: 'Switzer', sans-serif; font-size: 9.5px; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(160,160,160,0.48); text-decoration: none; transition: color 0.18s;
+    }
+    .footer-nav a:hover { color: rgba(160,160,160,0.82); }
+
+    /* ── Entrance ── */
+    .will-animate { opacity: 0; transform: translateY(12px); }
+    .animate-in { animation: fade-up 0.72s cubic-bezier(0.22,1,0.36,1) forwards; }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       LAYOUT
+    ════════════════════════════════════════════════════════ */
+    .wrap {
+      max-width: 1500px; margin: 0 auto;
+      padding-left: var(--gutter); padding-right: var(--gutter);
+    }
+
+    /* ── Hero ── */
+    .cs-hero {
+      padding-top: clamp(110px,13vw,150px);
+      padding-bottom: clamp(56px,7vw,88px);
+    }
+    .scroll-hint {
+      display: flex; gap: 5px; justify-content: center;
+      margin-top: clamp(36px,5vw,56px);
+    }
+    .sc-px { width: 8px; height: 8px; background: var(--green); opacity: 0.45; flex-shrink: 0; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 18px; margin-bottom: clamp(24px,3vw,40px); }
+    .hero-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; color: var(--green);
+    }
+    .hero-tag {
+      font-family: 'Switzer', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--mute);
+    }
+    .hero-tag span { margin: 0 6px; opacity: 0.4; }
+    .cs-hero h1 {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: clamp(80px,10vw,152px); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 0.88;
+      color: rgba(218,218,218,0.9); margin-bottom: clamp(28px,3.5vw,48px);
+    }
+    .hero-subtitle {
+      max-width: 580px; font-family: 'Switzer', sans-serif;
+      font-size: clamp(18px,1.6vw,21px); font-weight: 400; line-height: 1.68;
+      color: rgba(185,185,185,0.85); margin-bottom: clamp(40px,5vw,64px);
+    }
+    .meta-grid { display: flex; flex-wrap: wrap; gap: 28px 64px; }
+    .meta-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-bottom: 8px;
+    }
+    .meta-value {
+      font-family: 'Switzer', sans-serif; font-size: 15px; font-weight: 400;
+      color: var(--dim); line-height: 1.5;
+    }
+
+    /* ── Editorial section grid ── */
+    .cs-section {
+      display: grid;
+      grid-template-columns: var(--label-w) 1fr;
+      gap: 0 var(--col-gap);
+      align-items: start;
+      padding-top: clamp(56px,7vw,88px);
+      padding-bottom: clamp(48px,6vw,72px);
+    }
+    .cs-section.tight {
+      padding-top: clamp(32px,4vw,48px);
+      padding-bottom: clamp(32px,4vw,48px);
+    }
+    .sec-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute);
+      padding-top: 10px; position: sticky; top: 80px; line-height: 1.7;
+    }
+    .sec-body h2 {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: clamp(24px,2.8vw,38px); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.15;
+      color: rgba(210,210,210,0.9); margin-bottom: clamp(20px,2.5vw,32px);
+    }
+    .sec-body h3 {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: 19px; font-weight: 500; letter-spacing: -0.015em;
+      color: rgba(185,185,185,0.82); margin-top: 56px; margin-bottom: 14px;
+    }
+    .sec-body h3:first-child { margin-top: 0; }
+    .sec-body p {
+      font-family: 'Switzer', sans-serif; font-size: 16px; font-weight: 400;
+      line-height: 1.82; color: rgba(160,160,160,0.62);
+      margin-bottom: 16px; max-width: 760px;
+    }
+    .sec-body p:last-child { margin-bottom: 0; }
+
+    /* ── Pull quote ── */
+    .pull-quote { padding: clamp(36px,5vw,56px) 0; margin: clamp(36px,5vw,56px) 0; }
+    .pull-quote p {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: clamp(22px,2.8vw,38px); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.25;
+      color: rgba(210,210,210,0.88); max-width: none; margin: 0;
+    }
+    .pull-quote p em { font-style: normal; color: var(--green); }
+
+    /* ── Pattern list ── */
+    .pattern-list { margin-top: 48px; display: flex; flex-direction: column; gap: 0; }
+    .pattern-row {
+      display: grid;
+      grid-template-columns: 40px minmax(180px,1fr) 2fr;
+      gap: 0 clamp(20px,3vw,48px);
+      align-items: baseline;
+      padding: clamp(20px,2.5vw,28px) 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .pattern-row:first-child { border-top: none; }
+    .pattern-n {
+      font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700;
+      letter-spacing: 0.14em; color: rgba(182,242,59,0.35); padding-top: 2px;
+    }
+    .pattern-name {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: 17px; font-weight: 500; color: rgba(195,195,195,0.82); line-height: 1.4;
+    }
+    .pattern-def {
+      font-family: 'Switzer', sans-serif; font-size: 15px; font-weight: 400;
+      line-height: 1.72; color: rgba(150,150,150,0.5);
+    }
+
+    /* ── Hero image ── */
+    .hero-img { margin-top: clamp(40px,5vw,64px); }
+    .hero-img img { width: 100%; display: block; }
+
+    /* ── Image blocks ── */
+    .img-block { padding: clamp(40px,5vw,56px) 0; }
+    .img-full img  { width: 100%; display: block; }
+    .img-caption {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-top: 12px;
+    }
+
+    /* ── Video block ── */
+    .img-full video { width: 100%; display: block; }
+
+    /* ── Image pair (before/after, side-by-side) ── */
+    .img-pair {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(16px,2vw,24px);
+    }
+    .img-pair-item img { width: 100%; display: block; }
+    .img-pair-item .img-caption { margin-top: 10px; }
+
+    /* ── Stats inline ── */
+    .stats-inline {
+      display: flex; gap: clamp(40px,6vw,96px); flex-wrap: wrap;
+      padding: clamp(40px,5vw,64px) 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: clamp(32px,4vw,48px);
+    }
+    .stat-value {
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      font-size: clamp(40px,5.5vw,72px); font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1;
+      color: rgba(218,218,218,0.9); margin-bottom: 14px;
+    }
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mute); max-width: 220px; line-height: 1.6;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 959px) {
+      #site-nav { padding: 12px 24px; }
+      :root { --gutter: clamp(20px,4vw,40px); --label-w: 80px; --col-gap: 28px; }
+      .pattern-row { grid-template-columns: 36px 1fr; }
+      .pattern-def { display: none; }
+    }
+    @media (max-width: 699px) {
+      .cs-section { grid-template-columns: 1fr; }
+      .sec-label { position: static; padding-top: 0; margin-bottom: 16px; }
+      .pattern-row { grid-template-columns: 32px 1fr; }
+      .pattern-def { display: block; grid-column: 2; margin-top: 6px; }
+    }
+    @media (max-width: 599px) {
+      #hamburger { display: flex; }
+      .nav-right { display: none; }
+      .logo-word { display: none; }
+      #site-footer { padding: 9px 16px; }
+      .footer-nav { flex-wrap: wrap; gap: 10px 16px; }
+      .footer-nav a { font-size: 8px; letter-spacing: 0.12em; }
+      :root { --gutter: 20px; }
+      .cs-hero h1 { font-size: clamp(60px,18vw,96px); }
+      .meta-grid { gap: 20px 40px; }
+      .img-pair { grid-template-columns: 1fr; }
+      .stats-inline { gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="veil"></div>
+
+  <!-- ── Nav ── -->
+  <nav id="site-nav" class="will-animate">
+    <a class="nav-logo" href="index.html">
+      <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
+        <rect x="0"  y="0"  width="5" height="5"/>
+        <rect x="6"  y="0"  width="5" height="5"/>
+        <rect x="12" y="0"  width="5" height="5"/>
+        <rect x="18" y="0"  width="5" height="5"/>
+        <rect x="0"  y="6"  width="5" height="5"/>
+        <rect x="24" y="6"  width="5" height="5"/>
+        <rect x="0"  y="12" width="5" height="5"/>
+        <rect x="24" y="12" width="5" height="5"/>
+        <rect x="0"  y="18" width="5" height="5"/>
+        <rect x="6"  y="18" width="5" height="5"/>
+        <rect x="12" y="18" width="5" height="5"/>
+        <rect x="18" y="18" width="5" height="5"/>
+        <rect x="0"  y="24" width="5" height="5"/>
+        <rect x="0"  y="30" width="5" height="5"/>
+        <rect x="0"  y="36" width="5" height="5"/>
+      </svg>
+      <span class="logo-word">pixelandprompt</span>
+    </a>
+    <div class="nav-right">
+      <a href="projects.html">Work</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+    <button id="hamburger" aria-label="Open navigation" aria-expanded="false">
+      <svg width="20" height="13" viewBox="0 0 20 13" fill="none">
+        <rect width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+        <rect y="5.75" width="13" height="1.5" fill="rgba(160,160,160,0.65)"/>
+        <rect y="11.5" width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- ── Mobile overlay ── -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation" aria-hidden="true">
+    <div class="mm-header">
+      <a class="nav-logo" href="index.html">
+        <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
+          <rect x="0"  y="0"  width="5" height="5"/><rect x="6"  y="0"  width="5" height="5"/>
+          <rect x="12" y="0"  width="5" height="5"/><rect x="18" y="0"  width="5" height="5"/>
+          <rect x="0"  y="6"  width="5" height="5"/><rect x="24" y="6"  width="5" height="5"/>
+          <rect x="0"  y="12" width="5" height="5"/><rect x="24" y="12" width="5" height="5"/>
+          <rect x="0"  y="18" width="5" height="5"/><rect x="6"  y="18" width="5" height="5"/>
+          <rect x="12" y="18" width="5" height="5"/><rect x="18" y="18" width="5" height="5"/>
+          <rect x="0"  y="24" width="5" height="5"/><rect x="0"  y="30" width="5" height="5"/>
+          <rect x="0"  y="36" width="5" height="5"/>
+        </svg>
+        <span class="logo-word">pixelandprompt</span>
+      </a>
+      <button id="mm-close" aria-label="Close navigation">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M1.5 1.5 L16.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
+          <path d="M16.5 1.5 L1.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="mm-links">
+      <a href="projects.html" class="mm-link"><span class="mm-idx">01</span><span class="mm-label">Work</span></a>
+      <a href="#" class="mm-link"><span class="mm-idx">02</span><span class="mm-label">About</span></a>
+      <a href="#" class="mm-link"><span class="mm-idx">03</span><span class="mm-label">Contact</span></a>
+    </nav>
+    <div class="mm-foot">
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">Email ↗</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════════ -->
+  <div class="cs-hero wrap will-animate">
+    <div class="hero-eyebrow">
+      <span class="hero-num">08</span>
+      <span class="hero-tag">UX Design<span>·</span>2023<span>·</span>Onboarding</span>
+    </div>
+    <h1>Onboarding</h1>
+    <p class="hero-subtitle">Redesigning Studio's onboarding, from zero guidance to self-serve in under two minutes.</p>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-value">Lead UX Designer</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Domain</div>
+        <div class="meta-value">B2B SaaS</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Tools</div>
+        <div class="meta-value">Figma</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Type</div>
+        <div class="meta-value">Onboarding Redesign</div>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="projects/onboarding/usecontent.avif"
+           alt="Studio's redesigned onboarding dashboard showing project tiles as the primary entry point"
+           loading="eager" />
+    </div>
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="sc-px"></div>
+      <div class="sc-px"></div>
+      <div class="sc-px"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       01 — SITUATION
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">01<br>Situation</div>
+      <div class="sec-body">
+        <h2>Studio was never built for strangers</h2>
+        <p>It started as an invite-only internal tool. No sign-up flow, no welcome screen, no guidance. The app assumed you already knew what you were doing – because for years, everyone who used it did.</p>
+        <p>When it opened to new users, nothing changed. They landed in the same blank application grid the internal team had always navigated by instinct. The product had no entry point for outsiders.</p>
+
+        <div class="pattern-list">
+          <div class="pattern-row">
+            <div class="pattern-n">01</div>
+            <div class="pattern-name">No sign-up, no welcome</div>
+            <div class="pattern-def">New users landed directly in the app with no orientation, no guided setup, no acknowledgment that they were new.</div>
+          </div>
+          <div class="pattern-row">
+            <div class="pattern-n">02</div>
+            <div class="pattern-name">Architecture before anything</div>
+            <div class="pattern-def">Understanding the Company → Project hierarchy was a prerequisite for doing anything at all. The structure was exposed before it was relevant.</div>
+          </div>
+          <div class="pattern-row">
+            <div class="pattern-n">03</div>
+            <div class="pattern-name">8+ required fields to start</div>
+            <div class="pattern-def">Creating a company demanded VAT ID, legal address, a registered representative. Heavy compliance forms on the first screen of a new product relationship.</div>
+          </div>
+          <div class="pattern-row">
+            <div class="pattern-n">04</div>
+            <div class="pattern-name">Empty state with no fallback</div>
+            <div class="pattern-def">If you hadn't done anything yet, you saw nothing. The product offered no starting point, no example, no signal that it was worth continuing.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legacy screens -->
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/onboarding/legacy%20screens.avif"
+           alt="Original Studio landing screen showing tool tiles with no context and no entry point for new users"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">Original landing screen · tool tiles with no context · no entry point for new users</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       02 — RESEARCH
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">02<br>Research</div>
+      <div class="sec-body">
+        <h2>Nine platforms, four patterns</h2>
+        <p>A competitive audit across Wix, Squarespace, Webflow, Ghost, Shopify, WordPress, and four others. Not to copy what they do, but to understand what makes onboarding feel effortless versus alienating. Four patterns appeared in every successful flow.</p>
+
+        <div class="pattern-list">
+          <div class="pattern-row">
+            <div class="pattern-n">01</div>
+            <div class="pattern-name">Intent question first</div>
+            <div class="pattern-def">"What are you building?" before any editor. The product orients around the user's goal, not its own data model.</div>
+          </div>
+          <div class="pattern-row">
+            <div class="pattern-n">02</div>
+            <div class="pattern-name">Social login</div>
+            <div class="pattern-def">Google or Microsoft SSO removes email friction entirely. One click establishes identity – the product starts delivering value immediately after.</div>
+          </div>
+          <div class="pattern-row">
+            <div class="pattern-n">03</div>
+            <div class="pattern-name">Straight to editor</div>
+            <div class="pattern-def">Skip the dashboard. Land in the canvas. The shortest path between login and doing something meaningful.</div>
+          </div>
+          <div class="pattern-row">
+            <div class="pattern-n">04</div>
+            <div class="pattern-name">Pre-seeded content</div>
+            <div class="pattern-def">Never show a blank screen on first login. A sample project, a starter template, a default state – anything that makes the product feel alive from the start.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit image -->
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/onboarding/Nine%20platforms%20audited%2C%20four%20patterns%20showed%20up%20in%20every%20successful%20onboarding..avif"
+           alt="Competitive audit across nine CMS and website-builder platforms, showing four shared onboarding patterns"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">Competitive audit · nine platforms · four patterns found in every successful onboarding</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       03 — ITERATIONS
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">03<br>Iterations</div>
+      <div class="sec-body">
+        <h2>Three rounds before it clicked</h2>
+        <p>The first iteration still started with "Create a company." Structured, logical – but it put the platform's data model in front of the user's actual intent. No one opens a new tool thinking about corporate hierarchy.</p>
+        <p>The second direction introduced a single entry point, but forced users to choose between internal concepts on their first screen. Container-first thinking, dressed up in cleaner UI.</p>
+
+        <div class="pull-quote">
+          <p>Users think in terms of what they're building,<br><em>not how the data is organised.</em></p>
+        </div>
+
+        <p>Every flow that led with "Company" was adding friction without adding value. The architecture made sense to us. It meant nothing to someone logging in for the first time.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Iteration pair -->
+  <div class="wrap img-block">
+    <div class="img-pair">
+      <div class="img-pair-item">
+        <img src="projects/onboarding/iteration%20one%20.avif"
+             alt="First iteration of the onboarding flow, still container-first with company creation as the entry point"
+             loading="lazy" />
+        <div class="img-caption">Iteration 01 · container-first · create a company before a project · no guidance</div>
+      </div>
+      <div class="img-pair-item">
+        <img src="projects/onboarding/iteratation2.avif"
+             alt="Second iteration with a single entry point but still forcing users to choose between internal data concepts"
+             loading="lazy" />
+        <div class="img-caption">Iteration 02 · one entry point · still forced users to choose between internal concepts on day one</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       04 — SOLUTION
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">04<br>Solution</div>
+      <div class="sec-body">
+        <h2>Project first. Everything else second.</h2>
+        <p>After login, new users move through a short conversational wizard – four steps, all skippable. It asks how they want to start, names their company and first project, then routes them straight to the dashboard. No architecture exposed, no heavy forms, no empty state.</p>
+        <p>The wizard is the opposite of a form. It asks one question at a time, accepts partial answers, and never reveals why it's asking. By the end, the user has a working project and no idea they just created a company record.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wizard GIF -->
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/onboarding/four%20steps%20from%20login.gif"
+           alt="Four-step onboarding wizard showing conversational, skippable flow from login to first project"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">Four steps from login to first project · skippable · conversational · no forms</div>
+  </div>
+
+  <!-- Dashboard section -->
+  <div class="wrap">
+    <div class="cs-section tight">
+      <div class="sec-label"></div>
+      <div class="sec-body">
+        <h3>The dashboard rethought around the same principle</h3>
+        <p>Project tiles became the primary navigation surface. Company name becomes a secondary label – visible, but not the thing you click. A filter dropdown replaces fixed tabs, so the structure scales to any number of clients without navigation breaking down.</p>
+        <p>"My First Project" is always pre-seeded. No user ever lands on an empty screen.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard GIF -->
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/onboarding/always%20creating%20a%20project%2C%20company%20is%20a%20field.gif"
+           alt="Redesigned Studio dashboard with project tiles as primary navigation and company as a secondary label"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">Redesigned dashboard · project tiles as primary navigation · company name as secondary label · one click to editor</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       05 — OUTCOME
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">05<br>Outcome</div>
+      <div class="sec-body">
+        <div class="stats-inline">
+          <div class="stat-item">
+            <div class="stat-value">&lt; 2 min</div>
+            <div class="stat-label">From login to first project</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">8 → 2</div>
+            <div class="stat-label">Required fields to start working</div>
+          </div>
+        </div>
+
+        <p>Every new user lands with a project already waiting. The empty state problem is structurally impossible – the wizard always creates one before it ends.</p>
+        <p>The Company → Project hierarchy still exists in the data layer. On day one, users never see it. Company becomes something you encounter later, when you're ready to manage multiple clients – not a gate you clear before you can start.</p>
+        <p>The navigation holds at any scale. One client or fifty, the dropdown filter keeps the dashboard readable without restructuring how anything works.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding-bottom: 80px;"></div>
+
+  <!-- ── Footer ── -->
+  <footer id="site-footer" class="will-animate">
+    <nav class="footer-nav">
+      <a href="#">Contact</a>
+      <a href="#">Design Archive</a>
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">Email ↗</a>
+    </nav>
+  </footer>
+
+  <script>
+    window.addEventListener('load', () => {
+      const veil = document.getElementById('veil');
+      requestAnimationFrame(() => {
+        veil.style.opacity = '0';
+        setTimeout(() => veil.remove(), 950);
+      });
+      document.querySelectorAll('.will-animate').forEach((el, i) => {
+        setTimeout(() => {
+          el.classList.remove('will-animate');
+          el.classList.add('animate-in');
+        }, 700 + i * 100);
+      });
+    });
+
+    (() => {
+      const DUR  = '0.72s';
+      const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+      function prep(el) {
+        el.style.opacity   = '0';
+        el.style.transform = 'translateY(32px)';
+      }
+      function reveal(el, delay) {
+        if (!el) return;
+        el.style.transition = `opacity ${DUR} ${EASE} ${delay}ms, transform ${DUR} ${EASE} ${delay}ms`;
+        el.style.opacity    = '1';
+        el.style.transform  = 'translateY(0)';
+      }
+
+      const secObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          secObs.unobserve(e.target);
+          const sec = e.target;
+          let t = 0;
+
+          reveal(sec.querySelector('.sec-label'), t); t += 55;
+
+          const body = sec.querySelector('.sec-body');
+          if (body) {
+            [...body.children].forEach(child => {
+              const tag = child.tagName;
+              const cls = child.classList;
+              if (tag === 'H2') { reveal(child, t); t += 65; }
+              else if (tag === 'H3') { reveal(child, t); t += 50; }
+              else if (tag === 'P')  { reveal(child, t); t += 38; }
+              else if (cls.contains('pull-quote') || cls.contains('callout')) { reveal(child, t); t += 65; }
+              else if (cls.contains('stats-inline')) { reveal(child, t); t += 80; }
+            });
+            body.querySelectorAll('.pattern-row').forEach((el, i) => reveal(el, 55 + i * 48));
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.cs-section').forEach(sec => {
+        sec.querySelectorAll(
+          '.sec-label, .sec-body > h2, .sec-body > h3, .sec-body > p, ' +
+          '.pull-quote, .callout, .stats-inline, .pattern-row'
+        ).forEach(prep);
+        secObs.observe(sec);
+      });
+
+      const imgObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          reveal(e.target, 0);
+          imgObs.unobserve(e.target);
+        });
+      }, { threshold: 0.04 });
+
+      document.querySelectorAll('.img-block').forEach(el => { prep(el); imgObs.observe(el); });
+    })();
+
+    (() => {
+      const btn   = document.getElementById('hamburger');
+      const menu  = document.getElementById('mobile-menu');
+      const close = document.getElementById('mm-close');
+      const open  = () => { menu.classList.add('is-open'); menu.removeAttribute('aria-hidden'); btn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
+      const shut  = () => { menu.classList.remove('is-open'); menu.setAttribute('aria-hidden','true'); btn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
+      btn.addEventListener('click', open);
+      close.addEventListener('click', shut);
+      menu.querySelectorAll('.mm-link').forEach(a => a.addEventListener('click', shut));
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') shut(); });
+    })();
+  </script>
+
+</body>
+</html>

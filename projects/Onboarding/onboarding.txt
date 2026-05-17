@@ -1,0 +1,95 @@
+
+onboarding
+Redesigning Studio's onboarding, from zero guidance to self-serve in under 2 minutes.
+
+UX Design
+
+2023
+
+Onboarding
+
+Lead designer: onboarding, navigation, and dashboard
+
+Iterated through 3 major directions before the current solution
+
+Competitive audit across 9 CMS and website-builder platforms
+
+
+Redesigning Studio's onboarding, from zero guidance to self-serve in under 2 minutes.
+01. The Challenge
+Studio was never built for strangers
+Originally an invite-only internal tool. No sign-up, no welcome, no guidance. The app assumed you already knew what you were doing.
+
+What new users hit immediately:
+
+No sign-up flow, no guided setup, just a blank app grid
+
+Had to understand Company → Project hierarchy before doing anything
+
+8+ required fields just to create a company (VAT ID, legal address, representative…
+
+Empty state with zero fallback, if you had nothing, you saw nothing
+
+
+
+
+The original landing screen, tool tiles with no context, no entry point for new users
+02. Research
+What other platforms do right
+Audited Wix, Squarespace, Webflow, Ghost, Shopify, WordPress and others. Four patterns appeared everywhere:
+
+
+Intent question first : "What are you building?" before any editor
+
+Social login: Google/Microsoft SSO removes the email friction entirely
+
+Straight to editor: skip the dashboard, land in the canvas
+
+Pre-seeded content: never show a blank screen on first login
+
+
+
+Nine platforms audited, four patterns showed up in every successful onboarding.
+03. Design evolution
+Three iterations before the right model
+users think in terms of what they're building, not how the data is organised. Every flow that led with "Company" was adding friction without adding value.
+
+
+
+
+Still container-first. Create a company before a project. No guidance
+
+
+
+One entry point — but forced users to choose between internal data concepts on day one.
+04. The solution
+Project first
+After login, new users are guided through a short conversational wizard, four steps, all skippable. It asks how they want to start, names their company and first project, and routes them straight to the dashboard. No architecture exposed, no heavy forms, no empty state.
+
+
+Project tiles are the primary navigation, company name is a secondary label
+
+Company filter dropdown replaces tabs, works at any scale
+
+"My First Project" always pre-seeded, no empty state possible
+
+One click on any tile goes straight to the Editor
+
+
+
+
+"Four steps from login to first project: skippable, conversational, no forms.
+
+
+Always creating a project. Company is a field, not a gate.
+Results
+
+New users reach their first project in under 2 minutes
+
+No user ever lands on an empty screen
+
+Company hierarchy fully hidden on day one,  zero architecture exposed
+
+Scales to any number of clients without navigation breaking
+
+Reduced required fields from 8+ to 2 to start working

@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
+  <title>Portfolio</title>
+  <style>
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-Variable.woff2') format('woff2'),
+           url('fonts/Switzer-Variable.woff')  format('woff');
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-VariableItalic.woff2') format('woff2'),
+           url('fonts/Switzer-VariableItalic.woff')  format('woff');
+      font-weight: 100 900;
+      font-style: italic;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Switzer', sans-serif;
+      overflow: hidden;
+    }
+    #binaryCanvas {
+      position: fixed;
+      bottom: 48px;
+      right: 0;
+      cursor: pointer;
+    }
+
+    /* ── Project Cards ──────────────────────────────────────────── */
+    #feat-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      animation: fc-wrap-enter 1s 0.2s ease both;
+    }
+    @keyframes fc-wrap-enter {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .nc {
+      --nc-green: #b6f23b;
+      --nc-cream: #ece6d3;
+      --nc-ink: #0a0a0a;
+      background: var(--nc-green);
+      padding: clamp(14px, 1.46vw, 28px);
+      box-sizing: border-box;
+      position: absolute;
+      pointer-events: all;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: grab;
+      user-select: none;
+      transition: transform 0.36s cubic-bezier(0.22,1,0.36,1), box-shadow 0.36s;
+    }
+    /* fluid card sizes: designed at 1920px, scale down linearly, floor at ~960px */
+    .nc.card-h { width: clamp(480px, 46vw, 880px); height: clamp(265px, 25.3vw, 486px); }
+    .nc.card-v { width: clamp(300px, 30vw, 580px); height: clamp(406px, 40.5vw, 782px); }
+
+    /* card 1 — landscape, bottom of pile */
+    #feat-wrap .nc:nth-child(1) {
+      top: calc(50% - min(163px, 8.5vw));
+      left: calc(44% - min(640px, 33.5vw));
+      transform: rotate(-5deg);
+      z-index: 20;
+      box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7), 0 0 60px -10px rgba(182,242,59,0.12);
+    }
+    #feat-wrap .nc:nth-child(1):hover {
+      transform: rotate(-5deg) translateY(-10px);
+      box-shadow: 0 70px 120px -20px rgba(0,0,0,0.75), 0 0 80px -10px rgba(182,242,59,0.18);
+    }
+
+    /* card 2 — portrait, top of pile */
+    #feat-wrap .nc:nth-child(2) {
+      top: max(128px, calc(50% - min(431px, 22.3vw) + 60px));
+      left: calc(44% - min(140px, 7.2vw));
+      transform: rotate(8deg);
+      z-index: 23;
+      box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7), 0 0 60px -10px rgba(182,242,59,0.14);
+    }
+    #feat-wrap .nc:nth-child(2):hover {
+      transform: rotate(8deg) translateY(-10px);
+      box-shadow: 0 70px 120px -20px rgba(0,0,0,0.75), 0 0 80px -10px rgba(182,242,59,0.20);
+    }
+
+    /* card 3 — landscape, top of pile */
+    #feat-wrap .nc:nth-child(3) {
+      top: calc(50% - min(383px, 20vw) + 30px);
+      left: calc(44% - min(410px, 21.5vw));
+      transform: rotate(-2deg);
+      z-index: 22;
+      box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7), 0 0 60px -10px rgba(182,242,59,0.18);
+    }
+    #feat-wrap .nc:nth-child(3):hover {
+      transform: rotate(-2deg) translateY(-10px);
+      box-shadow: 0 70px 120px -20px rgba(0,0,0,0.75), 0 0 80px -10px rgba(182,242,59,0.24);
+    }
+
+    /* two horizontal stripes in the green border */
+    .nc::before, .nc::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      height: 6px;
+      background: var(--nc-ink);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .nc.card-h::before { top: calc(50% - 10px); }
+    .nc.card-h::after  { top: calc(50% + 6px); }
+    .nc.card-v::before { top: calc(38% - 10px); }
+    .nc.card-v::after  { top: calc(38% + 4px); }
+
+    /* panels grid */
+    .nc-panels {
+      display: grid;
+      height: 100%;
+      width: 100%;
+      gap: clamp(4px, 0.42vw, 8px);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* cream panel with notched corners */
+    .nc-panel {
+      background: var(--nc-cream);
+      clip-path: polygon(
+        12px 0, calc(100% - 12px) 0, calc(100% - 12px) 6px, 100% 6px,
+        100% calc(100% - 12px), calc(100% - 12px) calc(100% - 12px),
+        calc(100% - 12px) 100%, 12px 100%, 12px calc(100% - 6px),
+        0 calc(100% - 6px), 0 12px, 12px 12px
+      );
+      padding: clamp(16px, 1.67vw, 32px) clamp(20px, 2.08vw, 40px);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    /* landscape layout */
+    .nc-panels.h-layout { grid-template-columns: 1.5fr 1fr; grid-template-rows: 1fr; }
+    .nc-right { display: grid; grid-template-rows: 1fr auto; gap: clamp(4px, 0.42vw, 8px); }
+    .nc-right .nc-panel { padding: 0; }
+    .nc-icon-box { display: flex; align-items: center; justify-content: center; }
+    .nc-icon-box svg { width: clamp(100px, 10.4vw, 200px); height: clamp(100px, 10.4vw, 200px); }
+    .nc-barcode-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: clamp(9px, 0.94vw, 18px) clamp(13px, 1.35vw, 26px);
+      border-top: clamp(3px, 0.31vw, 6px) solid var(--nc-ink);
+    }
+
+    /* ── Pixel info block (replaces barcode) ───────────────────── */
+    .nc-pixel-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nc-px { display: block; max-width: 100%; }
+
+    /* portrait layout */
+    .nc-panels.v-layout { grid-template-rows: 1fr auto; grid-template-columns: 1fr; }
+    .nc-bottom { display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(4px, 0.42vw, 8px); }
+    .nc-bottom .nc-panel {
+      padding: clamp(13px, 1.35vw, 26px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nc-bottom .nc-panel svg { width: clamp(58px, 6vw, 116px); height: clamp(58px, 6vw, 116px); }
+
+    /* project title */
+    .nc-title {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 800;
+      color: var(--nc-ink);
+      line-height: 0.95;
+      letter-spacing: -0.025em;
+      -webkit-font-smoothing: antialiased;
+    }
+    .nc-title.big { font-size: clamp(44px, 4.6vw, 88px); }
+    .nc-title.mid { font-size: clamp(34px, 3.5vw, 68px); }
+
+    /* subtitle tag row */
+    .nc-sub {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: clamp(10px, 1.05vw, 20px);
+      letter-spacing: 0.18em;
+      color: var(--nc-ink);
+      margin-top: clamp(12px, 1.25vw, 24px);
+    }
+
+    /* ── Arrow link hover ── */
+    .nc-arrow-link {
+      display: inline-flex;
+      text-decoration: none;
+      transition: transform 0.28s cubic-bezier(0.22,1,0.36,1);
+      will-change: transform;
+    }
+    .nc-arrow-link:hover { transform: scale(1.14) translate(7px, -7px); }
+    .nc.is-dragging .nc-arrow-link { transform: none !important; transition: none; }
+
+    /* ── Title panel flip ── */
+    .nc-flip-wrap {
+      perspective: 1400px;
+      padding: 0;
+      position: relative;
+    }
+    .nc-flip-front {
+      width: 100%; height: 100%;
+      padding: clamp(16px, 1.67vw, 32px) clamp(20px, 2.08vw, 40px);
+      box-sizing: border-box;
+      transition: transform 0.3s cubic-bezier(0.55, 0, 1, 0.45);
+    }
+    .nc-flip-back {
+      position: absolute;
+      inset: 0;
+      padding: clamp(16px, 1.67vw, 32px) clamp(20px, 2.08vw, 40px);
+      box-sizing: border-box;
+      background: var(--nc-cream);
+      transform: rotateY(-90deg);
+      transition: transform 0.32s cubic-bezier(0, 0.55, 0.45, 1);
+      display: flex;
+      align-items: center;
+    }
+    .nc-flip-wrap:hover .nc-flip-front { transform: rotateY(90deg); }
+    .nc-flip-wrap:hover .nc-flip-back  { transform: rotateY(0deg); transition-delay: 0.24s; }
+    /* freeze flip while dragging */
+    .nc.is-dragging .nc-flip-front,
+    .nc.is-dragging .nc-flip-back       { transition: none !important; }
+    .nc.is-dragging .nc-flip-wrap:hover .nc-flip-front { transform: none; }
+    .nc.is-dragging .nc-flip-wrap:hover .nc-flip-back  { transform: rotateY(-90deg); }
+    /* back-face text */
+    .nc-back-text {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 500;
+      font-size: clamp(13px, 1.15vw, 22px);
+      line-height: 1.45;
+      color: var(--nc-ink);
+      text-wrap: pretty;
+    }
+
+    /* ── Navigation ─────────────────────────────────── */
+    #site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 30;
+      padding: 14px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      text-decoration: none;
+    }
+    .logo-mark rect {
+      fill: #b6f23b;
+      transition: fill 0.22s;
+    }
+    .nav-logo:hover .logo-mark rect {
+      fill: rgba(182,242,59,0.5);
+    }
+    .logo-word {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: rgba(200,200,200,0.48);
+      transition: color 0.22s;
+    }
+    .nav-logo:hover .logo-word { color: rgba(200,200,200,0.82); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+    .nav-right a {
+      font-family: 'Switzer', sans-serif;
+      font-size: 9.5px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.48);
+      text-decoration: none;
+      transition: color 0.18s;
+    }
+    .nav-right a:hover { color: rgba(160,160,160,0.82); }
+
+    /* ── Footer ─────────────────────────────────────── */
+    #site-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 5;
+      padding: 11px 40px 11px;
+      border-top: 1px solid rgba(160, 160, 160, 0.18);
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      pointer-events: none;
+    }
+    .footer-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      pointer-events: all;
+    }
+    .footer-nav a {
+      font-family: 'Switzer', sans-serif;
+      font-size: 9.5px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(160, 160, 160, 0.48);
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+    .footer-nav a:hover { color: rgba(160, 160, 160, 0.82); }
+
+    /* ── Hamburger button ───────────────────────────────────────── */
+    #hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.18s;
+    }
+    #hamburger:hover { opacity: 0.7; }
+
+    /* ── Mobile menu overlay ────────────────────────────────────── */
+    #mobile-menu {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: #0a0a0a;
+      padding: 0 32px 36px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+    #mobile-menu.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+    }
+
+    .mm-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+    }
+
+    #mm-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.18s;
+    }
+    #mm-close:hover { opacity: 0.6; }
+
+    .mm-links {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .mm-link {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      text-decoration: none;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .mm-link:last-child { border-bottom: none; }
+    .mm-link:hover .mm-label { color: #b6f23b; }
+
+    .mm-idx {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: rgba(182,242,59,0.5);
+      flex-shrink: 0;
+      width: 18px;
+    }
+
+    .mm-label {
+      font-family: 'Switzer', sans-serif;
+      font-size: clamp(40px, 13vw, 68px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: rgba(235,235,235,0.9);
+      line-height: 1;
+      transition: color 0.2s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mm-foot {
+      display: flex;
+      gap: 24px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+    }
+    .mm-foot a {
+      font-family: 'Switzer', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.4);
+      text-decoration: none;
+      transition: color 0.18s;
+    }
+    .mm-foot a:hover { color: rgba(160,160,160,0.8); }
+
+    /* Staggered link entrance */
+    #mobile-menu.is-open .mm-link {
+      animation: mm-link-in 0.38s ease both;
+    }
+    #mobile-menu.is-open .mm-link:nth-child(1) { animation-delay: 0.10s; }
+    #mobile-menu.is-open .mm-link:nth-child(2) { animation-delay: 0.16s; }
+    #mobile-menu.is-open .mm-link:nth-child(3) { animation-delay: 0.22s; }
+    @keyframes mm-link-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Desktop only: 10% card size reduction ─────────────────── */
+    @media (min-width: 960px) {
+      .nc.card-h { width: clamp(432px, 41.4vw, 792px); height: clamp(239px, 22.8vw, 437px); }
+      .nc.card-v { width: clamp(270px, 27vw, 522px);   height: clamp(365px, 36.5vw, 704px); }
+    }
+
+    /* ── Tablet: stacked layout ────────────────────────────────── */
+    @media (max-width: 959px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        align-items: flex-start;
+      }
+
+      #binaryCanvas { display: none; }
+
+      #feat-wrap {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(16px, 3vw, 32px);
+        padding: 96px 24px 80px;
+      }
+
+      .nc {
+        position: relative;
+        cursor: default;
+        padding: clamp(12px, 2vw, 24px);
+      }
+
+      #feat-wrap .nc:nth-child(1),
+      #feat-wrap .nc:nth-child(2),
+      #feat-wrap .nc:nth-child(3) {
+        top: auto; left: auto;
+        transform: none;
+        z-index: auto;
+        box-shadow: 0 20px 60px -10px rgba(0,0,0,0.6), 0 0 40px -8px rgba(182,242,59,0.12);
+      }
+
+      #feat-wrap .nc:nth-child(1):hover,
+      #feat-wrap .nc:nth-child(2):hover,
+      #feat-wrap .nc:nth-child(3):hover {
+        transform: translateY(-6px);
+        box-shadow: 0 30px 70px -10px rgba(0,0,0,0.65), 0 0 50px -8px rgba(182,242,59,0.18);
+      }
+
+      .nc.card-h {
+        width: min(760px, calc(100vw - 48px));
+        height: auto;
+        aspect-ratio: 880 / 486;
+      }
+
+      .nc.card-v {
+        width: min(500px, calc(100vw - 48px));
+        height: auto;
+        aspect-ratio: 580 / 782;
+      }
+
+      .nc-panels { gap: clamp(3px, 0.7vw, 8px); }
+
+      .nc-title.big { font-size: clamp(32px, 7vw, 88px); }
+      .nc-title.mid { font-size: clamp(24px, 5.5vw, 68px); }
+
+      .nc-sub {
+        font-size: clamp(9px, 1.8vw, 20px);
+        margin-top: clamp(8px, 1.8vw, 24px);
+      }
+
+      .nc-panel { padding: clamp(14px, 3.2vw, 32px) clamp(16px, 3.8vw, 40px); }
+
+      .nc-flip-front,
+      .nc-flip-back { padding: clamp(14px, 3.2vw, 32px) clamp(16px, 3.8vw, 40px); }
+
+      .nc-bottom .nc-panel { padding: clamp(10px, 2.2vw, 26px); }
+
+      .nc-barcode-row {
+        padding: clamp(7px, 1.6vw, 18px) clamp(9px, 2vw, 26px);
+      }
+
+      .nc-back-text { font-size: clamp(12px, 2vw, 22px); }
+
+      .nc-icon-box svg {
+        width: clamp(70px, 13vw, 200px);
+        height: clamp(70px, 13vw, 200px);
+      }
+
+      .nc-bottom .nc-panel svg {
+        width: clamp(44px, 8.5vw, 116px);
+        height: clamp(44px, 8.5vw, 116px);
+      }
+
+      .nc-px { max-width: 100%; }
+
+      #site-nav { padding: 12px 24px; }
+    }
+
+    /* ── Mobile ─────────────────────────────────────────────────── */
+    @media (max-width: 599px) {
+      /* Stack canvas below cards in the flex column */
+      body {
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      #feat-wrap {
+        order: 1;
+        width: 100%;
+        padding: 72px 16px 20px;
+        gap: 14px;
+      }
+
+      /* Binary canvas: pull out of fixed, flow after cards */
+      #binaryCanvas {
+        display: block;
+        position: relative;
+        order: 2;
+        width: 100%;
+        aspect-ratio: 860 / 114;
+        margin-bottom: 56px; /* clears fixed footer */
+        cursor: pointer;
+        opacity: 0.9;
+      }
+
+      .nc.card-h { width: calc(100vw - 32px); }
+      .nc.card-v { width: calc(100vw - 32px); }
+
+      .nc-title.big { font-size: clamp(28px, 8.5vw, 60px); }
+      .nc-title.mid { font-size: clamp(22px, 6.5vw, 48px); }
+
+      /* Nav: show all elements, compact & wrappable */
+      #site-nav {
+        padding: 10px 16px;
+        flex-wrap: wrap;
+        row-gap: 4px;
+      }
+      .logo-word {
+        display: inline; /* restore */
+        font-size: 9px;
+      }
+      /* Nav links move into overlay; show hamburger instead */
+      .nav-right { display: none; }
+      #hamburger { display: flex; }
+
+      /* Footer: restore, compact */
+      #site-footer {
+        display: flex;
+        padding: 9px 16px;
+      }
+      .footer-nav {
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .footer-nav a {
+        font-size: 8px;
+        letter-spacing: 0.12em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="site-nav">
+    <a class="nav-logo" href="index.html">
+      <!-- Pixel P mark: 5 cols × 7 rows, 5px blocks, 1px gap -->
+      <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0"  y="0"  width="5" height="5"/>
+        <rect x="6"  y="0"  width="5" height="5"/>
+        <rect x="12" y="0"  width="5" height="5"/>
+        <rect x="18" y="0"  width="5" height="5"/>
+        <rect x="0"  y="6"  width="5" height="5"/>
+        <rect x="24" y="6"  width="5" height="5"/>
+        <rect x="0"  y="12" width="5" height="5"/>
+        <rect x="24" y="12" width="5" height="5"/>
+        <rect x="0"  y="18" width="5" height="5"/>
+        <rect x="6"  y="18" width="5" height="5"/>
+        <rect x="12" y="18" width="5" height="5"/>
+        <rect x="18" y="18" width="5" height="5"/>
+        <rect x="0"  y="24" width="5" height="5"/>
+        <rect x="0"  y="30" width="5" height="5"/>
+        <rect x="0"  y="36" width="5" height="5"/>
+      </svg>
+      <span class="logo-word">pixelandprompt</span>
+    </a>
+    <div class="nav-right">
+      <a href="#">Work</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+    <button id="hamburger" aria-label="Open navigation" aria-expanded="false">
+      <svg width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+        <rect y="5.75" width="13" height="1.5" fill="rgba(160,160,160,0.65)"/>
+        <rect y="11.5" width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- ── Mobile navigation overlay ── -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation" aria-hidden="true">
+    <div class="mm-header">
+      <a class="nav-logo" href="index.html">
+        <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0"  y="0"  width="5" height="5"/>
+          <rect x="6"  y="0"  width="5" height="5"/>
+          <rect x="12" y="0"  width="5" height="5"/>
+          <rect x="18" y="0"  width="5" height="5"/>
+          <rect x="0"  y="6"  width="5" height="5"/>
+          <rect x="24" y="6"  width="5" height="5"/>
+          <rect x="0"  y="12" width="5" height="5"/>
+          <rect x="24" y="12" width="5" height="5"/>
+          <rect x="0"  y="18" width="5" height="5"/>
+          <rect x="6"  y="18" width="5" height="5"/>
+          <rect x="12" y="18" width="5" height="5"/>
+          <rect x="18" y="18" width="5" height="5"/>
+          <rect x="0"  y="24" width="5" height="5"/>
+          <rect x="0"  y="30" width="5" height="5"/>
+          <rect x="0"  y="36" width="5" height="5"/>
+        </svg>
+        <span class="logo-word">pixelandprompt</span>
+      </a>
+      <button id="mm-close" aria-label="Close navigation">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.5 1.5 L16.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
+          <path d="M16.5 1.5 L1.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="mm-links">
+      <a href="#" class="mm-link">
+        <span class="mm-idx">01</span>
+        <span class="mm-label">Work</span>
+      </a>
+      <a href="#" class="mm-link">
+        <span class="mm-idx">02</span>
+        <span class="mm-label">About</span>
+      </a>
+      <a href="#" class="mm-link">
+        <span class="mm-idx">03</span>
+        <span class="mm-label">Contact</span>
+      </a>
+    </nav>
+    <div class="mm-foot">
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">Email ↗</a>
+    </div>
+  </div>
+
+  <canvas id="binaryCanvas"></canvas>
+
+  <!-- ── Project Cards ── -->
+  <div id="feat-wrap">
+
+    <!-- card 1: landscape -->
+    <div class="nc card-h">
+      <div class="nc-panels h-layout">
+        <div class="nc-panel nc-flip-wrap">
+          <div class="nc-flip-front">
+            <div class="nc-title big"></div>
+            <div class="nc-sub"></div>
+          </div>
+          <div class="nc-flip-back">
+            <p class="nc-back-text"></p>
+          </div>
+        </div>
+        <div class="nc-right">
+          <div class="nc-panel nc-icon-box">
+            <a class="nc-arrow-link" href="#">
+              <svg width="200" height="200" viewBox="0 0 64 64" shape-rendering="geometricPrecision">
+                <path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="5" stroke-linecap="butt"/>
+                <path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="5" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+              </svg>
+            </a>
+          </div>
+          <div class="nc-panel nc-barcode-row">
+            <div class="nc-pixel-wrap">
+              <canvas class="nc-px" data-w="220" data-h="54"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- card 2: portrait -->
+    <div class="nc card-v">
+      <div class="nc-panels v-layout">
+        <div class="nc-panel nc-flip-wrap">
+          <div class="nc-flip-front">
+            <div class="nc-title mid"></div>
+            <div class="nc-sub"></div>
+          </div>
+          <div class="nc-flip-back">
+            <p class="nc-back-text"></p>
+          </div>
+        </div>
+        <div class="nc-bottom">
+          <div class="nc-panel">
+            <a class="nc-arrow-link" href="#">
+              <svg width="116" height="116" viewBox="0 0 64 64" shape-rendering="geometricPrecision">
+                <path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="5" stroke-linecap="butt"/>
+                <path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="5" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+              </svg>
+            </a>
+          </div>
+          <div class="nc-panel">
+            <div class="nc-pixel-wrap">
+              <canvas class="nc-px" data-w="168" data-h="62"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- card 3: landscape -->
+    <div class="nc card-h">
+      <div class="nc-panels h-layout">
+        <div class="nc-panel nc-flip-wrap">
+          <div class="nc-flip-front">
+            <div class="nc-title big"></div>
+            <div class="nc-sub"></div>
+          </div>
+          <div class="nc-flip-back">
+            <p class="nc-back-text"></p>
+          </div>
+        </div>
+        <div class="nc-right">
+          <div class="nc-panel nc-icon-box">
+            <a class="nc-arrow-link" href="#">
+              <svg width="200" height="200" viewBox="0 0 64 64" shape-rendering="geometricPrecision">
+                <path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="5" stroke-linecap="butt"/>
+                <path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="5" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+              </svg>
+            </a>
+          </div>
+          <div class="nc-panel nc-barcode-row">
+            <div class="nc-pixel-wrap">
+              <canvas class="nc-px" data-w="220" data-h="54"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FEATURED PROJECTS CONFIG
+       Edit the three entries below to change which projects appear.
+       Cards are ordered: left (landscape) · centre (portrait) · right (landscape)
+       title:     text shown on card front — use \n for a line break
+       titleSize: 'big' for landscape cards, 'mid' for portrait
+       tags:      short labels shown below the title (landscape gets '→' appended automatically)
+       back:      description shown on card flip
+       href:      the case study page to link to
+       seed:      controls the pixel pattern (3 = bottom-heavy, 7 = top-heavy, any other = uniform)
+       label:     text shown in the pixel info block on hover
+  ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    const FEATURED = [
+      {
+        title:     'But.tons',
+        titleSize: 'mid',
+        tags:      ['Product', '2025'],
+        back:      'A creative button generator that combines curated ingredients with AI temperature to turn UI design into an act of exploration.',
+        href:      'buttons.html',
+        seed:      11,
+        label:     'PRODUCT',
+      },
+      {
+        title:     'Verity',
+        titleSize: 'big',
+        tags:      ['UX for AI', '2026'],
+        back:      'Designing trust in AI-assisted compliance review. Making a system that is sometimes wrong feel safe to act on.',
+        href:      'verity.html',
+        seed:      3,
+        label:     'UX FOR AI',
+      },
+      {
+        title:     'Design\nSystem',
+        titleSize: 'big',
+        tags:      ['Systems', '2025'],
+        back:      'A production design system where Figma and Vue share the same source of truth. Built and maintained using Claude Code and the Figma MCP.',
+        href:      'designsystem.html',
+        seed:      7,
+        label:     'SYSTEMS',
+      },
+    ];
+
+    // Populate cards — do not edit below
+    (function () {
+      const cards = document.querySelectorAll('#feat-wrap .nc');
+      FEATURED.forEach((proj, i) => {
+        const card   = cards[i];
+        const isLand = card.classList.contains('card-h');
+
+        const titleEl = card.querySelector('.nc-title');
+        titleEl.className = 'nc-title ' + proj.titleSize;
+        titleEl.innerHTML = proj.title.replace('\n', '<br>');
+
+        const subEl = card.querySelector('.nc-sub');
+        const allTags = isLand ? [...proj.tags, '→'] : proj.tags;
+        subEl.innerHTML = allTags.map(t => '<span>' + t + '</span>').join('');
+
+        card.querySelector('.nc-back-text').textContent = proj.back;
+        card.querySelector('.nc-arrow-link').href = proj.href;
+
+        const cv = card.querySelector('canvas.nc-px');
+        if (cv) { cv.dataset.seed = proj.seed; cv.dataset.label = proj.label; }
+      });
+    })();
+  </script>
+
+  <footer id="site-footer">
+    <nav class="footer-nav">
+      <a href="#">Contact</a>
+      <a href="#">Design Archive</a>
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">Email ↗</a>
+    </nav>
+  </footer>
+
+  <script>
+    /* ── v5: PROJECTS — grey stroke idle, physics push + T/S pop on hover ── */
+    (() => {
+      const canvas = document.getElementById('binaryCanvas');
+      const ctx    = canvas.getContext('2d');
+
+      const FONT_SZ = 132;
+      const LSPC    = -6;
+      const PAD_X   = 20;
+      const PAD_Y   = 8;
+      const word    = 'PROJECTS';
+      const GREY    = 'rgba(70,70,70,0.85)';
+
+      let active = false;
+      canvas.addEventListener('click', () => {
+        if (active) return;
+        active = true;
+        startTransition();
+      });
+
+      document.fonts.ready.then(() => {
+        const fontStr = `800 ${FONT_SZ}px "Switzer","Helvetica Neue",Helvetica,sans-serif`;
+
+        /* measure full word with letter-spacing for canvas sizing */
+        const probe  = document.createElement('canvas');
+        probe.width  = 2400; probe.height = FONT_SZ * 2;
+        const pc = probe.getContext('2d');
+        pc.font          = fontStr;
+        pc.letterSpacing = `${LSPC}px`;
+        const m   = pc.measureText(word);
+        const tw  = Math.ceil(m.width);
+        const asc = Math.ceil(m.actualBoundingBoxAscent);
+        const dsc = Math.ceil(m.actualBoundingBoxDescent);
+
+        const textW = tw + PAD_X * 2;
+        const textH = asc + dsc + PAD_Y * 2;
+        canvas.width  = textW;
+        canvas.height = textH;
+
+        /* per-letter x positions (cumulative measureText with -6px spacing) */
+        const letterX = word.split('').map((_, i) =>
+          PAD_X + (i === 0 ? 0 : Math.ceil(pc.measureText(word.slice(0, i)).width))
+        );
+
+        /* individual glyph advance widths at 0 spacing — used for tight packing */
+        const widths = (() => {
+          const p2 = document.createElement('canvas');
+          p2.width = 600; p2.height = FONT_SZ * 2;
+          const c2 = p2.getContext('2d');
+          c2.font          = fontStr;
+          c2.letterSpacing = '0px';
+          return word.split('').map(ch => Math.ceil(c2.measureText(ch).width));
+        })();
+
+        function drawIdle() {
+          ctx.clearRect(0, 0, textW, textH);
+          ctx.save();
+          ctx.font          = fontStr;
+          ctx.letterSpacing = `${LSPC}px`;
+          ctx.textBaseline  = 'alphabetic';
+          ctx.strokeStyle   = GREY;
+          ctx.lineWidth     = 0.8;
+          ctx.lineJoin      = 'round';
+          ctx.strokeText(word, PAD_X, PAD_Y + asc);
+          ctx.restore();
+        }
+
+        drawIdle();
+
+        let hovered = false;
+        let rafId   = null;
+        let overlay = null;
+
+        canvas.addEventListener('mouseenter', () => {
+          if (hovered) return;
+          hovered = true;
+          startHover();
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+          hovered = false;
+          if (rafId)   { cancelAnimationFrame(rafId); rafId = null; }
+          if (overlay) { overlay.remove(); overlay = null; }
+          drawIdle();
+        });
+
+        function easeOut3(t) { return 1 - Math.pow(1 - t, 3); }
+
+        function startHover() {
+          const VW = window.innerWidth;
+          const VH = window.innerHeight - 48;
+
+          overlay = document.createElement('canvas');
+          overlay.width  = VW;
+          overlay.height = VH;
+          Object.assign(overlay.style, {
+            position: 'fixed', top: '0', left: '0',
+            width: VW + 'px', height: VH + 'px',
+            pointerEvents: 'none', zIndex: '10',
+          });
+          document.body.appendChild(overlay);
+          const oc = overlay.getContext('2d');
+          ctx.clearRect(0, 0, textW, textH);
+
+          /* letter positions in overlay coordinate space */
+          const baseX  = VW - textW;
+          const baseY  = VH - textH + PAD_Y + asc;
+          const startX = word.split('').map((_, i) => baseX + letterX[i]);
+
+          /* P moves right by PUSH, dragging R–C with it via a stagger wave.
+             T and S hit the viewport wall and can't go right — they pop upward. */
+          const PUSH     = 88;   /* px each base letter (P–C) travels right */
+          const STAGGER  = 48;   /* ms cascade delay between letters          */
+          const PUSH_DUR = 520;  /* ms for each base letter to complete push  */
+          const POP_DUR  = 540;  /* ms for T and S to pop up                  */
+
+          const letterH = asc + dsc;
+
+          /* T (i=6): wave arrives at 6×STAGGER, pops up then — higher, more tilt
+             S (i=7): wave arrives at 7×STAGGER, pops up with even more tilt    */
+          const T_POP_START = 6 * STAGGER; /* 288ms */
+          const S_POP_START = 7 * STAGGER; /* 336ms */
+
+          /* final elevated y — T goes ~65% of letter height above baseline,
+             S goes ~90% so it reads as higher / more chaotic                  */
+          const popY_T = baseY - letterH * 0.65;
+          const popY_S = baseY - letterH * 0.90;
+
+          /* CCW tilt (negative): top of letter falls leftward over the others */
+          const TILT_T = -0.40; /* ~−23° */
+          const TILT_S = -0.62; /* ~−36° */
+
+          const t0 = performance.now();
+
+          function frame(now) {
+            if (!hovered) return;
+            const elapsed = now - t0;
+
+            oc.clearRect(0, 0, VW, VH);
+            oc.save();
+            oc.font          = fontStr;
+            oc.letterSpacing = '0px';
+            oc.textBaseline  = 'alphabetic';
+            oc.strokeStyle   = GREY;
+            oc.lineWidth     = 0.8;
+            oc.lineJoin      = 'round';
+
+            for (let i = 0; i < 8; i++) {
+              let x = startX[i];
+              let y = baseY;
+              let tilt = 0;
+
+              if (i <= 5) {
+                /* P through C: cascade push rightward, all motion forward */
+                const lt = elapsed - i * STAGGER;
+                if (lt > 0) {
+                  x += PUSH * easeOut3(Math.min(lt / PUSH_DUR, 1));
+                }
+              } else {
+                /* T and S: wall stops rightward travel — they pop straight up
+                   with a CCW tilt, falling back over the compressed letters   */
+                const popStart = i === 6 ? T_POP_START : S_POP_START;
+                const finalY   = i === 6 ? popY_T : popY_S;
+                const finalT   = i === 6 ? TILT_T  : TILT_S;
+                const lt = elapsed - popStart;
+                if (lt > 0) {
+                  const e = easeOut3(Math.min(lt / POP_DUR, 1));
+                  y    = baseY + (finalY - baseY) * e;
+                  tilt = finalT * e;
+                }
+              }
+
+              if (tilt !== 0) {
+                oc.save();
+                oc.translate(x, y);
+                oc.rotate(tilt);
+                oc.strokeText(word[i], 0, 0);
+                oc.restore();
+              } else {
+                oc.strokeText(word[i], x, y);
+              }
+            }
+
+            oc.restore();
+            rafId = requestAnimationFrame(frame);
+          }
+
+          rafId = requestAnimationFrame(frame);
+        }
+      });
+
+      function startTransition() {
+        const SW = window.innerWidth, SH = window.innerHeight;
+        const fc = document.createElement('canvas');
+        fc.width = SW; fc.height = SH;
+        Object.assign(fc.style, {
+          position: 'fixed', top: '0', left: '0', zIndex: '100', pointerEvents: 'none',
+        });
+        document.body.appendChild(fc);
+        const fctx = fc.getContext('2d');
+
+        /* sparse pixel grid for scan texture */
+        const FS = 4, FST = 8;
+        const cells = [];
+        for (let y = 0; y <= SH + FST; y += FST)
+          for (let x = 0; x <= SW + FST; x += FST)
+            cells.push({ x, y, a: 0.07 + Math.random() * 0.16 });
+
+        /* project names that appear as scan sweeps past their Y position */
+        const listX  = Math.round(SW * 0.10);
+        const listY0 = Math.round(SH * 0.16);
+        const lineH  = 100;
+        const names  = [
+          'Verity',
+          'But.tons',
+          'Design System',
+          'Global Encounters',
+          'Onboarding',
+          'Café Puschkin',
+        ];
+
+        const DURATION = 4400;
+        const t0 = performance.now();
+        let done = false;
+
+        function step(now) {
+          if (done) return;
+          const prog  = Math.min((now - t0) / DURATION, 1);
+          const scanY = prog * (SH + 80);
+
+          fctx.fillStyle = '#0a0a0a';
+          fctx.fillRect(0, 0, SW, SH);
+
+          /* dim pixel fill above the scan line */
+          for (const c of cells) {
+            if (c.y > scanY) continue;
+            const a = c.a * Math.min((scanY - c.y) / 28, 1);
+            if (a < 0.005) continue;
+            fctx.fillStyle = `rgba(70,70,70,${a.toFixed(2)})`;
+            fctx.fillRect(c.x, c.y, FS, FS);
+          }
+
+          /* faint leading-edge streak */
+          if (scanY > 0 && scanY < SH + 20) {
+            const g = fctx.createLinearGradient(0, scanY - 12, 0, scanY + 2);
+            g.addColorStop(0, 'rgba(200,200,200,0.08)');
+            g.addColorStop(1, 'rgba(200,200,200,0)');
+            fctx.fillStyle = g;
+            fctx.fillRect(0, Math.max(0, scanY - 12), SW, 14);
+          }
+
+          /* names fade in as scan sweeps past each one */
+          fctx.font         = '300 16px "Switzer", sans-serif';
+          fctx.textAlign    = 'left';
+          fctx.textBaseline = 'alphabetic';
+          for (let i = 0; i < names.length; i++) {
+            const ny = listY0 + i * lineH;
+            if (scanY < ny - 8) continue;
+            const fa = Math.min((scanY - (ny - 8)) / 36, 1) * 0.62;
+            fctx.globalAlpha = fa;
+            fctx.fillStyle   = 'rgba(168,168,168,1)';
+            fctx.fillText(names[i], listX, ny);
+          }
+          fctx.globalAlpha = 1;
+
+          if (prog >= 1) {
+            done = true;
+            setTimeout(() => { window.location.href = 'projects.html'; }, 500);
+          } else {
+            requestAnimationFrame(step);
+          }
+        }
+
+        requestAnimationFrame(step);
+      }
+    })();
+
+    /* ── v1: binary text (uncomment to revert) ──────────────────────
+    (() => {
+      const canvas = document.getElementById('binaryCanvas');
+      const ctx    = canvas.getContext('2d');
+      const CHAR = 10;
+      const W = 950, H = 220;
+      canvas.width  = W;
+      canvas.height = H;
+      const COLS = Math.floor(W / CHAR);
+      const ROWS = Math.floor(H / CHAR);
+      const tOff = document.createElement('canvas');
+      tOff.width = W; tOff.height = H;
+      const tc = tOff.getContext('2d');
+      tc.fillStyle = '#fff'; tc.textAlign = 'right'; tc.textBaseline = 'top';
+      tc.font = 'bold 120px "Consolas", monospace';
+      tc.fillText('PROJECTS', W - 40, 65);
+      tc.strokeStyle = '#fff'; tc.lineWidth = 7;
+      tc.strokeText('PROJECTS', W - 40, 65);
+      const tPix = tc.getImageData(0, 0, W, H).data;
+      const textMask = Array.from({ length: ROWS }, (_, r) =>
+        Array.from({ length: COLS }, (_, col) => {
+          const px = Math.min(col * CHAR + 5, W - 1);
+          const py = Math.min(r   * CHAR + 5, H - 1);
+          return tPix[(py * W + px) * 4 + 3] > 60;
+        })
+      );
+      const cells = Array.from({ length: ROWS }, () =>
+        Array.from({ length: COLS }, () => ({
+          char:  Math.random() > 0.5 ? '1' : '0',
+          timer: Math.floor(Math.random() * 120)
+        }))
+      );
+      let mode = 'idle', hovered = false, frame = 0;
+      function drawText(boost) {
+        const a = (0.50 + boost).toFixed(2);
+        ctx.fillStyle = `rgba(160,160,160,${a})`;
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            if (!textMask[r][c]) continue;
+            const cell = cells[r][c];
+            if (hovered) {
+              cell.timer--;
+              if (cell.timer <= 0) {
+                cell.char  = Math.random() > 0.5 ? '1' : '0';
+                cell.timer = 80 + Math.floor(Math.random() * 160);
+              }
+            }
+            ctx.fillText(cell.char, c * CHAR, (r + 1) * CHAR);
+          }
+        }
+      }
+      canvas.addEventListener('mouseenter', () => { hovered = true; for (const row of cells) for (const cell of row) cell.timer = 0; });
+      canvas.addEventListener('mouseleave', () => { hovered = false; });
+      canvas.addEventListener('click', () => { if (mode !== 'idle') return; mode = 'transitioning'; startFill(); });
+      function startFill() {
+        const SW = window.innerWidth, SH = window.innerHeight;
+        const fc = document.createElement('canvas');
+        fc.width = SW; fc.height = SH;
+        Object.assign(fc.style, { position:'fixed', top:'0', left:'0', zIndex:'100', pointerEvents:'none' });
+        document.body.appendChild(fc);
+        const fctx = fc.getContext('2d');
+        const FC = 12, fCols = Math.ceil(SW/FC), fRows = Math.ceil(SH/FC);
+        const cLeft = SW-W, cTop = SH-H, srcY = cTop+65+45;
+        const src1 = { x: cLeft+W-540, y: srcY }, src2 = { x: cLeft+W-60, y: srcY };
+        const grid = Array.from({ length: fRows }, (_, r) => Array.from({ length: fCols }, (_, c) => {
+          const cx = c*FC+6, cy = r*FC+6;
+          const d1 = Math.max(Math.abs(cx-src1.x), Math.abs(cy-src1.y));
+          const d2 = Math.max(Math.abs(cx-src2.x), Math.abs(cy-src2.y));
+          return { char: Math.random()>0.5?'1':'0', dist: Math.min(d1,d2), phase: Math.random()*Math.PI*2, spd: 0.15+Math.random()*0.25, timer: 60+Math.floor(Math.random()*120) };
+        }));
+        const corners = [{x:0,y:0},{x:SW,y:0},{x:0,y:SH},{x:SW,y:SH}];
+        const maxMinDist = Math.max(...corners.map(k => Math.min(Math.max(Math.abs(k.x-src1.x),Math.abs(k.y-src1.y)),Math.max(Math.abs(k.x-src2.x),Math.abs(k.y-src2.y)))));
+        const SPEED = 18; let radius = 0, ff = 0, done = false;
+        function fillTick() {
+          if (done) return;
+          radius += SPEED; ff++;
+          fctx.fillStyle = '#0a0a0a'; fctx.fillRect(0,0,SW,SH);
+          fctx.font = `${FC-2}px "Consolas",monospace`;
+          for (let r=0; r<fRows; r++) for (let c=0; c<fCols; c++) {
+            const cell = grid[r][c];
+            if (cell.dist > radius) continue;
+            cell.timer--; if (cell.timer<=0) { cell.char = Math.random()>0.5?'1':'0'; cell.timer=80+Math.floor(Math.random()*160); }
+            const front = radius-cell.dist;
+            const a = front < SPEED*3 ? 0.62+0.22*Math.sin(ff*0.015*cell.spd+cell.phase) : 0.30+0.13*Math.sin(ff*0.010*cell.spd+cell.phase);
+            fctx.fillStyle = `rgba(155,155,155,${a.toFixed(2)})`; fctx.fillText(cell.char,c*FC,(r+1)*FC);
+          }
+          if (radius > maxMinDist+SPEED) { done=true; setTimeout(()=>{ window.location.href='projects.html'; },320); }
+          else requestAnimationFrame(fillTick);
+        }
+        requestAnimationFrame(fillTick);
+      }
+      function tick() { requestAnimationFrame(tick); ctx.clearRect(0,0,W,H); ctx.font=`${CHAR-1}px "Consolas",monospace`; frame++; if (mode==='idle') drawText(hovered?0.18:0); }
+      tick();
+    })();
+    ─────────────────────────────────────────────────────────────── */
+  </script>
+
+  <script>
+    document.fonts.ready.then(() => {
+      document.querySelectorAll('canvas.nc-px').forEach(canvas => {
+        const wrap  = canvas.closest('.nc-pixel-wrap');
+        const card  = canvas.closest('.nc');
+        const label = canvas.dataset.label || '';
+        const seed  = +canvas.dataset.seed;
+        const W     = +canvas.dataset.w;
+        const H     = +canvas.dataset.h;
+
+        canvas.width  = W;
+        canvas.height = H;
+
+        const ctx   = canvas.getContext('2d');
+        const BLOCK = 8, GAP = 5, STEP = BLOCK + GAP;
+
+        const rand = n => {
+          const x = Math.sin(n * 9301 + seed * 49297) * 233280;
+          return x - Math.floor(x);
+        };
+
+        /* ── per-card density function for intentional pixel forms ── */
+        const densityAt =
+          seed === 3  /* Typeset Studio — baseline gradient, heavy at bottom */
+            ? (gx, gy) => (gy / H) * 0.64 + 0.05
+          : seed === 7  /* Cipher Lab — top-heavy gradient, fades toward bottom */
+            ? (gx, gy) => (1 - gy / H) * 0.60 + 0.05
+          : () => 0.36;  /* portrait / default — uniform random */
+
+        /* ── build particle grid ── */
+        const particles = [];
+        let idx = 0;
+        for (let gy = 0; gy <= H - BLOCK; gy += STEP) {
+          for (let gx = 0; gx <= W - BLOCK; gx += STEP) {
+            if (rand(idx++) < densityAt(gx, gy)) {
+              particles.push({ ox: gx, oy: gy, x: gx, y: gy, vx: 0, vy: 0, a: 1 });
+            }
+          }
+        }
+
+        let textA  = 0;
+        let rafId  = null;
+        let active = false;
+
+        function drawFrame() {
+          ctx.clearRect(0, 0, W, H);
+          ctx.fillStyle = '#0a0a0a';
+          for (const p of particles) {
+            if (p.a <= 0) continue;
+            ctx.globalAlpha = p.a;
+            ctx.fillRect(Math.round(p.x), Math.round(p.y), BLOCK, BLOCK);
+          }
+          if (textA > 0) {
+            ctx.globalAlpha  = textA;
+            ctx.fillStyle    = '#0a0a0a';
+            const fsize      = Math.max(10, Math.round(H * 0.22));
+            ctx.font         = `700 ${fsize}px "JetBrains Mono", monospace`;
+            ctx.textAlign    = 'center';
+            ctx.textBaseline = 'middle';
+            if ('letterSpacing' in ctx) ctx.letterSpacing = '2px';
+            ctx.fillText(label, W / 2, H / 2);
+          }
+          ctx.globalAlpha = 1;
+        }
+
+        function scatter() {
+          if (rafId) cancelAnimationFrame(rafId);
+          active = true;
+
+          /* reset to origin, assign powder-burst velocities */
+          particles.forEach((p, i) => {
+            p.x = p.ox; p.y = p.oy; p.a = 1;
+            p.vx = (rand(i * 7 + 1) - 0.5) * 10;
+            p.vy = -(2 + rand(i * 5 + 3) * 5.5);  /* upward burst */
+          });
+
+          const tick = () => {
+            if (!active) return;
+            let anyLive = false;
+            for (const p of particles) {
+              if (p.a <= 0) continue;
+              p.vy += 0.34;   /* gravity */
+              p.vx *= 0.97;   /* lateral drag */
+              p.x  += p.vx;
+              p.y  += p.vy;
+              const dist = Math.hypot(p.x - p.ox, p.y - p.oy);
+              p.a = Math.max(0, 1 - dist / (Math.max(W, H) * 0.52));
+              if (p.y > H + 18 || p.x < -24 || p.x > W + 24) p.a = 0;
+              if (p.a > 0) anyLive = true;
+            }
+            textA = Math.min(1, textA + 0.048);
+            drawFrame();
+            if (anyLive || textA < 1) rafId = requestAnimationFrame(tick);
+            else rafId = null;
+          };
+
+          rafId = requestAnimationFrame(tick);
+        }
+
+        function reform() {
+          if (rafId) cancelAnimationFrame(rafId);
+          active = false;
+
+          /* snap back to origin, fade in while text fades out */
+          for (const p of particles) {
+            p.x = p.ox; p.y = p.oy; p.vx = 0; p.vy = 0; p.a = 0;
+          }
+
+          const tick = () => {
+            textA = Math.max(0, textA - 0.09);
+            for (const p of particles) p.a = Math.min(1, p.a + 0.07);
+            drawFrame();
+            const done = particles.every(p => p.a >= 1) && textA <= 0;
+            if (!done) rafId = requestAnimationFrame(tick);
+            else rafId = null;
+          };
+
+          rafId = requestAnimationFrame(tick);
+        }
+
+        drawFrame();
+
+        wrap.addEventListener('mouseenter', () => {
+          if (card && card.classList.contains('is-dragging')) return;
+          scatter();
+        });
+        wrap.addEventListener('mouseleave', reform);
+      });
+    });
+  </script>
+
+  <script>
+    (() => {
+      const cards = document.querySelectorAll('#feat-wrap .nc');
+      const rotations = [-5, 8, -2];
+      let topZ = 25;
+
+      cards.forEach((card, i) => {
+        card.addEventListener('mousedown', e => {
+          if (e.button !== 0) return;
+          if (window.innerWidth < 960) return;
+          e.preventDefault();
+
+          const cs = getComputedStyle(card);
+          const startLeft = parseFloat(cs.left);
+          const startTop  = parseFloat(cs.top);
+          const startMX = e.clientX, startMY = e.clientY;
+          let moved = false;
+
+          card.style.left       = startLeft + 'px';
+          card.style.top        = startTop  + 'px';
+          card.style.zIndex     = ++topZ;
+          card.style.transition = 'none';
+          card.style.transform  = `rotate(${rotations[i]}deg)`;
+          card.style.cursor     = 'grabbing';
+          card.classList.add('is-dragging');
+          document.body.style.cursor = 'grabbing';
+
+          const offsetX = e.clientX - startLeft;
+          const offsetY = e.clientY - startTop;
+
+          function onMove(e) {
+            if (!moved && (Math.abs(e.clientX - startMX) > 4 || Math.abs(e.clientY - startMY) > 4))
+              moved = true;
+            card.style.left = (e.clientX - offsetX) + 'px';
+            card.style.top  = (e.clientY - offsetY) + 'px';
+          }
+
+          function onUp() {
+            card.style.transition = '';
+            card.style.transform  = '';
+            card.style.cursor     = 'grab';
+            card.classList.remove('is-dragging');
+            document.body.style.cursor = '';
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup',   onUp);
+
+            // suppress the click that follows mouseup if we actually dragged
+            if (moved) {
+              function suppressClick(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                card.removeEventListener('click', suppressClick, true);
+              }
+              card.addEventListener('click', suppressClick, true);
+            }
+          }
+
+          document.addEventListener('mousemove', onMove);
+          document.addEventListener('mouseup',   onUp);
+        });
+      });
+    })();
+  </script>
+
+  <script>
+    (() => {
+      const btn  = document.getElementById('hamburger');
+      const menu = document.getElementById('mobile-menu');
+      const closeBtn = document.getElementById('mm-close');
+
+      function openMenu() {
+        menu.classList.add('is-open');
+        menu.removeAttribute('aria-hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        menu.classList.remove('is-open');
+        menu.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      btn.addEventListener('click', openMenu);
+      closeBtn.addEventListener('click', closeMenu);
+
+      // Close on Escape
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) closeMenu();
+      });
+
+      // Close when a menu link is tapped (navigation or hash links)
+      menu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', closeMenu);
+      });
+    })();
+  </script>
+
+</body>
+</html>

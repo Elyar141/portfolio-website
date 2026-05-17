@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
+  <title>But.tons – Creative Button Generator</title>
+  <style>
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-Variable.woff2') format('woff2'),
+           url('fonts/Switzer-Variable.woff')  format('woff');
+      font-weight: 100 900; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-VariableItalic.woff2') format('woff2'),
+           url('fonts/Switzer-VariableItalic.woff')  format('woff');
+      font-weight: 100 900; font-style: italic;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #0a0a0a;
+      --line:    #2a2a2a;
+      --mute:    #6c6c6c;
+      --dim:     #999;
+      --white:   #f2f2f2;
+      --green:   #b6f23b;
+      --gutter:  clamp(24px, 5vw, 72px);
+      --label-w: clamp(100px, 11vw, 160px);
+      --col-gap: clamp(32px, 4vw, 80px);
+    }
+
+    html { background: var(--bg); scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      background: var(--bg); min-height: 100vh;
+      font-family: 'Switzer', sans-serif; color: var(--dim);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+
+    #veil {
+      position: fixed; inset: 0; background: var(--bg);
+      z-index: 999; transition: opacity 0.9s ease; pointer-events: none;
+    }
+
+    /* ── Nav ── */
+    #site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+      padding: 14px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+    .logo-mark rect { fill: #b6f23b; transition: fill 0.22s; }
+    .nav-logo:hover .logo-mark rect { fill: rgba(182,242,59,0.5); }
+    .logo-word {
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.06em; color: rgba(200,200,200,0.48); transition: color 0.22s;
+    }
+    .nav-logo:hover .logo-word { color: rgba(200,200,200,0.82); }
+    .nav-right { display: flex; align-items: center; gap: 30px; }
+    .nav-right a {
+      font-family: 'Switzer', sans-serif; font-size: 9.5px; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(160,160,160,0.48); text-decoration: none; transition: color 0.18s;
+    }
+    .nav-right a:hover { color: rgba(160,160,160,0.82); }
+    #hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      padding: 5px; align-items: center; justify-content: center; transition: opacity 0.18s;
+    }
+    #hamburger:hover { opacity: 0.7; }
+
+    /* ── Mobile overlay ── */
+    #mobile-menu {
+      display: flex; flex-direction: column; position: fixed; inset: 0;
+      z-index: 50; background: #0a0a0a; padding: 0 32px 36px;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+    #mobile-menu.is-open { opacity: 1; visibility: visible; pointer-events: all; }
+    .mm-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+    }
+    #mm-close {
+      background: none; border: none; cursor: pointer; padding: 5px;
+      display: flex; align-items: center; justify-content: center; transition: opacity 0.18s;
+    }
+    #mm-close:hover { opacity: 0.6; }
+    .mm-links { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .mm-link {
+      display: flex; align-items: baseline; gap: 14px; text-decoration: none;
+      padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .mm-link:last-child { border-bottom: none; }
+    .mm-link:hover .mm-label { color: #b6f23b; }
+    .mm-idx {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.08em; color: rgba(182,242,59,0.5); flex-shrink: 0; width: 18px;
+    }
+    .mm-label {
+      font-family: 'Switzer', sans-serif; font-size: clamp(40px,13vw,68px);
+      font-weight: 700; letter-spacing: -0.02em; color: rgba(235,235,235,0.9);
+      line-height: 1; transition: color 0.2s ease; -webkit-font-smoothing: antialiased;
+    }
+    .mm-foot {
+      display: flex; gap: 24px; padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+    }
+    .mm-foot a {
+      font-family: 'Switzer', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(160,160,160,0.4); text-decoration: none; transition: color 0.18s;
+    }
+    .mm-foot a:hover { color: rgba(160,160,160,0.8); }
+    #mobile-menu.is-open .mm-link { animation: mm-link-in 0.38s ease both; }
+    #mobile-menu.is-open .mm-link:nth-child(1) { animation-delay: 0.10s; }
+    #mobile-menu.is-open .mm-link:nth-child(2) { animation-delay: 0.16s; }
+    #mobile-menu.is-open .mm-link:nth-child(3) { animation-delay: 0.22s; }
+    @keyframes mm-link-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Footer ── */
+    #site-footer {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 5;
+      padding: 11px 40px; border-top: 1px solid rgba(160,160,160,0.18);
+      display: flex; justify-content: flex-end; align-items: center;
+      pointer-events: none; background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+    }
+    .footer-nav { display: flex; align-items: center; gap: 28px; pointer-events: all; }
+    .footer-nav a {
+      font-family: 'Switzer', sans-serif; font-size: 9.5px; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(160,160,160,0.48); text-decoration: none; transition: color 0.18s;
+    }
+    .footer-nav a:hover { color: rgba(160,160,160,0.82); }
+
+    /* ── Entrance ── */
+    .will-animate { opacity: 0; transform: translateY(12px); }
+    .animate-in { animation: fade-up 0.72s cubic-bezier(0.22,1,0.36,1) forwards; }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       LAYOUT
+    ════════════════════════════════════════════════════════════ */
+    .wrap {
+      max-width: 1500px; margin: 0 auto;
+      padding-left: var(--gutter); padding-right: var(--gutter);
+    }
+
+    /* ── Hero ── */
+    .cs-hero {
+      padding-top: clamp(110px,13vw,150px);
+      padding-bottom: clamp(56px,7vw,88px);
+    }
+    .scroll-hint {
+      display: flex; gap: 5px; justify-content: center;
+      margin-top: clamp(36px,5vw,56px);
+    }
+    .sc-px { width: 8px; height: 8px; background: var(--green); opacity: 0.45; flex-shrink: 0; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 18px; margin-bottom: clamp(24px,3vw,40px); }
+    .hero-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; color: var(--green);
+    }
+    .hero-tag {
+      font-family: 'Switzer', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--mute);
+    }
+    .hero-tag span { margin: 0 6px; opacity: 0.4; }
+    .cs-hero h1 {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: clamp(80px,10vw,152px); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 0.88;
+      color: rgba(218,218,218,0.9); margin-bottom: clamp(28px,3.5vw,48px);
+    }
+    .hero-subtitle {
+      max-width: 580px; font-family: 'Switzer', sans-serif;
+      font-size: clamp(18px,1.6vw,21px); font-weight: 400; line-height: 1.68;
+      color: rgba(185,185,185,0.85); margin-bottom: clamp(40px,5vw,64px);
+    }
+    .meta-grid { display: flex; flex-wrap: wrap; gap: 28px 64px; }
+    .meta-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-bottom: 8px;
+    }
+    .meta-value {
+      font-family: 'Switzer', sans-serif; font-size: 15px; font-weight: 400;
+      color: var(--dim); line-height: 1.5;
+    }
+
+    /* ── Editorial section grid ── */
+    .cs-section {
+      display: grid;
+      grid-template-columns: var(--label-w) 1fr;
+      gap: 0 var(--col-gap);
+      align-items: start;
+      padding-top: clamp(56px,7vw,88px);
+      padding-bottom: clamp(48px,6vw,72px);
+    }
+    .cs-section.tight {
+      padding-top: clamp(32px,4vw,48px);
+      padding-bottom: clamp(32px,4vw,48px);
+    }
+    .sec-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute);
+      padding-top: 10px; position: sticky; top: 80px; line-height: 1.7;
+    }
+    .sec-body h2 {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: clamp(24px,2.8vw,38px); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.15;
+      color: rgba(210,210,210,0.9); margin-bottom: clamp(20px,2.5vw,32px);
+    }
+    .sec-body h3 {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: 19px; font-weight: 500; letter-spacing: -0.015em;
+      color: rgba(185,185,185,0.82); margin-top: 56px; margin-bottom: 14px;
+    }
+    .sec-body h3:first-child { margin-top: 0; }
+    .sec-body p {
+      font-family: 'Switzer', sans-serif; font-size: 16px; font-weight: 400;
+      line-height: 1.82; color: rgba(160,160,160,0.62);
+      margin-bottom: 16px; max-width: 760px;
+    }
+    .sec-body p:last-child { margin-bottom: 0; }
+
+    /* ── Pull quote ── */
+    .pull-quote { padding: clamp(36px,5vw,56px) 0; }
+    .pull-quote p {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: clamp(22px,2.8vw,38px); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.25;
+      color: rgba(210,210,210,0.88); max-width: none; margin: 0;
+    }
+    .pull-quote p em { font-style: normal; color: var(--green); }
+
+    /* ── Hero image ── */
+    .hero-img { margin-top: clamp(40px,5vw,64px); }
+    .hero-img img { width: 100%; display: block; }
+
+    /* ── Image blocks ── */
+    .img-block { padding: clamp(40px,5vw,56px) 0; }
+    .img-full img { width: 100%; display: block; }
+    .img-full video { width: 100%; display: block; }
+    .img-caption {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-top: 12px;
+    }
+
+    /* ── Img pair ── */
+    .img-pair {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(12px, 2vw, 24px);
+    }
+    .img-pair-item img { width: 100%; display: block; }
+
+    /* ════════════════════════════════════════════════════════════
+       CUSTOM COMPONENTS
+    ════════════════════════════════════════════════════════════ */
+
+    /* ── Flow diagram ── */
+    .flow-diagram {
+      background: rgba(255,255,255,0.025);
+      padding: clamp(28px,3.5vw,52px) clamp(24px,3vw,44px);
+      margin-top: clamp(32px,4vw,48px);
+    }
+    .flow-diagram-title {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(182,242,59,0.55); margin-bottom: clamp(28px,3vw,40px);
+    }
+    .flow-nodes {
+      display: grid;
+      grid-template-columns: 1fr 36px 1fr 36px 1fr;
+      gap: 0 clamp(12px,2vw,24px);
+      align-items: center;
+    }
+    .flow-node {
+      background: rgba(255,255,255,0.03);
+      padding: clamp(18px,2.2vw,28px) clamp(16px,2vw,24px);
+    }
+    .flow-node-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.18em; color: rgba(182,242,59,0.4);
+      margin-bottom: 12px;
+    }
+    .flow-node-title {
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      font-size: clamp(14px,1.3vw,18px); font-weight: 600;
+      color: rgba(210,210,210,0.88); margin-bottom: 10px; line-height: 1.25;
+    }
+    .flow-node-desc {
+      font-family: 'Switzer', sans-serif; font-size: 13px; font-weight: 400;
+      line-height: 1.7; color: rgba(140,140,140,0.65);
+    }
+    .flow-arrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700;
+      color: rgba(182,242,59,0.28); text-align: center;
+      user-select: none; line-height: 1;
+    }
+    .flow-temp {
+      margin-top: clamp(22px,2.5vw,32px);
+      padding-top: clamp(18px,2vw,26px);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .flow-temp-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--mute); margin-bottom: 14px;
+    }
+    .flow-temp-track {
+      height: 2px; background: rgba(255,255,255,0.07);
+      position: relative; border-radius: 1px;
+    }
+    .flow-temp-fill {
+      position: absolute; left: 0; top: 0; height: 100%;
+      width: 65%;
+      background: linear-gradient(90deg, rgba(182,242,59,0.2), rgba(182,242,59,0.65));
+      border-radius: 1px;
+    }
+    .flow-temp-thumb {
+      position: absolute; top: 50%; left: 65%;
+      transform: translate(-50%, -50%);
+      width: 11px; height: 11px;
+      background: var(--green); border-radius: 50%;
+      box-shadow: 0 0 12px rgba(182,242,59,0.35);
+    }
+    .flow-temp-hints {
+      display: flex; justify-content: space-between;
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(100,100,100,0.55);
+    }
+
+    /* ── System prompt ── */
+    .sys-prompt {
+      background: #0d0d0d;
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-top: clamp(28px,3vw,40px);
+      overflow: hidden;
+    }
+    .sys-prompt-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 18px;
+      background: rgba(255,255,255,0.025);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .sp-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .sp-dot:nth-child(1) { background: rgba(255,95,87,0.35); }
+    .sp-dot:nth-child(2) { background: rgba(255,188,46,0.35); }
+    .sp-dot:nth-child(3) { background: rgba(40,200,64,0.35); }
+    .sp-filename {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.1em; color: rgba(130,130,130,0.45);
+      margin-left: auto;
+    }
+    .sys-prompt-body {
+      padding: clamp(22px,2.8vw,36px) clamp(20px,2.5vw,36px);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(11px,0.9vw,13px); font-weight: 700;
+      line-height: 2; color: rgba(155,155,155,0.55);
+      overflow-x: auto;
+    }
+    .sp-line { display: block; }
+    .sp-blank { display: block; height: 1em; }
+    .sp-comment { color: rgba(100,100,100,0.55); }
+    .sp-key { color: rgba(182,242,59,0.6); }
+    .sp-val { color: rgba(155,155,155,0.55); }
+    .sp-hi { color: rgba(205,205,205,0.82); }
+    .sp-indent { padding-left: 2ch; }
+
+    /* ── Closing body text ── */
+    .closing-body {
+      font-family: 'Switzer', sans-serif; font-size: 16px; font-weight: 400;
+      line-height: 1.82; color: rgba(160,160,160,0.62);
+      max-width: 760px; padding-bottom: clamp(64px,8vw,96px);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 959px) {
+      #site-nav { padding: 12px 24px; }
+      :root { --gutter: clamp(20px,4vw,40px); --label-w: 80px; --col-gap: 28px; }
+      .flow-nodes {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .flow-arrow {
+        transform: rotate(90deg);
+        display: block;
+        padding: 10px 0;
+        text-align: center;
+      }
+    }
+    @media (max-width: 699px) {
+      .cs-section { grid-template-columns: 1fr; }
+      .sec-label { position: static; padding-top: 0; margin-bottom: 16px; }
+    }
+    @media (max-width: 599px) {
+      #hamburger { display: flex; }
+      .nav-right { display: none; }
+      .logo-word { display: none; }
+      #site-footer { padding: 9px 16px; }
+      .footer-nav { flex-wrap: wrap; gap: 10px 16px; }
+      .footer-nav a { font-size: 8px; letter-spacing: 0.12em; }
+      :root { --gutter: 20px; }
+      .cs-hero h1 { font-size: clamp(60px,18vw,96px); }
+      .meta-grid { gap: 20px 40px; }
+      .img-pair { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="veil"></div>
+
+  <!-- ── Nav ── -->
+  <nav id="site-nav" class="will-animate">
+    <a class="nav-logo" href="index.html">
+      <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
+        <rect x="0"  y="0"  width="5" height="5"/>
+        <rect x="6"  y="0"  width="5" height="5"/>
+        <rect x="12" y="0"  width="5" height="5"/>
+        <rect x="18" y="0"  width="5" height="5"/>
+        <rect x="0"  y="6"  width="5" height="5"/>
+        <rect x="24" y="6"  width="5" height="5"/>
+        <rect x="0"  y="12" width="5" height="5"/>
+        <rect x="24" y="12" width="5" height="5"/>
+        <rect x="0"  y="18" width="5" height="5"/>
+        <rect x="6"  y="18" width="5" height="5"/>
+        <rect x="12" y="18" width="5" height="5"/>
+        <rect x="18" y="18" width="5" height="5"/>
+        <rect x="0"  y="24" width="5" height="5"/>
+        <rect x="0"  y="30" width="5" height="5"/>
+        <rect x="0"  y="36" width="5" height="5"/>
+      </svg>
+      <span class="logo-word">pixelandprompt</span>
+    </a>
+    <div class="nav-right">
+      <a href="projects.html">Work</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+    <button id="hamburger" aria-label="Open navigation" aria-expanded="false">
+      <svg width="20" height="13" viewBox="0 0 20 13" fill="none">
+        <rect width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+        <rect y="5.75" width="13" height="1.5" fill="rgba(160,160,160,0.65)"/>
+        <rect y="11.5" width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- ── Mobile overlay ── -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation" aria-hidden="true">
+    <div class="mm-header">
+      <a class="nav-logo" href="index.html">
+        <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
+          <rect x="0"  y="0"  width="5" height="5"/><rect x="6"  y="0"  width="5" height="5"/>
+          <rect x="12" y="0"  width="5" height="5"/><rect x="18" y="0"  width="5" height="5"/>
+          <rect x="0"  y="6"  width="5" height="5"/><rect x="24" y="6"  width="5" height="5"/>
+          <rect x="0"  y="12" width="5" height="5"/><rect x="24" y="12" width="5" height="5"/>
+          <rect x="0"  y="18" width="5" height="5"/><rect x="6"  y="18" width="5" height="5"/>
+          <rect x="12" y="18" width="5" height="5"/><rect x="18" y="18" width="5" height="5"/>
+          <rect x="0"  y="24" width="5" height="5"/><rect x="0"  y="30" width="5" height="5"/>
+          <rect x="0"  y="36" width="5" height="5"/>
+        </svg>
+        <span class="logo-word">pixelandprompt</span>
+      </a>
+      <button id="mm-close" aria-label="Close navigation">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M1.5 1.5 L16.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
+          <path d="M16.5 1.5 L1.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="mm-links">
+      <a href="projects.html" class="mm-link"><span class="mm-idx">01</span><span class="mm-label">Work</span></a>
+      <a href="#" class="mm-link"><span class="mm-idx">02</span><span class="mm-label">About</span></a>
+      <a href="#" class="mm-link"><span class="mm-idx">03</span><span class="mm-label">Contact</span></a>
+    </nav>
+    <div class="mm-foot">
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">Email ↗</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════════ -->
+  <div class="cs-hero wrap will-animate">
+    <div class="hero-eyebrow">
+      <span class="hero-num">05</span>
+      <span class="hero-tag">Product Design<span>·</span>2025<span>·</span>Experimental Interface<span>·</span>Live Website</span>
+    </div>
+    <h1>But.tons</h1>
+    <p class="hero-subtitle">Exploring how AI temperature and curated ingredients can turn button design into creative experimentation.</p>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-value">Product Design</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Year</div>
+        <div class="meta-value">2025</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Type</div>
+        <div class="meta-value">Experimental Interface</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Status</div>
+        <div class="meta-value">Live Website</div>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="projects/buttons/image1.png"
+           alt="But.tons app – main canvas showing a gradient button, ingredient tabs for Mood, Movement, Texture and Style, and a prompt input bar"
+           loading="eager" />
+    </div>
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="sc-px"></div>
+      <div class="sc-px"></div>
+      <div class="sc-px"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       01 — THE SPARK
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">01<br>The Spark</div>
+      <div class="sec-body">
+        <h2>Inspired by Playground AI – applying exploration over precision to UI components</h2>
+        <p>Most AI tools optimize for output. Playground AI optimizes for discovery – it encourages users to explore possibilities they didn't know existed. I wanted to apply that same philosophy to something much smaller: button design.</p>
+        <p>What if a button wasn't just a functional UI element, but a small moment of character? What if the tool encouraged experimentation instead of correctness – where getting a surprising result was the point, not a failure state?</p>
+        <div class="pull-quote">
+          <p>Can a button <em>feel</em> expressive?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/buttons/Can a button feel expressive.gif"
+           alt="Opening concept animation – buttons shifting through different personalities, motion styles, and visual characters"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">But.tons · opening concept · personality through motion and form</div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-pair">
+      <div class="img-pair-item">
+        <img src="projects/buttons/Creative exploration through ingredient mixing..png"
+             alt="But.tons ingredient mixing interface – Movement tab open with LIQUID, WOBBLY, GLITCHY, BREATHING, BOUNCY, FLOATING, MAGNETIC options and a magenta pill button in the canvas"
+             loading="lazy" />
+        <div class="img-caption">But.tons · ingredient system · movement as creative direction</div>
+      </div>
+      <div class="img-pair-item">
+        <img src="projects/buttons/Creative exploration through style mixing playground UI apple.png"
+             alt="Playground AI interface showing style-mixing controls – the design reference that inspired But.tons"
+             loading="lazy" />
+        <div class="img-caption">Playground AI · style mixing reference · exploration over precision</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       02 — THE CONCEPT
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">02<br>The Concept</div>
+      <div class="sec-body">
+        <h2>Guided inputs, expressive outcomes</h2>
+        <p>Curated ingredients act as a creative starting point. They don't generate the result directly – they show users what's possible and help them move beyond the familiar defaults of UI design.</p>
+        <p>AI interpretation is the second layer. It pushes the result further, adding surprise and variation that you would rarely design intentionally. Together they form the core principle: give users a playful direction, then let the model expand the creative space.</p>
+
+        <div class="flow-diagram">
+          <div class="flow-diagram-title">Structured inputs, surprising outputs</div>
+          <div class="flow-nodes">
+            <div class="flow-node">
+              <div class="flow-node-num">01</div>
+              <div class="flow-node-title">Ingredients</div>
+              <div class="flow-node-desc">Mood, movement, texture, and style – curated categories that give creative direction without dictating the result.</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <div class="flow-node-num">02</div>
+              <div class="flow-node-title">AI Interpretation</div>
+              <div class="flow-node-desc">The model translates ingredient combinations into CSS – adding visual surprise and character beyond what was literally specified.</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <div class="flow-node-num">03</div>
+              <div class="flow-node-title">Generated Button</div>
+              <div class="flow-node-desc">CSS output with unique visual character – shape, animation, texture, and motion – ready to explore or refine conversationally.</div>
+            </div>
+          </div>
+          <div class="flow-temp">
+            <div class="flow-temp-label">Temperature – controls how far the model interprets beyond the literal input</div>
+            <div class="flow-temp-track">
+              <div class="flow-temp-fill"></div>
+              <div class="flow-temp-thumb"></div>
+            </div>
+            <div class="flow-temp-hints">
+              <span>Controlled</span>
+              <span>Experimental</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/buttons/Defines how the button behaves in space. Motion becomes personality..gif"
+           alt="Movement ingredient tab – selecting from LIQUID, WOBBLY, GLITCHY, BREATHING, BOUNCY, FLOATING, MAGNETIC and seeing the button respond"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">But.tons · movement tab · motion becomes personality</div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/buttons/Shapes the emotional tone of the button. Emotion translated into interaction..gif"
+           alt="Mood ingredient tab – switching between SHY, EAGER, CONFIDENT, ANXIOUS, DRAMATIC, SLEEPY, CURIOUS and watching the button's emotional tone shift"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">But.tons · mood tab · emotion translated into interaction</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       03 — THE PROMPT
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">03<br>The Prompt</div>
+      <div class="sec-body">
+        <h2>Making the prompt quieter, not smarter</h2>
+        <p>One unexpected challenge was not making the prompt more capable. It was making it more restrained.</p>
+        <p>In early versions, I asked the model to generate creative button labels alongside the CSS. It sounded like a useful addition – but it split the model's attention. It started optimizing for clever copy instead of visual character. The labels distracted from what actually mattered: shape, style, motion, texture.</p>
+        <p>The best results came when I removed that instruction entirely. A quieter prompt forced the model to concentrate. Less scope yielded stronger output.</p>
+
+        <div class="sys-prompt">
+          <div class="sys-prompt-bar">
+            <div class="sp-dot"></div>
+            <div class="sp-dot"></div>
+            <div class="sp-dot"></div>
+            <span class="sp-filename">system_prompt.txt</span>
+          </div>
+          <div class="sys-prompt-body"><span class="sp-line sp-comment"># But.tons – CSS Generation System Prompt</span>
+<span class="sp-blank"></span>
+<span class="sp-line sp-hi">You are a creative CSS button generator.</span>
+<span class="sp-blank"></span>
+<span class="sp-line sp-comment"># Inputs</span>
+<span class="sp-line"><span class="sp-key">Movement  </span><span class="sp-val">{{ movement }}</span>    <span class="sp-comment"># e.g. LIQUID, WOBBLY, MAGNETIC</span></span>
+<span class="sp-line"><span class="sp-key">Mood      </span><span class="sp-val">{{ mood }}</span>        <span class="sp-comment"># e.g. ANXIOUS, CONFIDENT, SHY</span></span>
+<span class="sp-line"><span class="sp-key">Texture   </span><span class="sp-val">{{ texture }}</span>     <span class="sp-comment"># e.g. GLASSY, MATTE, METALLIC</span></span>
+<span class="sp-line"><span class="sp-key">Style     </span><span class="sp-val">{{ style }}</span>       <span class="sp-comment"># e.g. PILL, SHARP, ORGANIC</span></span>
+<span class="sp-blank"></span>
+<span class="sp-line sp-comment"># Output rules</span>
+<span class="sp-line sp-hi">Output only valid CSS. Do not generate button labels or text content.</span>
+<span class="sp-blank"></span>
+<span class="sp-line sp-val">Focus exclusively on visual properties:</span>
+<span class="sp-line sp-indent sp-val">border-radius, background, box-shadow,</span>
+<span class="sp-line sp-indent sp-val">animation, transform, filter, transition</span>
+<span class="sp-blank"></span>
+<span class="sp-line sp-comment"># Intent-aware editing</span>
+<span class="sp-line sp-val">If a previous button exists in the conversation,</span>
+<span class="sp-line sp-val">modify only the properties relevant to the new request.</span>
+<span class="sp-line sp-hi">Preserve everything else.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       04 — INTENT AWARE EDITING
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">04<br>Intent Aware</div>
+      <div class="sec-body">
+        <h2>Editing without switching modes</h2>
+        <p>There is no Edit toggle. No separate mode for modifying versus generating. The model infers intent directly from the prompt – if a previous button exists in the conversation, it modifies only what was asked. Otherwise, it regenerates from scratch.</p>
+        <p>This keeps iteration fluid and preserves creative continuity. You don't interrupt the creative state to switch context. The conversation itself becomes the design history.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-full">
+      <video autoplay muted loop playsinline
+             aria-label="Intent-aware editing – modifying a button through natural language without switching modes">
+        <source src="projects/buttons/Refinement through langugae not modes.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="img-caption">But.tons · intent-aware editing · refinement through language not modes</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       05 — HYBRID CONTROL
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">05<br>Hybrid Control</div>
+      <div class="sec-body">
+        <h2>Not everything should be generated</h2>
+        <p>The ingredient system gives creative direction. The control panel gives precision. Not every property benefits from AI interpretation – sometimes you need exact control over a specific value.</p>
+        <p>This hybrid setup keeps the experience playful while still making it usable. The model handles the expressive work; the controls handle the deliberate work. Neither gets in the way of the other.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/buttons/Not everything should be generated..gif"
+           alt="Hybrid control panel – AI ingredient system alongside manual precision sliders working in tandem"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">But.tons · hybrid control · AI direction with manual precision</div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-pair">
+      <div class="img-pair-item">
+        <img src="projects/buttons/image2.png"
+             alt="Mood tab showing multiple emotional states as selectable cards, with a soft blue rounded button in the canvas"
+             loading="lazy" />
+        <div class="img-caption">But.tons · mood system · calm emotional state · soft blue output</div>
+      </div>
+      <div class="img-pair-item">
+        <img src="projects/buttons/image3.png"
+             alt="ANXIOUS mood selected – hot pink magenta button with high-energy presence and floating ingredient labels"
+             loading="lazy" />
+        <div class="img-caption">But.tons · mood system · anxious state · high-energy magenta output</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       06 — MICRO MOMENTS
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section tight">
+      <div class="sec-label">06<br>Micro Moments</div>
+      <div class="sec-body">
+        <h2>The project was as much about interaction as output</h2>
+        <p>Expressive cards, transparent state, and a UI that stays steady while the button evolves. Every small interaction was designed to stay out of the way – to keep attention on the creative result, not the tool producing it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/buttons/Designing the micro moments.gif"
+           alt="Micro interaction details – ingredient card states, canvas transitions, and subtle UI behaviors in action"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">But.tons · micro interactions · expressive cards and transparent state</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       CLOSING
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="pull-quote">
+      <p>LLMs are probabilistic systems.<br><em>Variation is not a bug</em> – it is the core of how they work.</p>
+    </div>
+    <p class="closing-body">By adding guardrails – curated ingredients, a constrained system prompt, and conversational editing – But.tons turns that probabilistic behavior into a product quality. Users stay in control while still leaving room for surprise. The randomness isn't reduced. It's made useful.</p>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer id="site-footer" class="will-animate">
+    <nav class="footer-nav">
+      <a href="#">Contact</a>
+      <a href="#">Design Archive</a>
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">Email ↗</a>
+    </nav>
+  </footer>
+
+  <script>
+    window.addEventListener('load', () => {
+      const veil = document.getElementById('veil');
+      requestAnimationFrame(() => {
+        veil.style.opacity = '0';
+        setTimeout(() => veil.remove(), 950);
+      });
+      document.querySelectorAll('.will-animate').forEach((el, i) => {
+        setTimeout(() => {
+          el.classList.remove('will-animate');
+          el.classList.add('animate-in');
+        }, 700 + i * 100);
+      });
+    });
+
+    (() => {
+      const DUR  = '0.72s';
+      const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+      function prep(el) {
+        el.style.opacity   = '0';
+        el.style.transform = 'translateY(32px)';
+      }
+      function reveal(el, delay) {
+        if (!el) return;
+        el.style.transition = `opacity ${DUR} ${EASE} ${delay}ms, transform ${DUR} ${EASE} ${delay}ms`;
+        el.style.opacity    = '1';
+        el.style.transform  = 'translateY(0)';
+      }
+
+      const secObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          secObs.unobserve(e.target);
+          const sec = e.target;
+          let t = 0;
+
+          reveal(sec.querySelector('.sec-label'), t); t += 55;
+
+          const body = sec.querySelector('.sec-body');
+          if (body) {
+            [...body.children].forEach(child => {
+              const tag = child.tagName;
+              const cls = child.classList;
+              if (tag === 'H2') { reveal(child, t); t += 65; }
+              else if (tag === 'H3') { reveal(child, t); t += 50; }
+              else if (tag === 'P')  { reveal(child, t); t += 38; }
+              else if (
+                cls.contains('pull-quote') ||
+                cls.contains('callout') ||
+                cls.contains('flow-diagram') ||
+                cls.contains('sys-prompt')
+              ) { reveal(child, t); t += 65; }
+            });
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.cs-section').forEach(sec => {
+        sec.querySelectorAll(
+          '.sec-label, .sec-body > h2, .sec-body > h3, .sec-body > p, ' +
+          '.pull-quote, .callout, .flow-diagram, .sys-prompt'
+        ).forEach(prep);
+        secObs.observe(sec);
+      });
+
+      const imgObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          reveal(e.target, 0);
+          imgObs.unobserve(e.target);
+        });
+      }, { threshold: 0.04 });
+
+      document.querySelectorAll('.img-block').forEach(el => { prep(el); imgObs.observe(el); });
+    })();
+
+    (() => {
+      const btn   = document.getElementById('hamburger');
+      const menu  = document.getElementById('mobile-menu');
+      const close = document.getElementById('mm-close');
+      const open  = () => {
+        menu.classList.add('is-open');
+        menu.removeAttribute('aria-hidden');
+        btn.setAttribute('aria-expanded','true');
+        document.body.style.overflow = 'hidden';
+      };
+      const shut  = () => {
+        menu.classList.remove('is-open');
+        menu.setAttribute('aria-hidden','true');
+        btn.setAttribute('aria-expanded','false');
+        document.body.style.overflow = '';
+      };
+      btn.addEventListener('click', open);
+      close.addEventListener('click', shut);
+      menu.querySelectorAll('.mm-link').forEach(a => a.addEventListener('click', shut));
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') shut(); });
+    })();
+  </script>
+
+</body>
+</html>

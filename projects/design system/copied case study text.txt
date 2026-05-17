@@ -1,0 +1,90 @@
+
+Design System
+A production design system where Figma and Vue share the same source of truth, built and maintained using Claude Code and the Figma MCP.
+
+Design System
+
+2025
+
+Product Designer
+
+lilaquadrat builds content management tools for creative agencies. As the product scaled, the gap between Figma and the Vue codebase grew, design decisions weren't reaching production accurately, and there was no structured way to catch drift.
+
+The goal: design tokens as the bridge between canvas and code. Define once in Figma, reference everywhere in Vue. No manual handoff, no translation layer.
+
+
+A production design system where Figma and Vue share the same source of truth,  built and maintained using Claude Code and the Figma MCP.
+01. The Problem
+Broken workflow
+
+
+No shared token layer : colors and spacing were hardcoded across Vue files. Any brand change required manual updates in dozens of places.
+
+
+Design–code drift : Figma was used for handoff, not as a living reference. The codebase gradually diverged from design intent.
+
+
+No governance : updates traveled through Slack messages that got buried. There was no structured way to know how far things had drifted.
+
+02. Foundations
+Tokens first: everything follows
+Before a single component was built, the token architecture was defined in Figma as four variable collections. Every color, spacing value, and radius in the system references a variable. No hardcoded values, anywhere.
+
+
+Colors: 32 semantic tokens, Light + Dark mode
+
+Spacing: 4px base unit, 22-step scale
+
+Radius: 7-step scale, radius-md(4px) applied universally
+
+Typography: size scale + weight tokens
+
+
+
+
+
+32 semantic color tokens with Light and Dark mode support.
+
+
+Four variable collections, the single source of truth for every visual decision.
+
+
+
+Foundations
+
+
+03. Components
+A library, not a collection of frames
+Every component is a Figma ComponentSet with named variant properties, variable-bound fills, and documented states. No loose frames, no static mockups.
+
+
+16 component sets, each in a labeled section frame with variant matrix.
+04. Workflows
+Design and code, always in sync
+A bidirectional workflow between Figma and Vue. Claude Code reads design intent directly from the file, generates components, and syncs changes back. No handoff step. No redlines.
+
+
+
+
+
+
+Claude Code reading design intent directly from Figma.
+
+Generated Vue component, CSS vars mapped to Figma token names.
+Governance
+Building the system was one challenge. Keeping it accurate as the product evolved required a different approach: a repeatable audit instead of Slack messages that get buried.
+
+
+Token alignment: Figma variable names checked against CSS custom properties
+
+Component coverage: every Component Set verified against Vue file in/src/components/
+
+Naming drift: variant property names and CSS conventions checked for consistency
+
+
+
+A design system that doesn't drift. Token-bound in Figma, enforced in code, audited on a schedule.
+
+
+
+

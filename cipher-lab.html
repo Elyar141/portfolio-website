@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cipher Lab — Case Study</title>
+  <style>
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-Variable.woff2') format('woff2'),
+           url('fonts/Switzer-Variable.woff')  format('woff');
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      color: #c8c8c8;
+      font-family: 'Switzer', sans-serif;
+      min-height: 100vh;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 22px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      z-index: 10;
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(12px);
+    }
+    .back-link {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: rgba(160,160,160,0.85); }
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.25);
+    }
+
+    .hero {
+      padding: 160px 80px 96px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      max-width: 1200px;
+    }
+    .project-type {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.28);
+      margin-bottom: 36px;
+    }
+    h1 {
+      font-size: clamp(64px, 9vw, 130px);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 0.92;
+      color: rgba(210,210,210,0.88);
+      margin-bottom: 52px;
+    }
+    .hero-desc {
+      max-width: 520px;
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1.72;
+      color: rgba(160,160,160,0.55);
+    }
+
+    .body-wrap {
+      padding: 88px 80px;
+      max-width: 820px;
+    }
+    .section { margin-bottom: 72px; }
+    .section-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.24);
+      margin-bottom: 22px;
+    }
+    .section p {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(160,160,160,0.52);
+    }
+
+    .img-placeholder {
+      width: 100%;
+      max-width: 1040px;
+      margin: 0 80px 0;
+      aspect-ratio: 16 / 9;
+      background: rgba(255,255,255,0.022);
+      border: 1px solid rgba(255,255,255,0.055);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .img-placeholder span {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.16);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="back-link" href="index.html">← Back to portfolio</a>
+    <span class="tag">Security · Design · 2023</span>
+  </header>
+
+  <div class="hero">
+    <p class="project-type">Case Study</p>
+    <h1>Cipher<br>Lab</h1>
+    <p class="hero-desc">An OS skin for people who find default interfaces too loud. Silence as a design language, and security as something that feels earned, not imposed.</p>
+  </div>
+
+  <div class="img-placeholder"><span>Project Visual</span></div>
+
+  <div class="body-wrap">
+    <div class="section">
+      <p class="section-label">Overview</p>
+      <p>Cipher Lab is a security-first interface layer that strips modern OS chrome down to its functional core. Every decision was made by asking one question: does this element earn its presence? Most didn't survive the audit.</p>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Problem</p>
+      <p>Security software is universally anxious in its visual language: warnings, locks, shields, alerts. It communicates threat rather than confidence. Power users and security professionals wanted interfaces that felt calm and controlled, not perpetually alarmed.</p>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Solution</p>
+      <p>A monochrome interface skin with a strict information hierarchy. Alerts are contextual and silent by default, surfaced only on demand. Authentication flows are ceremonial rather than procedural. The visual language communicates competence through restraint rather than abundance.</p>
+    </div>
+  </div>
+
+  <div class="img-placeholder"><span>Interface Detail</span></div>
+
+  <div class="body-wrap">
+    <div class="section">
+      <p class="section-label">Outcome</p>
+      <p>Adopted by a small community of security researchers and power users. The most common feedback: "It's the first interface skin I've used where I actually trust it more because it's saying less." That's the design philosophy in one sentence.</p>
+    </div>
+  </div>
+
+</body>
+</html>

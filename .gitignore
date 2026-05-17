@@ -1,0 +1,22 @@
+# Claude Code internal config
+.claude/
+
+# Internal docs
+DESIGN_SYSTEM.md
+SESSION_NOTES.md
+case-study-design-system.md
+
+# Dev scratch
+test/
+
+# Loose images not part of the site
+Screenshot 2026-05-10 213125.png
+e07d68fa638322a17d5f040a2da87436.jpg
+
+# Files over GitHub's 100MB limit
+projects/Onboarding/login_cropped.gif
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini

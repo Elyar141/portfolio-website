@@ -1,0 +1,114 @@
+
+Better Words
+An AI speech coach with voice cloning and semantic search. Record yourself speaking, get improved versions in your own voice.
+
+Product Design
+
+2025
+
+Vibe Coded Web App
+
+Live Website
+
+Live Website
+
+
+An AI speech coach with voice cloning and semantic search. Record yourself speaking, get improved versions in your own voice.
+01. Overview
+The Core Idea
+ Most speech coaching tools require too much effort.
+
+I explored a simple question:
+
+How far can a single interaction go?
+
+Better Words compresses a multi-step AI workflow: recording, processing, rewriting, voice generation, and playback  into one ritual-like control: a large orange button.
+
+The Constraint
+One button. No menus. No dashboard.
+
+The entire experience had to live inside a single object.
+If the interface became cluttered, the habit would break.
+
+02. Interaction Design
+Gesture Language
+Tap to Pause / Resume
+A single tap pauses recording.
+Tapping again resumes.
+
+This keeps the experience flexible without adding UI controls.
+
+
+
+Hold to Commit
+Holding the button signals intention.
+
+While holding:
+
+The button turns red
+
+Microcopy appears: “Hold to send”
+
+This prevents accidental submission while keeping the interface minimal.
+
+
+
+02. Designing the AI Waiting Moment
+Perceived Speed
+AI processing is part of the experience.
+
+Instead of a generic spinner, I designed:
+
+Animated gradients
+
+Code-like visual feedback
+
+Playful microcopy (“ironing your metaphors…”)
+
+The goal was to reduce perceived latency and build trust.
+
+
+
+The Reveal
+When processing finishes, the orange button expands into a full-screen feedback space.
+
+The result feels like an event, not just output.
+
+
+
+03. Elevation Control
+Gradual Improvement
+Improvement isn’t binary.
+
+The Elevation slider allows users to move between:
+
+
+Close to original
+
+More structured
+
+More sophisticated
+
+This keeps the output within the user’s identity range.
+
+
+
+
+Voice & Trust
+Voice cloning requires trust. Before first use, users choose between:
+
+
+Cloning their own voice
+
+Using an AI voice
+
+Clear privacy messaging explains how audio is processed and deleted.
+
+
+
+Building It
+Vibe Coding  Better Words started as an experiment in building under constraint,  one button, no clutter, no feature creep.
+
+I built the entire tool from scratch using AI-assisted workflows and rapid prototyping tools, iterating directly in code and interface at the same time. 
+
+For several months, I used it daily.

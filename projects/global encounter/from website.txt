@@ -1,0 +1,78 @@
+
+Global Encounters
+Transforming a dated, bureaucratic application platform into a warm, editorial experience worthy of what Global Encounters actually offers its community.
+
+UX/UI Design
+
+2026
+
+Platform Redesign
+
+Global Encounters runs heritage travel journeys, youth camps across 36 countries, and talent programmes for the global Ismaili community. The ii-platform is the application portal for all of them. Despite the significance of what it offers, the platform felt like enterprise software, flat, grey, and completely disconnected from the cultural richness of the programmes themselves.
+
+
+Transforming a dated, bureaucratic application platform into a warm, editorial experience worthy of what Global Encounters actually offers its community.
+01. The Challenge
+Form over function
+A global community platform that felt like a government form
+
+No emotional context
+
+Cognitive overload
+
+No visual hierarchy
+
+Confusing login
+
+Grey-on-grey forms
+
+Login
+The original login split email and password across two screens, with a faded world map as the only context. The redesign collapses it into one screen, with a full-bleed photograph of the Amber Fort behind it. Before the user types anything, they know what the platform is for.
+
+
+Dashboard
+Five cards of identical weight, no visual hierarchy, and a buried resume flow. The redesign leads with two large hero cards, full destination photography, applications-open badges and moves Profile Update to the nav dropdown where it belongs.
+
+
+
+
+
+
+Single-screen login with full-bleed destination photography.
+
+
+Two-tier card hierarchy leads with flagship programmes. 
+02.APPLICANT SELECTION
+Who is this for?
+Heritage Journeys allows family applications. This decision gets its own dedicated screen. Two clean cards existing user with application status badge, or new application. The teal selection border connects visually to the Continue button. Button inactive until a card is selected, preventing accidental progression.
+
+Applicant Selection
+The old platform combined applicant selection with programme selection on the same cluttered screen, buried inside a data table. The redesign gives it one job, two clean cards, existing applicant or new, with the Continue button inactive until a choice is made.
+
+
+
+Application Intro
+All 8 form steps were exposed as simultaneous tabs before a single field was filled. The redesign hides the burden, a progress indicator replaces the tab overload, and registration type becomes two selectable cards consistent with the screen before it.
+
+
+
+
+
+Dedicated screen for a single decision. Selection state connects visually to the CTA.
+
+
+
+Three programmes, one job. Pending applications surface as a resume card at the bottom.
+
+
+
+Progress bar appears for the first time. Destinations as a scannable table, registration type as card selection.
+
+
+
+Destination preference as selectable cards. country, dates, and price in context. Form content sits in a white container on cream, with the progress bar advancing to step 2.
+
+
+03.VISUAL LANGUAGE
+Six decisions, one system
+Cabinet Grotesk replaces the platform's generic typeface, geometric but warm, optimised for digital. Each programme carries its official sub-brand colour as an accent, with teal reserved for all interactive elements. Photography is treated as context, not decoration. Sharp edges throughout, no rounded corners. Cream at the page level, white inside form containers. And every screen has exactly one job.

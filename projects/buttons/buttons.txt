@@ -1,0 +1,92 @@
+
+But.tons
+Creative Button Generator
+
+Product Design
+
+2025
+
+Experimental Interface
+
+Live Website
+
+Live Website
+
+Exploring how AI temperature and curated ingredients can turn button design into creative experimentation.
+
+A creative tool inspired by Playground AI that balances structure and randomness. Designed to encourage play instead of precision.
+
+
+Create buttons with personality using AI. Combine moods, movements, textures, and styles to design UI with character. 
+01. The Spark
+Inspired by Playground AI
+Most AI tools optimize for speed and output. Playground AI focuses on exploration and surprise. I wanted to apply that philosophy to UI components.
+
+
+Creative exploration through style mixing.
+
+Creative exploration through ingredient mixing.
+
+
+Can a button feel expressive
+What if buttons were not just functional UI elements, but small moments of character. What if the interface encouraged experimentation instead of correctness.
+
+
+
+
+02. The Concept
+Guided inputs, expressive outcomes.
+Curated ingredients act as a starting spark. They show what is possible and help users move beyond familiar UI conventions.
+
+AI interpretation is the second layer of exploration. It pushes the result further, adding surprise and variation that you would rarely design intentionally.
+
+This became the core principle. Give users a playful direction, then let the model expand the creative space.
+
+
+
+Defines how the button behaves in space. Motion becomes personality.
+
+Shapes the emotional tone of the button. Emotion translated into interaction.
+Prompt iteration as a design process
+One unexpected challenge was not making the prompt smarter. It was making the prompt quieter.
+
+In early versions, I asked the model to generate creative button labels. It sounded fun, but it distracted the model from what mattered. Shape, style, motion, texture.
+
+The best results came when I constrained the output. Then the model focused on visual character.
+
+
+
+
+System Prompt
+03. Intent Aware Editing
+Editing without switching modes
+Refinement through language, not modes.
+There is no Edit toggle. The model infers intent from the prompt. If a previous button exists, it modifies only what is requested. Otherwise, it regenerates.
+
+This keeps iteration fluid and preserves creative continuity.
+
+
+
+The core UI structure for the interactive button playground.
+4. Hybrid Control
+AI plus manual tuning
+Not everything should be generated.
+The ingredient system gives direction. The base control panel gives precision.
+
+This hybrid setup keeps the experience playful. But still usable.
+
+
+
+
+Designing the micro moments
+The project was as much about interaction as it was about output.
+
+
+
+Expressive cards, transparent state, and a steady UI that lets the button evolve.
+Embracing the oddness
+LLMs are probabilistic systems, not precision instruments. Variation is not a bug in their behavior. It is the core of how they work.
+
+This project was an experiment in turning that behavior into a product quality.
+
+By adding guardrails like curated ingredients, constrained prompts, and conversational editing, I built a system that keeps users in control while still leaving room for surprise.

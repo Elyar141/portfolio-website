@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
+  <title>Design System – lilaquadrat</title>
+  <style>
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-Variable.woff2') format('woff2'),
+           url('fonts/Switzer-Variable.woff')  format('woff');
+      font-weight: 100 900; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-VariableItalic.woff2') format('woff2'),
+           url('fonts/Switzer-VariableItalic.woff')  format('woff');
+      font-weight: 100 900; font-style: italic;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #0a0a0a;
+      --line:    #2a2a2a;
+      --mute:    #6c6c6c;
+      --dim:     #999;
+      --white:   #f2f2f2;
+      --green:   #b6f23b;
+      --gutter:  clamp(24px, 5vw, 72px);
+      --label-w: clamp(100px, 11vw, 160px);
+      --col-gap: clamp(32px, 4vw, 80px);
+    }
+
+    html { background: var(--bg); scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      background: var(--bg); min-height: 100vh;
+      font-family: 'Switzer', sans-serif; color: var(--dim);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+
+    #veil {
+      position: fixed; inset: 0; background: var(--bg);
+      z-index: 999; transition: opacity 0.9s ease; pointer-events: none;
+    }
+
+    /* ── Nav ── */
+    #site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+      padding: 14px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+    .logo-mark rect { fill: #b6f23b; transition: fill 0.22s; }
+    .nav-logo:hover .logo-mark rect { fill: rgba(182,242,59,0.5); }
+    .logo-word {
+      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.06em; color: rgba(200,200,200,0.48); transition: color 0.22s;
+    }
+    .nav-logo:hover .logo-word { color: rgba(200,200,200,0.82); }
+    .nav-right { display: flex; align-items: center; gap: 30px; }
+    .nav-right a {
+      font-family: 'Switzer', sans-serif; font-size: 9.5px; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(160,160,160,0.48); text-decoration: none; transition: color 0.18s;
+    }
+    .nav-right a:hover { color: rgba(160,160,160,0.82); }
+    #hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      padding: 5px; align-items: center; justify-content: center; transition: opacity 0.18s;
+    }
+    #hamburger:hover { opacity: 0.7; }
+
+    /* ── Mobile overlay ── */
+    #mobile-menu {
+      display: flex; flex-direction: column; position: fixed; inset: 0;
+      z-index: 50; background: #0a0a0a; padding: 0 32px 36px;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+    #mobile-menu.is-open { opacity: 1; visibility: visible; pointer-events: all; }
+    .mm-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+    }
+    #mm-close {
+      background: none; border: none; cursor: pointer; padding: 5px;
+      display: flex; align-items: center; justify-content: center; transition: opacity 0.18s;
+    }
+    #mm-close:hover { opacity: 0.6; }
+    .mm-links { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .mm-link {
+      display: flex; align-items: baseline; gap: 14px; text-decoration: none;
+      padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .mm-link:last-child { border-bottom: none; }
+    .mm-link:hover .mm-label { color: #b6f23b; }
+    .mm-idx {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.08em; color: rgba(182,242,59,0.5); flex-shrink: 0; width: 18px;
+    }
+    .mm-label {
+      font-family: 'Switzer', sans-serif; font-size: clamp(40px,13vw,68px);
+      font-weight: 700; letter-spacing: -0.02em; color: rgba(235,235,235,0.9);
+      line-height: 1; transition: color 0.2s ease; -webkit-font-smoothing: antialiased;
+    }
+    .mm-foot {
+      display: flex; gap: 24px; padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+    }
+    .mm-foot a {
+      font-family: 'Switzer', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(160,160,160,0.4); text-decoration: none; transition: color 0.18s;
+    }
+    .mm-foot a:hover { color: rgba(160,160,160,0.8); }
+    #mobile-menu.is-open .mm-link { animation: mm-link-in 0.38s ease both; }
+    #mobile-menu.is-open .mm-link:nth-child(1) { animation-delay: 0.10s; }
+    #mobile-menu.is-open .mm-link:nth-child(2) { animation-delay: 0.16s; }
+    #mobile-menu.is-open .mm-link:nth-child(3) { animation-delay: 0.22s; }
+    @keyframes mm-link-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Footer ── */
+    #site-footer {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 5;
+      padding: 11px 40px; border-top: 1px solid rgba(160,160,160,0.18);
+      display: flex; justify-content: flex-end; align-items: center;
+      pointer-events: none; background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+    }
+    .footer-nav { display: flex; align-items: center; gap: 28px; pointer-events: all; }
+    .footer-nav a {
+      font-family: 'Switzer', sans-serif; font-size: 9.5px; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(160,160,160,0.48); text-decoration: none; transition: color 0.18s;
+    }
+    .footer-nav a:hover { color: rgba(160,160,160,0.82); }
+
+    /* ── Entrance ── */
+    .will-animate { opacity: 0; transform: translateY(12px); }
+    .animate-in { animation: fade-up 0.72s cubic-bezier(0.22,1,0.36,1) forwards; }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       LAYOUT
+    ════════════════════════════════════════════════════════ */
+    .wrap {
+      max-width: 1500px; margin: 0 auto;
+      padding-left: var(--gutter); padding-right: var(--gutter);
+    }
+
+    /* ── Hero ── */
+    .cs-hero {
+      padding-top: clamp(110px,13vw,150px);
+      padding-bottom: clamp(56px,7vw,88px);
+    }
+    .scroll-hint {
+      display: flex; gap: 5px; justify-content: center;
+      margin-top: clamp(36px,5vw,56px);
+    }
+    .sc-px { width: 8px; height: 8px; background: var(--green); opacity: 0.45; flex-shrink: 0; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 18px; margin-bottom: clamp(24px,3vw,40px); }
+    .hero-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; color: var(--green);
+    }
+    .hero-tag {
+      font-family: 'Switzer', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--mute);
+    }
+    .hero-tag span { margin: 0 6px; opacity: 0.4; }
+    .cs-hero h1 {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: clamp(80px,10vw,152px); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 0.88;
+      color: rgba(218,218,218,0.9); margin-bottom: clamp(28px,3.5vw,48px);
+    }
+    .hero-subtitle {
+      max-width: 580px; font-family: 'Switzer', sans-serif;
+      font-size: clamp(18px,1.6vw,21px); font-weight: 400; line-height: 1.68;
+      color: rgba(185,185,185,0.85); margin-bottom: clamp(40px,5vw,64px);
+    }
+    .meta-grid { display: flex; flex-wrap: wrap; gap: 28px 64px; }
+    .meta-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-bottom: 8px;
+    }
+    .meta-value {
+      font-family: 'Switzer', sans-serif; font-size: 15px; font-weight: 400;
+      color: var(--dim); line-height: 1.5;
+    }
+
+    /* ── Editorial section grid ── */
+    .cs-section {
+      display: grid;
+      grid-template-columns: var(--label-w) 1fr;
+      gap: 0 var(--col-gap);
+      align-items: start;
+      padding-top: clamp(56px,7vw,88px);
+      padding-bottom: clamp(48px,6vw,72px);
+    }
+    .cs-section.tight {
+      padding-top: clamp(32px,4vw,48px);
+      padding-bottom: clamp(32px,4vw,48px);
+    }
+    .sec-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute);
+      padding-top: 10px; position: sticky; top: 80px; line-height: 1.7;
+    }
+    .sec-body h2 {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: clamp(24px,2.8vw,38px); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.15;
+      color: rgba(210,210,210,0.9); margin-bottom: clamp(20px,2.5vw,32px);
+    }
+    .sec-body p {
+      font-family: 'Switzer', sans-serif; font-size: 16px; font-weight: 400;
+      line-height: 1.82; color: rgba(160,160,160,0.62);
+      margin-bottom: 16px; max-width: 760px;
+    }
+    .sec-body p:last-child { margin-bottom: 0; }
+
+    /* ── Pull quote ── */
+    .pull-quote { padding: clamp(36px,5vw,56px) 0; }
+    .pull-quote p {
+      font-family: 'Helvetica Neue', Helvetica, 'Switzer', sans-serif;
+      font-size: clamp(22px,2.8vw,38px); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.25;
+      color: rgba(210,210,210,0.88); max-width: none; margin: 0;
+    }
+    .pull-quote p em { font-style: normal; color: var(--green); }
+
+    /* ── Approach list ── */
+    .approach-list {
+      margin-top: 48px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .approach-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 0 clamp(20px,3vw,40px);
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      align-items: start;
+    }
+    .approach-n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(182,242,59,0.35); padding-top: 3px;
+    }
+    .approach-title {
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      font-size: 17px; font-weight: 500;
+      color: rgba(200,200,200,0.85);
+      margin-bottom: 8px; line-height: 1.3;
+    }
+    .approach-desc {
+      font-family: 'Switzer', sans-serif;
+      font-size: 15px; font-weight: 400;
+      line-height: 1.75; color: rgba(150,150,150,0.65);
+      max-width: 680px;
+    }
+
+    /* ── Image blocks ── */
+    .img-block { padding: clamp(40px,5vw,56px) 0; }
+    .img-full img { width: 100%; display: block; }
+    .img-caption {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-top: 12px;
+    }
+    .img-pair {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(12px, 2vw, 24px);
+    }
+    .img-pair-item img { width: 100%; display: block; }
+    @media (max-width: 599px) { .img-pair { grid-template-columns: 1fr; } }
+
+    /* ════════════════════════════════════════════════════════
+       CUSTOM: System architecture map (hero visual, redrawn)
+    ════════════════════════════════════════════════════════ */
+    .sys-map {
+      margin-top: clamp(40px,5vw,64px);
+      display: grid;
+      grid-template-columns: 1fr 56px 1fr 56px 1fr;
+      align-items: start;
+      gap: 0;
+    }
+    .sys-col {
+      padding: clamp(28px,3.5vw,44px);
+      background: rgba(255,255,255,0.014);
+      border: 1px solid rgba(255,255,255,0.055);
+    }
+    .sys-col-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(182,242,59,0.45);
+      display: block; margin-bottom: 16px;
+    }
+    .sys-col-title {
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      font-size: clamp(18px,2vw,26px); font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.1;
+      color: rgba(210,210,210,0.9);
+      margin-bottom: 24px;
+    }
+    .sys-col-item {
+      font-family: 'Switzer', sans-serif;
+      font-size: 14px; font-weight: 400;
+      line-height: 1.6; color: rgba(140,140,140,0.55);
+      padding: 7px 0;
+    }
+    .sys-arrow {
+      display: flex; align-items: flex-start; justify-content: center;
+      padding-top: 72px;
+    }
+    .sys-arrow-glyph {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; font-weight: 700;
+      color: rgba(108,108,108,0.28);
+      letter-spacing: -0.02em;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       CUSTOM: Token specs inline list (Foundations section)
+    ════════════════════════════════════════════════════════ */
+    .token-specs {
+      margin-top: 40px;
+    }
+    .token-spec {
+      display: grid;
+      grid-template-columns: clamp(100px,14vw,140px) 1fr;
+      gap: 0 clamp(20px,3vw,48px);
+      padding: 12px 0;
+      align-items: baseline;
+    }
+    .token-spec-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--mute);
+    }
+    .token-spec-val {
+      font-family: 'Switzer', sans-serif;
+      font-size: 15px; font-weight: 400;
+      color: rgba(185,185,185,0.68); line-height: 1.5;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       CUSTOM: Workflow process flow (redrawn from diagram)
+    ════════════════════════════════════════════════════════ */
+    .flow-diagram {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .flow-step {
+      padding: clamp(24px,3vw,36px) clamp(18px,2.5vw,28px) clamp(24px,3vw,36px) 0;
+      border-right: 1px solid rgba(255,255,255,0.04);
+    }
+    .flow-step:first-child { padding-left: 0; }
+    .flow-step:last-child { border-right: none; }
+    .flow-step + .flow-step { padding-left: clamp(18px,2.5vw,28px); }
+    .flow-n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(182,242,59,0.35);
+      display: block; margin-bottom: 14px;
+    }
+    .flow-title {
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      font-size: 15px; font-weight: 500;
+      color: rgba(195,195,195,0.82);
+      margin-bottom: 10px; line-height: 1.3;
+    }
+    .flow-desc {
+      font-family: 'Switzer', sans-serif;
+      font-size: 13px; font-weight: 400;
+      line-height: 1.65; color: rgba(130,130,130,0.5);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       CUSTOM: Outcome stats (redrawn impact block)
+    ════════════════════════════════════════════════════════ */
+    .outcome-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.045);
+      margin-top: clamp(40px,5vw,64px);
+    }
+    .outcome-stat {
+      background: var(--bg);
+      padding: clamp(36px,4.5vw,56px) clamp(28px,3.5vw,44px);
+    }
+    .outcome-num {
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      font-size: clamp(52px,7vw,88px); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1;
+      color: rgba(218,218,218,0.9);
+      display: block; margin-bottom: 14px;
+    }
+    .outcome-unit {
+      font-size: clamp(22px,2.8vw,36px); font-weight: 300;
+      letter-spacing: -0.02em;
+      color: rgba(160,160,160,0.38);
+    }
+    .outcome-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--mute);
+      display: block; margin-top: 12px;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════════════════════ */
+    @media (max-width: 959px) {
+      #site-nav { padding: 12px 24px; }
+      :root { --gutter: clamp(20px,4vw,40px); --label-w: 80px; --col-gap: 28px; }
+      .sys-map { grid-template-columns: 1fr 40px 1fr 40px 1fr; }
+      .flow-diagram { grid-template-columns: repeat(3, 1fr); }
+      .flow-step:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.04); padding-left: 0; }
+      .flow-step:nth-child(5) { border-top: 1px solid rgba(255,255,255,0.04); }
+    }
+    @media (max-width: 699px) {
+      .cs-section { grid-template-columns: 1fr; }
+      .sec-label { position: static; padding-top: 0; margin-bottom: 16px; }
+      .approach-item { grid-template-columns: 36px 1fr; gap: 0 16px; }
+      .sys-map { grid-template-columns: 1fr; }
+      .sys-arrow { display: none; }
+      .sys-col + .sys-col { margin-top: 2px; }
+      .flow-diagram { grid-template-columns: 1fr 1fr; }
+      .flow-step:nth-child(5) { grid-column: 1 / -1; border-right: none; }
+      .outcome-stats { grid-template-columns: 1fr; }
+      .token-spec { grid-template-columns: 1fr; gap: 4px 0; }
+    }
+    @media (max-width: 599px) {
+      #hamburger { display: flex; }
+      .nav-right { display: none; }
+      .logo-word { display: none; }
+      #site-footer { padding: 9px 16px; }
+      .footer-nav { flex-wrap: wrap; gap: 10px 16px; }
+      .footer-nav a { font-size: 8px; letter-spacing: 0.12em; }
+      :root { --gutter: 20px; }
+      .cs-hero h1 { font-size: clamp(60px,18vw,96px); }
+      .meta-grid { gap: 20px 40px; }
+      .sys-col { padding: 24px 20px; }
+      .flow-diagram { grid-template-columns: 1fr; }
+      .flow-step {
+        border-right: none; padding-left: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+      }
+      .flow-step:last-child { border-bottom: none; }
+      .flow-step + .flow-step { padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="veil"></div>
+
+  <!-- ── Nav ── -->
+  <nav id="site-nav" class="will-animate">
+    <a class="nav-logo" href="index.html">
+      <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
+        <rect x="0"  y="0"  width="5" height="5"/>
+        <rect x="6"  y="0"  width="5" height="5"/>
+        <rect x="12" y="0"  width="5" height="5"/>
+        <rect x="18" y="0"  width="5" height="5"/>
+        <rect x="0"  y="6"  width="5" height="5"/>
+        <rect x="24" y="6"  width="5" height="5"/>
+        <rect x="0"  y="12" width="5" height="5"/>
+        <rect x="24" y="12" width="5" height="5"/>
+        <rect x="0"  y="18" width="5" height="5"/>
+        <rect x="6"  y="18" width="5" height="5"/>
+        <rect x="12" y="18" width="5" height="5"/>
+        <rect x="18" y="18" width="5" height="5"/>
+        <rect x="0"  y="24" width="5" height="5"/>
+        <rect x="0"  y="30" width="5" height="5"/>
+        <rect x="0"  y="36" width="5" height="5"/>
+      </svg>
+      <span class="logo-word">pixelandprompt</span>
+    </a>
+    <div class="nav-right">
+      <a href="projects.html">Work</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+    <button id="hamburger" aria-label="Open navigation" aria-expanded="false">
+      <svg width="20" height="13" viewBox="0 0 20 13" fill="none">
+        <rect width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+        <rect y="5.75" width="13" height="1.5" fill="rgba(160,160,160,0.65)"/>
+        <rect y="11.5" width="20" height="1.5" fill="rgba(160,160,160,0.65)"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- ── Mobile overlay ── -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation" aria-hidden="true">
+    <div class="mm-header">
+      <a class="nav-logo" href="index.html">
+        <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
+          <rect x="0"  y="0"  width="5" height="5"/><rect x="6"  y="0"  width="5" height="5"/>
+          <rect x="12" y="0"  width="5" height="5"/><rect x="18" y="0"  width="5" height="5"/>
+          <rect x="0"  y="6"  width="5" height="5"/><rect x="24" y="6"  width="5" height="5"/>
+          <rect x="0"  y="12" width="5" height="5"/><rect x="24" y="12" width="5" height="5"/>
+          <rect x="0"  y="18" width="5" height="5"/><rect x="6"  y="18" width="5" height="5"/>
+          <rect x="12" y="18" width="5" height="5"/><rect x="18" y="18" width="5" height="5"/>
+          <rect x="0"  y="24" width="5" height="5"/><rect x="0"  y="30" width="5" height="5"/>
+          <rect x="0"  y="36" width="5" height="5"/>
+        </svg>
+        <span class="logo-word">pixelandprompt</span>
+      </a>
+      <button id="mm-close" aria-label="Close navigation">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M1.5 1.5 L16.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
+          <path d="M16.5 1.5 L1.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="mm-links">
+      <a href="projects.html" class="mm-link"><span class="mm-idx">01</span><span class="mm-label">Work</span></a>
+      <a href="#" class="mm-link"><span class="mm-idx">02</span><span class="mm-label">About</span></a>
+      <a href="#" class="mm-link"><span class="mm-idx">03</span><span class="mm-label">Contact</span></a>
+    </nav>
+    <div class="mm-foot">
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">Email ↗</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════════ -->
+  <div class="cs-hero wrap will-animate">
+    <div class="hero-eyebrow">
+      <span class="hero-num">04</span>
+      <span class="hero-tag">Product Design<span>·</span>2025<span>·</span>lilaquadrat</span>
+    </div>
+    <h1>Design System</h1>
+    <p class="hero-subtitle">A production design system where Figma and Vue share the same source of truth. No handoff. No drift.</p>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-value">Product Designer</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Domain</div>
+        <div class="meta-value">SaaS · Design Tooling</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Tools</div>
+        <div class="meta-value">Figma · Vue · Claude Code · Figma MCP</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Type</div>
+        <div class="meta-value">Shipped product</div>
+      </div>
+    </div>
+
+    <!-- REDRAWN: system architecture — Figma → Tokens → Vue -->
+    <div class="sys-map">
+      <div class="sys-col">
+        <span class="sys-col-tag">Source</span>
+        <div class="sys-col-title">Figma</div>
+        <div class="sys-col-item">Variable Collections</div>
+        <div class="sys-col-item">Light + Dark mode</div>
+        <div class="sys-col-item">32 semantic color tokens</div>
+        <div class="sys-col-item">Spacing · Radius · Typography</div>
+      </div>
+      <div class="sys-arrow" aria-hidden="true">
+        <span class="sys-arrow-glyph">→</span>
+      </div>
+      <div class="sys-col">
+        <span class="sys-col-tag">Bridge</span>
+        <div class="sys-col-title">Design Tokens</div>
+        <div class="sys-col-item">CSS custom properties</div>
+        <div class="sys-col-item">Token names match Figma variables</div>
+        <div class="sys-col-item">No hardcoded values, anywhere</div>
+        <div class="sys-col-item">Single source of truth</div>
+      </div>
+      <div class="sys-arrow" aria-hidden="true">
+        <span class="sys-arrow-glyph">→</span>
+      </div>
+      <div class="sys-col">
+        <span class="sys-col-tag">Output</span>
+        <div class="sys-col-title">Vue</div>
+        <div class="sys-col-item">16 component sets</div>
+        <div class="sys-col-item">Variant-bound in Figma</div>
+        <div class="sys-col-item">Generated by Claude Code via MCP</div>
+        <div class="sys-col-item">Audited on a schedule</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="sc-px"></div>
+      <div class="sc-px"></div>
+      <div class="sc-px"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       01 PROBLEM
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">01<br>Problem</div>
+      <div class="sec-body">
+        <h2>Broken workflow</h2>
+        <p>lilaquadrat builds content management tools for creative agencies. As the product scaled, the gap between Figma and the Vue codebase grew. Design decisions weren't reaching production accurately and there was no structured way to catch the drift.</p>
+        <div class="approach-list">
+          <div class="approach-item">
+            <span class="approach-n">01</span>
+            <div>
+              <div class="approach-title">No shared token layer</div>
+              <div class="approach-desc">Colors and spacing were hardcoded across Vue files. Any brand change required manual updates in dozens of places – tedious and error-prone.</div>
+            </div>
+          </div>
+          <div class="approach-item">
+            <span class="approach-n">02</span>
+            <div>
+              <div class="approach-title">Design–code drift</div>
+              <div class="approach-desc">Figma was used for handoff, not as a living reference. The codebase gradually diverged from design intent with no mechanism to detect it.</div>
+            </div>
+          </div>
+          <div class="approach-item">
+            <span class="approach-n">03</span>
+            <div>
+              <div class="approach-title">No governance</div>
+              <div class="approach-desc">Updates traveled through Slack messages that got buried. There was no structured process to know how far things had drifted or who was responsible for keeping them aligned.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       02 FOUNDATIONS
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">02<br>Foundations</div>
+      <div class="sec-body">
+        <h2>Tokens first: everything follows</h2>
+        <p>Before a single component was built, the token architecture was defined in Figma as four variable collections. Every color, spacing value, and radius in the system references a variable. No hardcoded values, anywhere. Change a token in Figma and the change propagates everywhere it is referenced in code.</p>
+        <div class="token-specs">
+          <div class="token-spec">
+            <span class="token-spec-name">Color</span>
+            <span class="token-spec-val">32 semantic tokens · Light + Dark mode support</span>
+          </div>
+          <div class="token-spec">
+            <span class="token-spec-name">Spacing</span>
+            <span class="token-spec-val">4px base unit · 22-step scale</span>
+          </div>
+          <div class="token-spec">
+            <span class="token-spec-name">Radius</span>
+            <span class="token-spec-val">7-step scale · radius-md (4px) applied universally</span>
+          </div>
+          <div class="token-spec">
+            <span class="token-spec-name">Typography</span>
+            <span class="token-spec-val">Size scale + weight tokens · no hardcoded values</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-pair">
+      <div class="img-pair-item">
+        <img src="projects/design%20system/four%20variable%20collections.avif"
+             alt="Four Figma variable collections forming the token architecture – Color, Spacing, Radius, and Typography"
+             loading="lazy" />
+        <div class="img-caption">Figma variable collections · four collections · single source of truth</div>
+      </div>
+      <div class="img-pair-item">
+        <img src="projects/design%20system/color%20tokens.avif"
+             alt="32 semantic color tokens with Light and Dark mode variants defined in Figma"
+             loading="lazy" />
+        <div class="img-caption">Color tokens · 32 semantic tokens · Light and Dark mode</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       03 COMPONENTS
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">03<br>Components</div>
+      <div class="sec-body">
+        <h2>A library, not a collection of frames</h2>
+        <p>Every component is a Figma ComponentSet with named variant properties, variable-bound fills, and documented states. No loose frames, no static mockups. Each component in Figma has a direct counterpart in the Vue codebase, generated and kept in sync through Claude Code reading design intent directly from the file.</p>
+        <p>16 component sets, each in a labeled section frame with a full variant matrix. Every state documented. Every fill token-bound. No ambiguity in handoff – because there is no handoff.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/design%20system/foundations.avif"
+           alt="Foundation tokens and base styles defined in Figma as the grounding layer for all components"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">Foundations · base tokens · grounding layer for all components</div>
+  </div>
+
+  <div class="wrap img-block" style="padding-top: 0;">
+    <div class="img-full">
+      <img src="projects/design%20system/16%20components.webp"
+           alt="16 component sets in Figma with variant matrices and labeled section frames"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">Component library · 16 component sets · variant matrices · labeled sections</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       04 WORKFLOW
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">04<br>Workflow</div>
+      <div class="sec-body">
+        <h2>Design and code, always in sync</h2>
+        <p>A bidirectional workflow between Figma and Vue. Claude Code reads design intent directly from the Figma file via MCP, generates Vue components with CSS variables mapped to Figma token names, and syncs changes back. No handoff step. No redlines. No translation layer between design and code.</p>
+
+        <!-- REDRAWN: 5-step process flow -->
+        <div class="flow-diagram">
+          <div class="flow-step">
+            <span class="flow-n">01</span>
+            <div class="flow-title">Design Tokens</div>
+            <div class="flow-desc">Token architecture defined in Figma as variable collections</div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-n">02</span>
+            <div class="flow-title">Claude Code</div>
+            <div class="flow-desc">Reads Figma via MCP, generates Vue components from design spec</div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-n">03</span>
+            <div class="flow-title">Real App</div>
+            <div class="flow-desc">Components tested in context, edge cases surface, refinements happen</div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-n">04</span>
+            <div class="flow-title">Figma MCP</div>
+            <div class="flow-desc">Design updates pushed back to Figma, keeping documentation current</div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-n">05</span>
+            <div class="flow-title">Governance Audit</div>
+            <div class="flow-desc">Scheduled check: Figma tokens vs code, component coverage, drift report</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/design%20system/claude%20code%20reading%20design%20intent.avif"
+           alt="Claude Code reading design intent directly from the Figma file via MCP"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">Claude Code · reading design intent · directly from Figma via MCP</div>
+  </div>
+
+  <div class="wrap img-block" style="padding-top: 0;">
+    <div class="img-full">
+      <img src="projects/design%20system/generated%20vue%20componentes.avif"
+           alt="Generated Vue component with CSS custom properties mapped directly to Figma token names"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">Generated Vue component · CSS vars mapped to Figma token names · no manual translation</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       05 GOVERNANCE
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="cs-section">
+      <div class="sec-label">05<br>Governance</div>
+      <div class="sec-body">
+        <h2>A repeatable audit, not a Slack message</h2>
+        <p>Building the system was one challenge. Keeping it accurate as the product evolved required a different approach. Instead of informal communication that gets buried, a structured audit runs on a schedule – three checks, each with a clear pass or fail.</p>
+        <div class="approach-list">
+          <div class="approach-item">
+            <span class="approach-n">01</span>
+            <div>
+              <div class="approach-title">Token alignment</div>
+              <div class="approach-desc">Figma variable names checked against CSS custom properties in the codebase. Any mismatch is a drift warning.</div>
+            </div>
+          </div>
+          <div class="approach-item">
+            <span class="approach-n">02</span>
+            <div>
+              <div class="approach-title">Component coverage</div>
+              <div class="approach-desc">Every Figma ComponentSet verified against a Vue file in <code style="font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(182,242,59,0.5)">/src/components/</code>. Missing components surface immediately.</div>
+            </div>
+          </div>
+          <div class="approach-item">
+            <span class="approach-n">03</span>
+            <div>
+              <div class="approach-title">Naming drift</div>
+              <div class="approach-desc">Variant property names in Figma checked against CSS conventions in code. Consistency enforced at the naming level, not just the visual.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap img-block">
+    <div class="img-full">
+      <img src="projects/design%20system/audit.avif"
+           alt="Design system audit showing token alignment, component coverage, and naming drift checks"
+           loading="lazy" />
+    </div>
+    <div class="img-caption">Governance audit · token alignment · component coverage · naming drift</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       REDRAWN: Outcome / impact block
+  ══════════════════════════════════════════════════════════ -->
+  <div class="wrap">
+    <div class="pull-quote">
+      <p>A design system that doesn't drift. <em>Token-bound in Figma, enforced in code, audited on a schedule.</em></p>
+    </div>
+  </div>
+
+  <div class="wrap img-block" style="padding-top: 0;">
+    <div class="outcome-stats">
+      <div class="outcome-stat">
+        <span class="outcome-num">32<span class="outcome-unit"> tokens</span></span>
+        <span class="outcome-label">Semantic color tokens · Light + Dark</span>
+      </div>
+      <div class="outcome-stat">
+        <span class="outcome-num">16<span class="outcome-unit"> sets</span></span>
+        <span class="outcome-label">Component sets · variable-bound fills</span>
+      </div>
+      <div class="outcome-stat">
+        <span class="outcome-num">0<span class="outcome-unit"> steps</span></span>
+        <span class="outcome-label">Manual handoff · no redlines · no translation</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding-bottom: 80px;"></div>
+
+  <!-- ── Footer ── -->
+  <footer id="site-footer" class="will-animate">
+    <nav class="footer-nav">
+      <a href="#">Contact</a>
+      <a href="#">Design Archive</a>
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">Email ↗</a>
+    </nav>
+  </footer>
+
+  <script>
+    window.addEventListener('load', () => {
+      const veil = document.getElementById('veil');
+      requestAnimationFrame(() => {
+        veil.style.opacity = '0';
+        setTimeout(() => veil.remove(), 950);
+      });
+      document.querySelectorAll('.will-animate').forEach((el, i) => {
+        setTimeout(() => {
+          el.classList.remove('will-animate');
+          el.classList.add('animate-in');
+        }, 700 + i * 100);
+      });
+    });
+
+    (() => {
+      const DUR  = '0.72s';
+      const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+      function prep(el) {
+        el.style.opacity   = '0';
+        el.style.transform = 'translateY(32px)';
+      }
+      function reveal(el, delay) {
+        if (!el) return;
+        el.style.transition = `opacity ${DUR} ${EASE} ${delay}ms, transform ${DUR} ${EASE} ${delay}ms`;
+        el.style.opacity    = '1';
+        el.style.transform  = 'translateY(0)';
+      }
+
+      const secObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          secObs.unobserve(e.target);
+          const sec = e.target;
+          let t = 0;
+
+          reveal(sec.querySelector('.sec-label'), t); t += 55;
+
+          const body = sec.querySelector('.sec-body');
+          if (body) {
+            [...body.children].forEach(child => {
+              const tag = child.tagName;
+              const cls = child.classList;
+              if (tag === 'H2') { reveal(child, t); t += 65; }
+              else if (tag === 'P')  { reveal(child, t); t += 38; }
+              else if (cls.contains('pull-quote')) { reveal(child, t); t += 65; }
+            });
+            body.querySelectorAll('.approach-item').forEach((el, i) => reveal(el, 80 + i * 70));
+            body.querySelectorAll('.token-spec').forEach((el, i)    => reveal(el, 60 + i * 40));
+            body.querySelectorAll('.flow-step').forEach((el, i)     => reveal(el, 60 + i * 55));
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.cs-section').forEach(sec => {
+        sec.querySelectorAll(
+          '.sec-label, .sec-body > h2, .sec-body > p, .pull-quote, .approach-item, .token-spec, .flow-step'
+        ).forEach(prep);
+        secObs.observe(sec);
+      });
+
+      const imgObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          reveal(e.target, 0);
+          imgObs.unobserve(e.target);
+        });
+      }, { threshold: 0.04 });
+
+      document.querySelectorAll('.img-block, .pull-quote').forEach(el => {
+        prep(el); imgObs.observe(el);
+      });
+
+      document.querySelectorAll('.outcome-stat').forEach((el, i) => {
+        prep(el);
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            reveal(e.target, i * 80);
+            obs.unobserve(e.target);
+          });
+        }, { threshold: 0.1 });
+        obs.observe(el);
+      });
+    })();
+
+    (() => {
+      const btn   = document.getElementById('hamburger');
+      const menu  = document.getElementById('mobile-menu');
+      const close = document.getElementById('mm-close');
+      const open  = () => { menu.classList.add('is-open'); menu.removeAttribute('aria-hidden'); btn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
+      const shut  = () => { menu.classList.remove('is-open'); menu.setAttribute('aria-hidden','true'); btn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
+      btn.addEventListener('click', open);
+      close.addEventListener('click', shut);
+      menu.querySelectorAll('.mm-link').forEach(a => a.addEventListener('click', shut));
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') shut(); });
+    })();
+  </script>
+
+</body>
+</html>
