@@ -569,7 +569,7 @@
           </div>
         </div>
 
-        <p>Sara manages CSRD compliance at Muller GmbH. She collects certificates, energy reports, and supplier audits from 15 sources and submits them to external auditors every year. Today this happens over email and shared drives. One missing document fails the entire audit.</p>
+        <p>A sustainability manager at Muller GmbH collects certificates, energy reports, and supplier audits from 15 sources and submits them to external auditors every year. Today this happens over email and shared drives. One missing document fails the entire audit.</p>
         <p>Verity centralises this. It uses AI to verify whether uploaded documents satisfy each compliance requirement. The product problem is solved. The design problem is not.</p>
       </div>
     </div>
@@ -583,7 +583,7 @@
       <div class="sec-label">02<br>Problem</div>
       <div class="sec-body">
         <h2>The AI is sometimes wrong. Acting on a wrong verdict in compliance has real consequences.</h2>
-        <p>A failed audit. A regulatory penalty. Reputational damage for the company. The naive solution is a confidence score. But a number without explanation is not trustworthy. It asks Sara to trust a verdict without understanding the reasoning.</p>
+        <p>A failed audit. A regulatory penalty. Reputational damage for the company. The naive solution is a confidence score. But a number without explanation is not trustworthy. It asks the reviewer to trust a verdict without understanding the reasoning.</p>
 
         <div class="pull-quote">
           <p>Trust is not a UI component.<br><em>It is a system of patterns</em> that work together.</p>
@@ -610,7 +610,7 @@
               </svg>
             </div>
             <div class="principle-title">Show evidence, not verdicts</div>
-            <div class="principle-desc">Let Sara see the raw document text the AI used. She verifies the source, not just the conclusion.</div>
+            <div class="principle-desc">Surface the raw document text the AI used. Reviewers verify the source, not just the conclusion.</div>
           </div>
           <div class="principle-card">
             <div class="principle-num">
@@ -631,7 +631,7 @@
               </svg>
             </div>
             <div class="principle-title">Name what the AI does not know</div>
-            <div class="principle-desc">When uncertain, the system says exactly what it could not confirm and links directly to where Sara should look.</div>
+            <div class="principle-desc">When uncertain, the system names the exact gap and links directly to where to look.</div>
           </div>
         </div>
       </div>
@@ -647,8 +647,8 @@
     <div class="cs-section no-border tight">
       <div class="sec-label">04<br>Design</div>
       <div class="sec-body">
-        <h3>What Sara sees before any AI result</h3>
-        <p>Plain language: what this requirement asks for. A checklist: exactly what valid proof must include. This frames every AI verdict before she sees it.</p>
+        <h3>Context before the AI verdict</h3>
+        <p>Plain language: what this requirement asks for. A checklist: exactly what valid proof must include. This frames every AI verdict before it appears.</p>
       </div>
     </div>
   </div>
@@ -668,7 +668,7 @@
       <div class="sec-label"></div>
       <div class="sec-body">
         <h3>Evidence, not verdicts</h3>
-        <p>Each criterion in the AI review card is expandable. She clicks it and sees the exact text extracted from the document, the page it came from, and one sentence explaining what the AI found. She does not have to trust the conclusion. She can verify it in ten seconds.</p>
+        <p>Each criterion in the AI review card is expandable. A click reveals the exact text extracted from the document, the page it came from, and one sentence explaining what the AI found. The verdict doesn't have to be taken on faith. The evidence is right there.</p>
         <div class="callout">
           <div class="callout-label">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
@@ -708,7 +708,7 @@
       <div class="sec-label"></div>
       <div class="sec-body">
         <h3>The reasoning is visible, not hidden behind a spinner</h3>
-        <p>Criteria resolve one by one as the AI reads the document. By the time the verdict appears, Sara has already watched the reasoning build. The result is a summary of what she already saw, not a black box output.</p>
+        <p>Criteria resolve one by one as the AI reads the document. By the time the verdict appears, the reasoning has already built in plain sight. The result is a summary of what was already visible, not a black box output.</p>
       </div>
     </div>
   </div>
@@ -728,7 +728,7 @@
       <div class="sec-label"></div>
       <div class="sec-body">
         <h3>When the AI is uncertain, it says exactly what it could not confirm</h3>
-        <p>Not "verification failed." The exact gap: ISO 14064 is referenced but the document does not specify whether market-based or location-based Scope 2 accounting was applied. The criterion turns amber. A direct link takes Sara to the section where the AI looked.</p>
+        <p>Not "verification failed." The exact gap: ISO 14064 is referenced but the document does not specify whether market-based or location-based Scope 2 accounting was applied. The criterion turns amber. A direct link points to the section where the AI looked.</p>
       </div>
     </div>
   </div>
@@ -748,7 +748,7 @@
       <div class="sec-label"></div>
       <div class="sec-body">
         <h3>Overriding the AI requires a reason, and that reason becomes the record</h3>
-        <p>She cannot confirm without writing why. That note is logged alongside the original AI flag, in sequence, with timestamps. The AI finding is never deleted. Both layers are visible to anyone who later needs to verify that this decision was made carefully.</p>
+        <p>Confirmation requires a written reason. That note is logged alongside the original AI flag, in sequence, with timestamps. The AI finding is never deleted. Both layers are visible to anyone who later needs to verify that this decision was made carefully.</p>
       </div>
     </div>
   </div>
@@ -811,34 +811,10 @@
   ══════════════════════════════════════════════════════════ -->
   <div class="wrap">
     <div class="cs-section no-border">
-      <div class="sec-label">06<br>Validate</div>
+      <div class="sec-label">06<br>Question</div>
       <div class="sec-body">
-        <h2>Two things to test before shipping</h2>
-        <ul class="validate-list">
-          <li class="validate-item">
-            <div class="validate-num">
-              <svg width="5" height="5" viewBox="0 0 5 5" fill="none" aria-hidden="true">
-                <rect x="0" y="0" width="5" height="5" fill="#b6f23b"/>
-              </svg>
-            </div>
-            <div class="validate-body">
-              <div class="validate-q">Is the AI explanation actually plain enough?</div>
-              <p>Show the review card to sustainability managers. Ask them to explain back what the AI found and what to do next. If they cannot answer in 30 seconds, it is not plain enough.</p>
-            </div>
-          </li>
-          <li class="validate-item">
-            <div class="validate-num">
-              <svg width="13" height="5" viewBox="0 0 13 5" fill="none" aria-hidden="true">
-                <rect x="0" y="0" width="5" height="5" fill="#b6f23b"/>
-                <rect x="8" y="0" width="5" height="5" fill="#b6f23b"/>
-              </svg>
-            </div>
-            <div class="validate-body">
-              <div class="validate-q">Does the override modal feel like accountability or punishment?</div>
-              <p>Watch whether the required reason field discourages legitimate overrides. The goal is a traceable decision, not an obstacle. There is a meaningful difference between the two.</p>
-            </div>
-          </li>
-        </ul>
+        <h2>Does the form produce the judgment, or just the record?</h2>
+        <p>Requiring a written reason slows the reflex and gives the audit trail meaning. The failure mode: a reviewer who writes "verified against source" and clicks through. The log entry exists. The judgment doesn't. Design can make carelessness harder. It cannot make someone care.</p>
       </div>
     </div>
   </div>
