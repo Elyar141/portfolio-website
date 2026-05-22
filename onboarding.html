@@ -317,6 +317,16 @@
       color: var(--mute); max-width: 220px; line-height: 1.6;
     }
 
+    /* ── Desktop type bumps ─────────────────────────────────── */
+    @media (min-width: 960px) {
+      .sec-body p,
+      .callout p,
+      .validate-body p { font-size: 18px; line-height: 1.65; }
+      .sec-body h3     { font-size: 22px; line-height: 1.18; }
+      .validate-q      { font-size: 22px; line-height: 1.20; }
+      .principle-title { font-size: 22px; line-height: 1.15; }
+    }
+
     /* ── Responsive ── */
     @media (max-width: 959px) {
       #site-nav { padding: 12px 24px; }
