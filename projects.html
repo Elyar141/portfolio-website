@@ -10,32 +10,23 @@
   <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
   <style>
     @font-face {
-      font-family: 'Switzer';
-      src: url('fonts/Switzer-Variable.woff2') format('woff2'),
-           url('fonts/Switzer-Variable.woff')  format('woff');
+      font-family: 'Geist';
+      src: url('fonts/Geist-Variable.woff2') format('woff2');
       font-weight: 100 900;
       font-style: normal;
     }
-    @font-face {
-      font-family: 'Switzer';
-      src: url('fonts/Switzer-VariableItalic.woff2') format('woff2'),
-           url('fonts/Switzer-VariableItalic.woff')  format('woff');
-      font-weight: 100 900;
-      font-style: italic;
-    }
-
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --bg:      #0a0a0a;
-      --line:    #2a2a2a;
-      --mute:    #6c6c6c;
-      --dim:     #999;
-      --mid:     #c0c0c0;
-      --hi:      #e0e0e0;
-      --white:   #f2f2f2;
-      --green:   #b6f23b;
-      --green-d: rgba(182,242,59,0.65);
+      --line:    #2e2e2e;
+      --mute:    #8c8c8c;
+      --dim:     #a0a0a0;
+      --mid:     #c6c6c6;
+      --hi:      #f0f0f0;
+      --white:   #f7f7f7;
+      --green:   #c8e899;
+      --green-d: rgba(200,232,153,0.65);
     }
 
     html { background: var(--bg); }
@@ -43,7 +34,7 @@
     body {
       background: var(--bg);
       min-height: 100vh;
-      font-family: 'Switzer', sans-serif;
+      font-family: 'Geist', sans-serif;
       color: var(--dim);
       -webkit-font-smoothing: antialiased;
     }
@@ -76,160 +67,45 @@
       text-decoration: none;
     }
     .logo-mark rect {
-      fill: #b6f23b;
+      fill: #c8e899;
       transition: fill 0.22s;
     }
-    .nav-logo:hover .logo-mark rect { fill: rgba(182,242,59,0.5); }
+    .nav-logo:hover .logo-mark rect { fill: rgba(200,232,153,0.5); }
     .logo-word {
       font-family: 'JetBrains Mono', monospace;
       font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 0.06em;
-      color: rgba(200,200,200,0.48);
+      color: #8c8c8c;
       transition: color 0.22s;
     }
-    .nav-logo:hover .logo-word { color: rgba(200,200,200,0.82); }
+    .nav-logo:hover .logo-word { color: #c6c6c6; }
     .nav-right {
       display: none;
       align-items: center;
       gap: 30px;
     }
     .nav-right a {
-      font-family: 'Switzer', sans-serif;
+      font-family: 'Geist', sans-serif;
       font-size: 12px;
       font-weight: 400;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(160,160,160,0.48);
+      color: #8c8c8c;
       text-decoration: none;
       transition: color 0.18s;
     }
-    .nav-right a:hover { color: rgba(160,160,160,0.82); }
+    .nav-right a:hover { color: #c6c6c6; }
 
     /* ── Hamburger button ───────────────────────────────────────── */
-    #hamburger {
-      display: flex;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.18s;
-    }
-    #hamburger:hover { opacity: 0.7; }
 
     /* ── Mobile menu overlay (global — identical to index.html) ─── */
-    #mobile-menu {
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      background: #0a0a0a;
-      padding: 0 32px 36px;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity 0.28s ease, visibility 0.28s ease;
-    }
-    #mobile-menu.is-open {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: all;
-    }
-    .mm-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      flex-shrink: 0;
-    }
-    #mm-close {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.18s;
-    }
-    #mm-close:hover { opacity: 0.6; }
-    .mm-links {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .mm-link {
-      display: flex;
-      align-items: baseline;
-      gap: 14px;
-      text-decoration: none;
-      padding: 18px 0;
-    }
-    .mm-link:hover .mm-label { color: #b6f23b; }
-    .mm-idx {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: rgba(182,242,59,0.5);
-      flex-shrink: 0;
-      width: 18px;
-    }
-    .mm-label {
-      font-family: 'Switzer', sans-serif;
-      font-size: clamp(40px, 13vw, 68px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: rgba(235,235,235,0.9);
-      line-height: 1;
-      transition: color 0.2s ease;
-      -webkit-font-smoothing: antialiased;
-    }
-    .mm-foot {
-      display: flex;
-      gap: 24px;
-      padding-top: 28px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      flex-shrink: 0;
-    }
-    .mm-foot a {
-      font-family: 'Switzer', sans-serif;
-      font-size: 9px;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(160,160,160,0.6);
-      text-decoration: none;
-      transition: color 0.18s;
-    }
-    .mm-foot a:hover { color: rgba(160,160,160,0.8); }
-    #mobile-menu.is-open .mm-link { animation: mm-link-in 0.38s ease both; }
-    #mobile-menu.is-open .mm-link:nth-child(1) { animation-delay: 0.10s; }
-    #mobile-menu.is-open .mm-link:nth-child(2) { animation-delay: 0.16s; }
-    #mobile-menu.is-open .mm-link:nth-child(3) { animation-delay: 0.22s; }
-    @keyframes mm-link-in {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
 
     /* ── Footer (global component — identical to index.html) ────── */
     #site-footer {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 5;
-      background: rgba(10,10,10,0.88);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid rgba(160,160,160,0.18);
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      pointer-events: all;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px clamp(24px, 5vw, 40px);
+      border-top: 1px solid var(--line);
     }
     .footer-label {
       font-family: 'JetBrains Mono', monospace;
@@ -237,7 +113,7 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(160,160,160,0.55);
+      color: #8c8c8c;
     }
     .footer-nav {
       display: flex;
@@ -250,11 +126,11 @@
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(160,160,160,0.6);
+      color: #a0a0a0;
       text-decoration: none;
       transition: color 0.18s ease;
     }
-    .footer-nav a:hover { color: rgba(160,160,160,0.85); }
+    .footer-nav a:hover { color: #c6c6c6; }
 
     /* ── Project list ───────────────────────────────────────────── */
     .projects { list-style: none; padding-top: 70px; padding-bottom: 60px; }
@@ -362,9 +238,8 @@
       }
       .logo-word { display: inline; font-size: 9px; }
       .nav-right  { display: none; }
-      #hamburger  { display: flex; }
 
-      #site-footer { padding: 0 20px; height: 40px; }
+      #site-footer { padding: 14px 20px; }
       .footer-label { display: none; }
       .footer-nav { gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
       .footer-nav a { font-size: 8px; letter-spacing: 0.12em; }
@@ -438,65 +313,8 @@
       <a href="projects.html">Work</a>
       <a href="#">About</a>
       <a href="mailto:azadielshan@gmail.com">Contact</a>
-    </div>
-    <button id="hamburger" aria-label="Open navigation" aria-expanded="false">
-      <svg width="5" height="17" viewBox="0 0 5 17" fill="none">
-        <rect width="5" height="5" fill="#b6f23b"/>
-        <rect y="6" width="5" height="5" fill="#b6f23b"/>
-        <rect y="12" width="5" height="5" fill="#b6f23b"/>
-      </svg>
-    </button>
+    </div>
   </nav>
-
-  <!-- ── Mobile menu overlay (global component) ── -->
-  <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation" aria-hidden="true">
-    <div class="mm-header">
-      <a class="nav-logo" href="index.html">
-        <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0"  y="0"  width="5" height="5"/>
-          <rect x="6"  y="0"  width="5" height="5"/>
-          <rect x="12" y="0"  width="5" height="5"/>
-          <rect x="18" y="0"  width="5" height="5"/>
-          <rect x="0"  y="6"  width="5" height="5"/>
-          <rect x="24" y="6"  width="5" height="5"/>
-          <rect x="0"  y="12" width="5" height="5"/>
-          <rect x="24" y="12" width="5" height="5"/>
-          <rect x="0"  y="18" width="5" height="5"/>
-          <rect x="6"  y="18" width="5" height="5"/>
-          <rect x="12" y="18" width="5" height="5"/>
-          <rect x="18" y="18" width="5" height="5"/>
-          <rect x="0"  y="24" width="5" height="5"/>
-          <rect x="0"  y="30" width="5" height="5"/>
-          <rect x="0"  y="36" width="5" height="5"/>
-        </svg>
-      </a>
-      <button id="mm-close" aria-label="Close navigation">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1.5 1.5 L16.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
-          <path d="M16.5 1.5 L1.5 16.5" stroke="rgba(160,160,160,0.65)" stroke-width="1.5" stroke-linecap="square"/>
-        </svg>
-      </button>
-    </div>
-    <nav class="mm-links">
-      <a href="projects.html" class="mm-link">
-        <span class="mm-idx">01</span>
-        <span class="mm-label">Work</span>
-      </a>
-      <a href="about.html" class="mm-link">
-        <span class="mm-idx">02</span>
-        <span class="mm-label">About</span>
-      </a>
-      <a href="mailto:azadielshan@gmail.com" class="mm-link">
-        <span class="mm-idx">03</span>
-        <span class="mm-label">Contact</span>
-      </a>
-    </nav>
-    <div class="mm-foot">
-      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
-      <a href="mailto:azadielshan@gmail.com">Email ↗</a>
-    </div>
-  </div>
-
   <ol class="projects">
 
     <li>
@@ -596,8 +414,7 @@
     <span class="footer-label">Elshan Azadi</span>
     <nav class="footer-nav">
       <a href="mailto:azadielshan@gmail.com">Contact</a>
-      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
-      <a href="mailto:azadielshan@gmail.com">Email ↗</a>
+      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
     </nav>
   </footer>
 
@@ -628,33 +445,8 @@
     });
 
     /* ── Hamburger menu ── */
-    (() => {
-      const btn      = document.getElementById('hamburger');
-      const menu     = document.getElementById('mobile-menu');
-      const closeBtn = document.getElementById('mm-close');
-
-      function openMenu() {
-        menu.classList.add('is-open');
-        menu.removeAttribute('aria-hidden');
-        btn.setAttribute('aria-expanded', 'true');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeMenu() {
-        menu.classList.remove('is-open');
-        menu.setAttribute('aria-hidden', 'true');
-        btn.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      }
-
-      btn.addEventListener('click', openMenu);
-      closeBtn.addEventListener('click', closeMenu);
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && menu.classList.contains('is-open')) closeMenu();
-      });
-      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-    })();
   </script>
 
+  <script src="floating-nav.js" defer></script>
 </body>
 </html>
