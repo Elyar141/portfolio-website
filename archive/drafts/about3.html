@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <title>About – Elshan Azadi</title>
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('../../fonts/Geist-Variable.woff2') format('woff2');
+      font-weight: 100 900; font-style: normal;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #ede6ca;
+      --card:    #fdd7d4;
+      --card-2:  #f9c8c4;
+      --ink:     #141301;
+      --green:   #6a6f4b;
+      --veil:    #ffffff;
+
+      --line:    rgba(20,19,1,0.16);
+      --mute:    rgba(20,19,1,0.55);
+      --dim:     rgba(20,19,1,0.66);
+      --pad:     clamp(28px, 3.6vw, 64px);
+      --r:       14px;
+    }
+
+    html { background: var(--bg); scroll-behavior: smooth; overflow-x: clip; }
+    body {
+      background: var(--bg); min-height: 100vh;
+      font-family: 'Geist', sans-serif; color: var(--dim);
+      -webkit-font-smoothing: antialiased; overflow-x: clip;
+    }
+
+    #veil {
+      position: fixed; inset: 0; background: var(--bg);
+      z-index: 999; transition: opacity 0.9s ease; pointer-events: none;
+    }
+
+    /* ── Nav ── (chrome carried over from designsystem-v2) */
+    #site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+      padding: 23.5px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(237,230,202,0.82); backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+    .logo-mark rect { fill: #6a6f4b; transition: fill 0.22s; }
+    .nav-logo:hover .logo-mark rect { fill: rgba(106,111,75,0.5); }
+    .nav-right { display: none; }
+
+    body #float-nav {
+      top: 19px; bottom: auto;
+      left: 50%; transform: translateX(-50%);
+      z-index: 65;
+      background: transparent;
+      border: 3px solid #fabab6;
+      box-shadow: none;
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+      padding: 7px; gap: 4px;
+    }
+    #float-nav .fn-item {
+      width: auto; height: 30px;
+      padding: 0 15px;
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      white-space: nowrap; text-decoration: none;
+      color: var(--green);
+      transition: background 0.2s ease, color 0.2s ease, transform 0.24s cubic-bezier(0.22,1,0.36,1);
+    }
+    #float-nav .fn-item:hover {
+      background: var(--card); color: var(--ink); transform: translateY(-1px);
+    }
+    #float-nav .fn-item.is-active { background: var(--green); color: var(--card); }
+    #float-nav .fn-item:focus-visible { outline: 1px dashed var(--green); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      #float-nav .fn-item:hover { transform: none; }
+    }
+
+    .wrap { max-width: none; margin: 0; padding: 0 20px; }
+
+    /* ════════════════════════════════════════════════════════
+       DECK — same engine as about2 / designsystem-v2
+    ════════════════════════════════════════════════════════ */
+    .deck { position: relative; padding-top: 100px; padding-bottom: 8vh; --n: 5; }
+    .card {
+      --enter: 0; --cover: 0;
+      background: transparent;
+      border-radius: var(--r);
+      padding: var(--pad);
+      display: flex; flex-direction: column;
+      margin-bottom: 12px;
+    }
+    .card::after { content: none; }
+    /* Every card is transparent so the drawing behind stays continuous
+       across the whole deck. With no dimming veil to hide them, the
+       contents have to leave on their own as the next card lands. */
+    .card > * {
+      opacity: calc(1 - var(--cover));
+      transition: opacity 620ms ease;
+    }
+    /* Text keeps to the left half; the drawing owns the right. */
+    .card > div { max-width: 46%; }
+
+    .frame { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+    .frame svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .frame rect, .frame path {
+      fill: none; stroke: var(--green);
+      stroke-width: 5; stroke-dasharray: 5 6; opacity: 1;
+    }
+    .frame rect {
+      x: 3px; y: 3px;
+      width: calc(100% - 6px); height: calc(100% - 6px);
+      rx: calc(var(--r) - 3px);
+    }
+    .frame path { display: none; }
+    .frame.bendable rect { display: none; }
+    .frame.bendable path { display: block; }
+    @media (max-width: 859px) { .frame { display: none; } }
+
+    @media (min-width: 860px) and (min-height: 640px) {
+      :root { --stage-inset: 88px; }
+      .deck { height: calc(var(--n) * 100vh); padding-top: 0; padding-bottom: 0; }
+      .stage {
+        position: sticky; top: var(--stage-inset);
+        height: calc(100vh - var(--stage-inset) * 2);
+        overflow: hidden;
+        border-radius: var(--r);
+        background: var(--bg);
+      }
+      .card {
+        position: absolute; inset: 0;
+        margin-bottom: 0;
+        overflow: hidden;
+        transform: translateY(calc(var(--enter) * 100%));
+        will-change: transform;
+        transition: transform 1180ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .card { transition: none; }
+      }
+    }
+
+    /* ── Type ── */
+    .eyebrow { display: flex; align-items: center; gap: 16px; margin-bottom: clamp(24px,3vw,40px); }
+    .eyebrow-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; color: var(--green);
+    }
+    .eyebrow-tag { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--mute); }
+    .eyebrow-tag span { margin: 0 6px; opacity: 0.4; }
+    .card--hero h1 {
+      font-family: 'Helvetica Neue', Helvetica, 'Geist', sans-serif;
+      font-size: clamp(52px,7.2vw,116px); font-weight: 700;
+      letter-spacing: -0.045em; line-height: 0.86;
+      color: rgba(20,19,1,0.92);
+      margin-bottom: clamp(24px,3vw,40px);
+    }
+    .hero-line {
+      font-size: clamp(17px,1.5vw,20px); line-height: 1.6;
+      color: rgba(20,19,1,0.78);
+      margin-bottom: clamp(36px,4vw,56px);
+    }
+    .hero-line em { font-style: normal; color: var(--green); }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 22px 44px; padding-top: 26px; border-top: 1px solid rgba(20,19,1,0.14); }
+    .meta-k {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-bottom: 7px;
+    }
+    .meta-v { font-size: 14px; color: var(--dim); }
+
+    .card-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: clamp(22px,3vw,40px); }
+    .card-n {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.16em; color: var(--green);
+    }
+    .card-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase; color: rgba(20,19,1,0.55);
+    }
+    .statement {
+      font-family: 'Helvetica Neue', Helvetica, 'Geist', sans-serif;
+      font-size: clamp(30px,3.9vw,58px); font-weight: 700;
+      letter-spacing: -0.035em; line-height: 1.04;
+      color: rgba(20,19,1,0.92);
+      margin-bottom: clamp(18px,2vw,26px);
+    }
+    .support {
+      font-size: clamp(15px,1.3vw,18px); line-height: 1.62;
+      color: rgba(20,19,1,0.68);
+    }
+    .support em { font-style: normal; color: var(--green); }
+    .mailto {
+      display: inline-block; margin-top: clamp(20px,2.4vw,32px);
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+      letter-spacing: 0.04em; color: var(--green); text-decoration: none;
+      border-bottom: 2px solid var(--card); padding-bottom: 4px;
+      transition: border-color 0.2s ease;
+    }
+    .mailto:hover { border-color: var(--green); }
+
+    /* ════════════════════════════════════════════════════════
+       THE SCENE — scattered → ordered → shipped
+       One set of nine marks, moved by the deck rather than
+       redrawn. Base coordinates are the tidy grid; the scatter
+       and the final tightening are transforms off that, so the
+       ordered state is the one with no transform at all.
+    ════════════════════════════════════════════════════════ */
+    .scene {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 50%;
+      z-index: 0; pointer-events: none;
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(20px,3vw,56px);
+    }
+    .doodle { width: 100%; height: 100%; max-height: 100%; display: block; overflow: visible; }
+
+    .doodle g, .doodle path, .doodle rect, .doodle circle {
+      fill: none;
+      stroke: rgba(20,19,1,0.82);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    /* One dasharray value works for every stroke because pathLength
+       normalises them all to 1, however long they really are. */
+    .ink { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    .mark {
+      animation: draw 1.1s ease-out both;
+      animation-delay: var(--dd, 0s);
+      transform-box: fill-box; transform-origin: center;
+      transform: translate(var(--sx,0), var(--sy,0)) rotate(var(--sr,0deg)) scale(var(--ss,1));
+      transition: transform 950ms cubic-bezier(0.22,1,0.36,1) var(--td, 0ms),
+                  fill 800ms ease var(--td, 0ms);
+    }
+    /* Ordered: the grid the marks were authored on. */
+    .scene[data-stage="2"] .mark { transform: none; }
+    /* Shipped: the grid closes up into one body, and colour arrives. */
+    .scene[data-stage="3"] .mark,
+    .scene[data-stage="4"] .mark {
+      transform: translate(var(--tx,0), var(--ty,0));
+      fill: var(--card);
+    }
+
+    /* Stage-only furniture. Each draws itself the moment its stage
+       arrives, rather than on load, so the reveal is earned. */
+    .at { opacity: 0; transition: opacity 600ms ease; }
+    .scene[data-stage="2"] .at-2,
+    .scene[data-stage="3"] .at-3,
+    .scene[data-stage="4"] .at-3 { opacity: 1; }
+    .scene[data-stage="2"] .at-2 .ink { animation: draw 1.2s ease-out 0.15s forwards; }
+    .scene[data-stage="3"] .at-3 .ink,
+    .scene[data-stage="4"] .at-3 .ink { animation: draw 1.2s ease-out 0.15s forwards; }
+
+    .doodle text {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+      letter-spacing: 1.6px; fill: var(--green); stroke: none;
+    }
+    .doodle .cycle-arc { stroke: var(--green); stroke-width: 2; stroke-dasharray: 1; }
+    .scene[data-stage="2"] .cycle-arc { animation: draw 1.4s ease-out 0.15s forwards; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mark, .at .ink, .cycle-arc { animation: none; stroke-dashoffset: 0; }
+      .mark { transition: none; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE
+       ⚠ DRAFT GAP: below 860 the scene is hidden entirely. The
+       drawing is authored for a tall-right column and has no
+       portrait arrangement yet. See notes.
+    ════════════════════════════════════════════════════════ */
+    @media (max-width: 859px) {
+      #site-nav { padding: 12px 22px; }
+      body #float-nav { top: 7.5px; }
+      .deck { padding-top: 84px; }
+      .card { padding: clamp(26px,5vw,40px); }
+      .card > div { max-width: none; }
+      .scene { display: none; }
+    }
+    @media (max-width: 599px) {
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="veil"></div>
+
+  <nav id="site-nav">
+    <a class="nav-logo" href="../index.html" aria-label="Home">
+      <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
+        <rect x="0" y="0" width="5" height="5"/><rect x="6" y="0" width="5" height="5"/>
+        <rect x="12" y="0" width="5" height="5"/><rect x="18" y="0" width="5" height="5"/>
+        <rect x="0" y="6" width="5" height="5"/><rect x="24" y="6" width="5" height="5"/>
+        <rect x="0" y="12" width="5" height="5"/><rect x="24" y="12" width="5" height="5"/>
+        <rect x="0" y="18" width="5" height="5"/><rect x="6" y="18" width="5" height="5"/>
+        <rect x="12" y="18" width="5" height="5"/><rect x="18" y="18" width="5" height="5"/>
+        <rect x="0" y="24" width="5" height="5"/><rect x="0" y="30" width="5" height="5"/>
+        <rect x="0" y="36" width="5" height="5"/>
+      </svg>
+    </a>
+    <div class="nav-right"></div>
+  </nav>
+
+  <div class="wrap deck">
+   <div class="stage">
+
+    <!-- ══════════ THE SCENE ══════════ -->
+    <div class="scene" data-stage="0" aria-hidden="true">
+      <svg class="doodle" viewBox="0 0 600 620" role="img"
+           aria-label="Nine marks scattered at random, then aligned into a grid inside a prototype and test cycle, then closed into a single filled block with a rising step line beneath it.">
+
+        <defs>
+          <marker id="ca" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b" stroke="none"/>
+          </marker>
+        </defs>
+
+        <!-- ── STAGE 2 · the cycle that puts them in order ── -->
+        <g class="at at-2">
+          <path class="cycle-arc ink" pathLength="1" marker-end="url(#ca)"
+                d="M 300 132 A 168 168 0 1 1 154 216"/>
+          <text x="300" y="104" text-anchor="middle">PROTOTYPE</text>
+          <text x="516" y="306" text-anchor="middle">TEST</text>
+          <text x="300" y="512" text-anchor="middle">SHIP</text>
+        </g>
+
+        <!-- ── THE NINE MARKS ──
+             Authored on the tidy grid. --sx/--sy/--sr/--ss throw them
+             out of it for the opening; --tx/--ty close them up at the
+             end. Stage 2 is simply the absence of both. -->
+        <g class="marks">
+          <rect class="mark ink" pathLength="1" x="189" y="189" width="54" height="54"
+                style="--dd:.05s; --sx:-132px; --sy:-104px; --sr:-19deg; --ss:.78; --tx:28px;  --ty:28px;  --td:0ms"/>
+          <rect class="mark ink" pathLength="1" x="273" y="189" width="54" height="54"
+                style="--dd:.13s; --sx:46px;   --sy:-150px; --sr:13deg;  --ss:1.18; --tx:0px;   --ty:28px;  --td:60ms"/>
+          <rect class="mark ink" pathLength="1" x="357" y="189" width="54" height="54"
+                style="--dd:.21s; --sx:150px;  --sy:-74px;  --sr:26deg;  --ss:.90; --tx:-28px; --ty:28px;  --td:120ms"/>
+          <rect class="mark ink" pathLength="1" x="189" y="273" width="54" height="54"
+                style="--dd:.29s; --sx:-170px; --sy:30px;   --sr:8deg;   --ss:1.10; --tx:28px;  --ty:0px;   --td:40ms"/>
+          <rect class="mark ink" pathLength="1" x="273" y="273" width="54" height="54"
+                style="--dd:.37s; --sx:24px;   --sy:52px;   --sr:-14deg; --ss:.72; --tx:0px;   --ty:0px;   --td:100ms"/>
+          <rect class="mark ink" pathLength="1" x="357" y="273" width="54" height="54"
+                style="--dd:.45s; --sx:176px;  --sy:92px;   --sr:-23deg; --ss:1.05; --tx:-28px; --ty:0px;   --td:160ms"/>
+          <rect class="mark ink" pathLength="1" x="189" y="357" width="54" height="54"
+                style="--dd:.53s; --sx:-104px; --sy:154px;  --sr:16deg;  --ss:.95; --tx:28px;  --ty:-28px; --td:80ms"/>
+          <rect class="mark ink" pathLength="1" x="273" y="357" width="54" height="54"
+                style="--dd:.61s; --sx:36px;   --sy:150px;  --sr:-9deg;  --ss:1.22; --tx:0px;   --ty:-28px; --td:140ms"/>
+          <rect class="mark ink" pathLength="1" x="357" y="357" width="54" height="54"
+                style="--dd:.69s; --sx:148px;  --sy:150px;  --sr:21deg;  --ss:.82; --tx:-28px; --ty:-28px; --td:200ms"/>
+        </g>
+
+        <!-- ── STAGE 3 · shipped, and getting better ── -->
+        <g class="at at-3">
+          <rect class="ink" pathLength="1" x="197" y="197" width="206" height="206" rx="6"/>
+          <path class="ink" pathLength="1"
+                d="M 200 540 L 244 540 L 244 512 L 292 512 L 292 484 L 340 484 L 340 452 L 400 452"/>
+          <text x="300" y="586" text-anchor="middle">BETTER EACH PASS</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="frame" aria-hidden="true">
+      <svg><rect width="100%" height="100%" rx="14" /><path /></svg>
+    </div>
+
+    <!-- 00 · HERO ──────────────────────────────────────── -->
+    <section class="card card--hero">
+      <div>
+        <div class="eyebrow">
+          <span class="eyebrow-num">00</span>
+          <span class="eyebrow-tag">About<span>·</span>2026</span>
+        </div>
+        <h1>Elshan<br>Azadi</h1>
+        <p class="hero-line">Product designer. I work on the parts of a product that have <em>a system underneath them</em>, and I build the tooling that keeps that system honest.</p>
+        <div class="meta-row">
+          <div><div class="meta-k">Role</div><div class="meta-v">Product Designer</div></div>
+          <div><div class="meta-k">Currently</div><div class="meta-v">lilaquadrat</div></div>
+          <div><div class="meta-k">Focus</div><div class="meta-v">B2B SaaS · Design systems</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 · WHAT I BUILD ──────────────────────────────── -->
+    <section class="card">
+      <div>
+        <div class="card-head"><span class="card-n">01</span><span class="card-tag">What I build</span></div>
+        <h2 class="statement">B2B SaaS, and the systems underneath it.</h2>
+        <p class="support">Design systems, AI-assisted workflows, and a steady run of <em>shipped experiments.</em> The common thread is products with real complexity in them, where the interface has to carry a system rather than decorate one.</p>
+      </div>
+    </section>
+
+    <!-- 02 · HOW I WORK ────────────────────────────────── -->
+    <section class="card">
+      <div>
+        <div class="card-head"><span class="card-n">02</span><span class="card-tag">How I work</span></div>
+        <h2 class="statement">Prototype, test with real users, ship.</h2>
+        <p class="support">I move fast, and I iterate in systems rather than in screens, so <em>every pass leaves something reusable behind.</em> The second time through a problem is always cheaper than the first.</p>
+      </div>
+    </section>
+
+    <!-- 03 · WHAT MATTERS ──────────────────────────────── -->
+    <section class="card">
+      <div>
+        <div class="card-head"><span class="card-n">03</span><span class="card-tag">What matters</span></div>
+        <h2 class="statement">Products that improve when you use them.</h2>
+        <p class="support">The work is in <em>seeing what gets better each time.</em> Anyone can ship once. The interesting part is building the thing that tells you what to fix next.</p>
+      </div>
+    </section>
+
+    <!-- 04 · SAY HI ────────────────────────────────────── -->
+    <section class="card">
+      <div>
+        <div class="card-head"><span class="card-n">04</span><span class="card-tag">Say hi</span></div>
+        <h2 class="statement">Tell me what's broken.</h2>
+        <p class="support">Happy to talk about design systems, B2B products, or getting an agent to do the parts nobody wants to do twice.</p>
+        <a class="mailto" href="mailto:azadielshan@gmail.com">azadielshan@gmail.com</a>
+      </div>
+    </section>
+
+   </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      const veil = document.getElementById('veil');
+      requestAnimationFrame(() => {
+        veil.style.opacity = '0';
+        setTimeout(() => veil.remove(), 950);
+      });
+    });
+
+    /* ── Deck motion ──────────────────────────────────────────────
+       Identical to about2 / designsystem-v2, with one addition: the
+       active index is written onto the scene as data-stage, and CSS
+       does the rest. The drawing is a function of scroll position,
+       not a timeline.
+    ─────────────────────────────────────────────────────────────── */
+    (() => {
+      const deck  = document.querySelector('.deck');
+      const stage = document.querySelector('.stage');
+      if (!deck || !stage) return;
+
+      const cards = [...stage.querySelectorAll('.card')];
+      if (!cards.length) return;
+
+      const scene = stage.querySelector('.scene');
+
+      deck.style.setProperty('--n', cards.length);
+      cards.forEach((c, i) => { c.style.zIndex = i + 1; });
+
+      const clamp = v => v < 0 ? 0 : v > 1 ? 1 : v;
+
+      let queued = false;
+      let shown  = -1;
+
+      function place(active) {
+        if (active === shown) return;
+        shown = active;
+        for (let i = 0; i < cards.length; i++) {
+          cards[i].style.setProperty('--enter', i <= active ? '0' : '1');
+          cards[i].style.setProperty('--cover', i <  active ? '1' : '0');
+        }
+        if (scene) scene.dataset.stage = active;
+      }
+
+      function paint() {
+        queued = false;
+
+        if (getComputedStyle(stage).position !== 'sticky') {
+          cards.forEach(c => {
+            c.style.removeProperty('--enter');
+            c.style.removeProperty('--cover');
+          });
+          shown = -1;
+          return;
+        }
+
+        const range = deck.offsetHeight - stage.offsetHeight;
+        if (range <= 0) return;
+
+        const progress = clamp(-deck.getBoundingClientRect().top / range);
+        const t = progress * (cards.length - 1);
+        place(Math.max(0, Math.min(cards.length - 1, Math.round(t))));
+      }
+
+      function request() {
+        if (!queued) { queued = true; requestAnimationFrame(paint); }
+      }
+
+      addEventListener('scroll', request, { passive: true });
+      addEventListener('resize', request);
+      paint();
+    })();
+
+    /* ── Bendable border ────────────────────────────────────────── */
+    (() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const stage = document.querySelector('.stage');
+      const frame = document.querySelector('.frame');
+      const path  = frame && frame.querySelector('path');
+      if (!stage || !path) return;
+
+      const INSET = 3, STEP = 14, REACH = 90, MAXPULL = 26, STIFF = 0.16, DAMP = 0.74;
+
+      let pts = [], w = 0, h = 0, r = 0;
+      let mx = -1e4, my = -1e4, live = false, running = false;
+
+      function build() {
+        const b = frame.getBoundingClientRect();
+        w = b.width  - INSET * 2;
+        h = b.height - INSET * 2;
+        r = Math.max(1, parseFloat(getComputedStyle(frame).getPropertyValue('--r')) - INSET);
+        if (w <= 0 || h <= 0) { pts = []; return; }
+
+        pts = [];
+        const add = (x, y, nx, ny) => pts.push({ x, y, nx, ny, off: 0, v: 0 });
+        const arc = (cx, cy, a0, a1) => {
+          const s = STEP / r;
+          for (let a = a0; a < a1; a += s) {
+            const c = Math.cos(a), n = Math.sin(a);
+            add(cx + r * c, cy + r * n, c, n);
+          }
+        };
+
+        for (let x = r; x < w - r; x += STEP) add(x, 0, 0, -1);
+        arc(w - r, r, -Math.PI / 2, 0);
+        for (let y = r; y < h - r; y += STEP) add(w, y, 1, 0);
+        arc(w - r, h - r, 0, Math.PI / 2);
+        for (let x = w - r; x > r; x -= STEP) add(x, h, 0, 1);
+        arc(r, h - r, Math.PI / 2, Math.PI);
+        for (let y = h - r; y > r; y -= STEP) add(0, y, -1, 0);
+        arc(r, r, Math.PI, Math.PI * 1.5);
+
+        frame.classList.add('bendable');
+        draw();
+      }
+
+      function draw() {
+        if (!pts.length) return;
+        let d = '';
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i];
+          const x = (p.x + p.nx * p.off + INSET).toFixed(1);
+          const y = (p.y + p.ny * p.off + INSET).toFixed(1);
+          d += (i ? 'L' : 'M') + x + ' ' + y;
+        }
+        path.setAttribute('d', d + 'Z');
+      }
+
+      function tick() {
+        let moving = false;
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i];
+          let target = 0;
+          if (live) {
+            const dx = mx - p.x, dy = my - p.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < REACH * 2.2) {
+              const g = Math.exp(-(dist * dist) / (2 * REACH * REACH));
+              const proj = dx * p.nx + dy * p.ny;
+              target = Math.max(-MAXPULL, Math.min(MAXPULL, proj)) * g;
+            }
+          }
+          p.v += (target - p.off) * STIFF;
+          p.v *= DAMP;
+          p.off += p.v;
+          if (Math.abs(p.v) > 0.02 || Math.abs(p.off) > 0.02) moving = true;
+        }
+        draw();
+        if (moving || live) requestAnimationFrame(tick);
+        else running = false;
+      }
+
+      function wake() {
+        if (!running) { running = true; requestAnimationFrame(tick); }
+      }
+
+      stage.addEventListener('pointermove', e => {
+        const b = frame.getBoundingClientRect();
+        mx = e.clientX - b.left - INSET;
+        my = e.clientY - b.top  - INSET;
+        live = true;
+        wake();
+      }, { passive: true });
+
+      stage.addEventListener('pointerleave', () => { live = false; wake(); });
+
+      addEventListener('resize', build);
+      build();
+    })();
+  </script>
+
+  <script src="../floating-nav.js" defer></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const nav = document.getElementById('float-nav');
+      if (!nav) return;
+      const labels = ['Work', 'About', 'Say hi'];
+      nav.querySelectorAll('.fn-item').forEach((el, i) => {
+        if (!labels[i]) return;
+        el.textContent = labels[i];
+        el.setAttribute('aria-label', labels[i]);
+        el.setAttribute('title', labels[i]);
+      });
+    });
+  </script>
+</body>
+</html>

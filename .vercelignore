@@ -1,0 +1,7 @@
+# Superseded pages. They stay in the repo as a record; nothing links to them
+# and they are not part of the site, so they are not uploaded to the deploy.
+archive/
+
+# Dev scratch
+test/
+NEXT_SESSION.md

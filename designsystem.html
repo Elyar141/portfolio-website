@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <title>Design System – lilaquadrat</title>
   <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
   <style>
@@ -14,408 +14,646 @@
       src: url('fonts/Geist-Variable.woff2') format('woff2');
       font-weight: 100 900; font-style: normal;
     }
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg:      #0a0a0a;
-      --line:    #2e2e2e;
-      --mute:    #8c8c8c;
-      --dim:     #a0a0a0;
-      --white:   #f7f7f7;
-      --green:   #c8e899;
-      --gutter:  clamp(24px, 5vw, 72px);
-      --label-w: clamp(100px, 11vw, 160px);
-      --col-gap: clamp(32px, 4vw, 80px);
+      /* ── Palette · shared with the about page ────────────────────
+         Cream ground, blush surface, olive for every mark and
+         micro-label. --veil is what a covered card washes toward: it
+         sits on the far side of --bg from --card, so "receding" means
+         the same thing here as it did in the dark original. */
+      --bg:      #ede6ca;   /* cream */
+      --card:    #f8d5d1;   /* blush · the deck surface */
+      --card-2:  #f5d0cb;   /* blush, one tier down */
+      --blush:   #fabab6;   /* the border blush · unused since the frame went */
+      --ink:     #191712;
+      --green:   #6a6f4b;   /* dusty earthy olive */
+      --veil:    #ffffff;
+
+      --line:    rgba(25,23,18,0.16);
+      --mute:    rgba(25,23,18,0.48);
+      --dim:     rgba(25,23,18,0.66);
+
+      /* The pixel dash was defined here — a 3px olive square on a 9px
+         pitch, the same mark as the logo, and every divider on the page was
+         made of it. There are no dividers on the page now. It was a good
+         rule and it was used seven times, which was six times too many: a
+         page that marks every seam is a page that does not trust its own
+         spacing. The seams are gaps and alignment now, and the mark stays
+         where it earns its place — in the logo, and in the diagrams. */
+
+      --gutter:  clamp(20px, 4vw, 56px);
+      --pad:     clamp(28px, 3.6vw, 64px);
+      --r:       15px;
+      --nav-h:   64px;
     }
 
-    html { background: var(--bg); scroll-behavior: smooth; overflow-x: hidden; }
+    /* `overflow-x: clip`, never `hidden` — `hidden` makes these scroll
+       containers and silently kills the stage's position: sticky. */
+    html { background: var(--bg); scroll-behavior: smooth; overflow-x: clip; }
     body {
       background: var(--bg); min-height: 100vh;
-      font-family: 'Geist', sans-serif; color: var(--dim);
-      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+      font-family: 'Geist', Arial, sans-serif; color: var(--dim);
+      -webkit-font-smoothing: antialiased; overflow-x: clip;
     }
+    a { color: inherit; }
 
     #veil {
       position: fixed; inset: 0; background: var(--bg);
       z-index: 999; transition: opacity 0.9s ease; pointer-events: none;
     }
 
-    /* ── Nav ── */
+    /* ── Nav ──────────────────────────────────────────────────────
+       The about page's bar, unchanged: a 64px transparent band, the
+       pixel mark on the left, a centred menu in the middle. No pill,
+       no blur, no bar background — the stage frame below is the only
+       edge on the page, and the nav sits in the air above it.
+
+       The band's height is also the stage's inset, so the bar's box
+       ends exactly where the frame begins. */
     #site-nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 30;
-      padding: 14px 40px;
-      display: flex; justify-content: space-between; align-items: center;
-      background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
-    }
-    .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
-    .logo-mark rect { fill: #c8e899; transition: fill 0.22s; }
-    .nav-logo:hover .logo-mark rect { fill: rgba(200,232,153,0.5); }
-    .logo-word {
-      font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700;
-      letter-spacing: 0.06em; color: #8c8c8c; transition: color 0.22s;
-    }
-    .nav-logo:hover .logo-word { color: #c6c6c6; }
-    .nav-right { display: none; align-items: center; gap: 30px; }
-    .nav-right a {
-      font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 400;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: #8c8c8c; text-decoration: none; transition: color 0.18s;
-    }
-    .nav-right a:hover { color: #c6c6c6; }
-
-    /* ── Mobile overlay ── */
-
-    /* ── Footer ── */
-    #site-footer {
+      position: fixed; z-index: 60; inset: 0 0 auto;
+      height: var(--nav-h); padding: 16px 40px;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 16px clamp(24px, 5vw, 40px);
-      border-top: 1px solid var(--line);
+      pointer-events: none;
     }
-    .footer-label {
-      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase; color: #8c8c8c;
-    }
-    .footer-nav { display: flex; align-items: center; gap: 24px; }
-    .footer-nav a {
-      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: #a0a0a0; text-decoration: none; transition: color 0.18s;
-    }
-    .footer-nav a:hover { color: #c6c6c6; }
+    /* The name set in mono, not the pixel square it used to be — the
+       about page carries the wordmark now and the case studies follow
+       it. 9px DM Mono, olive, tracked: the deck's own small-type
+       metrics, so the bar reads as one line of type rather than as a
+       logo at one end and links in the middle.
 
-    /* ── Entrance ── */
-    .will-animate { opacity: 0; transform: translateY(12px); }
-    .animate-in { animation: fade-up 0.72s cubic-bezier(0.22,1,0.36,1) forwards; }
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ════════════════════════════════════════════════════════
-       LAYOUT
-    ════════════════════════════════════════════════════════ */
-    .wrap {
-      max-width: 1500px; margin: 0 auto;
-      padding-left: var(--gutter); padding-right: var(--gutter);
-    }
-
-    /* ── Hero ── */
-    .cs-hero {
-      padding-top: clamp(110px,13vw,150px);
-      padding-bottom: clamp(56px,7vw,88px);
-    }
-    .scroll-hint {
-      display: flex; gap: 5px; justify-content: center;
-      margin-top: clamp(36px,5vw,56px);
-    }
-    .sc-px { width: 8px; height: 8px; background: var(--green); opacity: 0.45; flex-shrink: 0; }
-    .hero-eyebrow { display: flex; align-items: center; gap: 18px; margin-bottom: clamp(24px,3vw,40px); }
-    .hero-num {
-      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.12em; color: var(--green);
-    }
-    .hero-tag {
-      font-family: 'Geist', sans-serif; font-size: 10px; font-weight: 400;
-      letter-spacing: 0.22em; text-transform: uppercase; color: var(--mute);
-    }
-    .hero-tag span { margin: 0 6px; opacity: 0.4; }
-    .cs-hero h1 {
-      font-family: 'Helvetica Neue', Helvetica, 'Geist', sans-serif;
-      font-size: clamp(80px,10vw,152px); font-weight: 700;
-      letter-spacing: -0.04em; line-height: 0.88;
-      color: rgba(218,218,218,0.9); margin-bottom: clamp(28px,3.5vw,48px);
-    }
-    .hero-subtitle {
-      max-width: 580px; font-family: 'Geist', sans-serif;
-      font-size: clamp(18px,1.6vw,21px); font-weight: 400; line-height: 1.68;
-      color: rgba(185,185,185,0.85); margin-bottom: clamp(40px,5vw,64px);
-    }
-    .meta-grid { display: flex; flex-wrap: wrap; gap: 28px 64px; }
-    .meta-label {
-      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-bottom: 8px;
-    }
-    .meta-value {
-      font-family: 'Geist', sans-serif; font-size: 15px; font-weight: 400;
-      color: var(--dim); line-height: 1.5;
-    }
-
-    /* ── Editorial section grid ── */
-    .cs-section {
-      display: grid;
-      grid-template-columns: var(--label-w) 1fr;
-      gap: 0 var(--col-gap);
-      align-items: start;
-      padding-top: clamp(56px,7vw,88px);
-      padding-bottom: clamp(48px,6vw,72px);
-    }
-    .cs-section.tight {
-      padding-top: clamp(32px,4vw,48px);
-      padding-bottom: clamp(32px,4vw,48px);
-    }
-    .sec-label {
-      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute);
-      padding-top: 10px; position: sticky; top: 80px; line-height: 1.7;
-    }
-    .sec-body h2 {
-      font-family: 'Helvetica Neue', Helvetica, 'Geist', sans-serif;
-      font-size: clamp(24px,2.8vw,38px); font-weight: 700;
-      letter-spacing: -0.025em; line-height: 1.15;
-      color: rgba(210,210,210,0.9); margin-bottom: clamp(20px,2.5vw,32px);
-    }
-    .sec-body p {
-      font-family: 'Geist', sans-serif; font-size: 16px; font-weight: 400;
-      line-height: 1.82; color: #a0a0a0;
-      margin-bottom: 16px; max-width: 760px;
-    }
-    .sec-body p:last-child { margin-bottom: 0; }
-
-    /* ── Pull quote ── */
-    .pull-quote { padding: clamp(36px,5vw,56px) 0; }
-    .pull-quote p {
-      font-family: 'Helvetica Neue', Helvetica, 'Geist', sans-serif;
-      font-size: clamp(22px,2.8vw,38px); font-weight: 700;
-      letter-spacing: -0.025em; line-height: 1.25;
-      color: rgba(210,210,210,0.88); max-width: none; margin: 0;
-    }
-    .pull-quote p em { font-style: normal; color: var(--green); }
-
-    /* ── Approach list ── */
-    .approach-list {
-      margin-top: 48px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .approach-item {
-      display: grid;
-      grid-template-columns: 44px 1fr;
-      gap: 0 clamp(20px,3vw,40px);
-      padding: 28px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      align-items: start;
-    }
-    .approach-n {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px; font-weight: 700;
+       It opens under the pointer the way the squares came apart. The
+       extra tracking is spent into empty space — the menu is absolutely
+       positioned and out of flow, so nothing moves to make room. Fine
+       pointers only, or a tap would leave it stuck open on a phone. */
+    .mark {
+      display: block; pointer-events: auto;
+      color: var(--green); text-decoration: none; white-space: nowrap;
+      font: 500 9px/1 'DM Mono', monospace;
       letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(200,232,153,0.35); padding-top: 3px;
+      transition: letter-spacing 0.34s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .approach-title {
-      font-family: 'Helvetica Neue', Helvetica, sans-serif;
-      font-size: 17px; font-weight: 500;
-      color: #c6c6c6;
-      margin-bottom: 8px; line-height: 1.3;
+    .mark span { display: inline; }
+
+    /* ── The identity line ────────────────────────────────────────
+       The landing page's, carried over unchanged so the bar is the same
+       bar on every page: same 9px DM Mono, same tracking, same olive as
+       the mark at the other end of the row. The logo holds the left, the
+       sections the middle, this the right — and since the menu is
+       absolutely positioned and out of flow, dropping this in as the
+       second flex child is all space-between needs to push it out.
+
+       It goes at 900, where the row has width for the mark and the
+       section links and nothing else. */
+    .availability {
+      margin: 0 0 0 auto; pointer-events: none; white-space: nowrap;
+      color: var(--green);
+      font: 500 9px/1 'DM Mono', monospace;
+      letter-spacing: 0.12em; text-transform: uppercase;
     }
-    .approach-desc {
-      font-family: 'Geist', sans-serif;
-      font-size: 15px; font-weight: 400;
-      line-height: 1.75; color: #a0a0a0;
-      max-width: 680px;
+    .availability .role + .role::before { content: ' ·  '; }
+    @media (max-width: 900px) { .availability { display: none; } }
+    @media (hover: hover) { .mark:hover { letter-spacing: 0.2em; } }
+    .mark:focus-visible { letter-spacing: 0.2em; }
+    /* Fourteen mono characters do not fit beside a centred menu on a
+       phone, so the name stacks — which is why the halves are separate
+       spans. The negative margin takes back the tracking applied after
+       each line's last character, keeping both flush to one edge. */
+    @media (max-width: 720px) {
+      .mark { font-size: 8px; line-height: 1.35; letter-spacing: 0.08em; }
+      .mark span { display: block; margin-right: -0.08em; }
     }
 
-    /* ── Image blocks ── */
-    .img-block { padding: clamp(40px,5vw,56px) 0; }
-    .img-full img { width: 100%; display: block; }
-    .img-caption {
-      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
-      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-top: 12px;
+    /* Words, tracked out in mono, underlined from the left on hover.
+       The rule is a 1px olive hairline — the one hairline the page
+       allows, and only because it is a moving thing, not a border. */
+    .menu {
+      position: absolute; left: 50%; top: 23px; transform: translateX(-50%);
+      display: flex; gap: 0; white-space: nowrap; pointer-events: auto;
     }
-    .img-pair {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: clamp(12px, 2vw, 24px);
+    .menu a {
+      position: relative; padding: 4px 14px; text-decoration: none;
+      color: var(--ink);
+      font: 500 10px/1 'DM Mono', monospace;
+      letter-spacing: 0.15em; text-transform: uppercase;
     }
-    .img-pair-item img { width: 100%; display: block; }
-    @media (max-width: 599px) { .img-pair { grid-template-columns: 1fr; } }
+    .menu a::after {
+      content: ''; position: absolute; right: 14px; bottom: 0; left: 14px;
+      height: 1px; background: var(--green);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform 0.25s ease;
+    }
+    .menu a:hover::after, .menu a[aria-current]::after {
+      transform: scaleX(1); transform-origin: left;
+    }
+    /* Dashes are the page's own mark, so focus is where they belong. */
+    .menu a:focus-visible { outline: 1px dashed var(--green); outline-offset: 3px; }
 
-    /* ════════════════════════════════════════════════════════
-       CUSTOM: System architecture map (hero visual, redrawn)
-    ════════════════════════════════════════════════════════ */
-    .sys-map {
-      margin-top: clamp(40px,5vw,64px);
-      display: grid;
-      grid-template-columns: 1fr 56px 1fr 56px 1fr;
-      align-items: start;
-      gap: 0;
-    }
-    .sys-col {
-      padding: clamp(28px,3.5vw,44px);
-      background: #1a1a1a;
-    }
-    .sys-col-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(200,232,153,0.45);
-      display: block; margin-bottom: 16px;
-    }
-    .sys-col-title {
-      font-family: 'Helvetica Neue', Helvetica, sans-serif;
-      font-size: clamp(18px,2vw,26px); font-weight: 700;
-      letter-spacing: -0.03em; line-height: 1.1;
-      color: rgba(210,210,210,0.9);
-      margin-bottom: 24px;
-    }
-    .sys-col-item {
-      font-family: 'Geist', sans-serif;
-      font-size: 14px; font-weight: 400;
-      line-height: 1.6; color: #8c8c8c;
-      padding: 7px 0;
-    }
-    .sys-arrow {
-      display: flex; align-items: flex-start; justify-content: center;
-      padding-top: 72px;
-    }
-    .sys-arrow-glyph {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px; font-weight: 700;
-      color: rgba(108,108,108,0.28);
-      letter-spacing: -0.02em;
-    }
+    /* Full-bleed: the page fills the viewport, 20px of air each side. */
+    .wrap { max-width: none; margin: 0; padding: 0 20px; }
 
     /* ════════════════════════════════════════════════════════
-       CUSTOM: Token specs inline list (Foundations section)
+       TYPE — one scale, shared with the about page
+
+       Display is Geist at 480, tracked hard negative, set on a
+       line-height under 1. Emphasis inside display type switches to
+       Playfair italic; emphasis inside body copy just turns olive.
+       Micro-labels are Geist 500 at 9–10px, uppercase, tracked out —
+       mono is reserved for the nav and for literal code.
     ════════════════════════════════════════════════════════ */
-    .token-specs {
-      margin-top: 40px;
+    .card--hero h1 em,
+    .statement em,
+    .pull em {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400; font-style: italic;
+      letter-spacing: -0.09em;
     }
-    .token-spec {
-      display: grid;
-      grid-template-columns: clamp(100px,14vw,140px) 1fr;
-      gap: 0 clamp(20px,3vw,48px);
-      padding: 12px 0;
-      align-items: baseline;
+    /* The display tracking is cut for 60–150px. The pull runs at 29,
+       where -0.09em closes the word up into one shape. */
+    .pull em { letter-spacing: -0.03em; }
+
+    /* ── HERO — the first card in the deck ── */
+    .eyebrow {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: clamp(24px,3vw,40px);
     }
-    .token-spec-name {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--mute);
+    .eyebrow-num {
+      font: 500 10px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--green);
     }
-    .token-spec-val {
-      font-family: 'Geist', sans-serif;
-      font-size: 15px; font-weight: 400;
-      color: rgba(185,185,185,0.68); line-height: 1.5;
+    .eyebrow-tag {
+      font: 500 10px/1.45 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
+    .eyebrow-tag span { margin: 0 6px; opacity: 0.4; }
+    .card--hero h1 {
+      font-family: 'Geist', Arial, sans-serif;
+      font-size: clamp(56px,9.6vw,148px); font-weight: 480;
+      letter-spacing: -0.073em; line-height: 0.9;
+      color: var(--ink);
+      margin-bottom: clamp(24px,3vw,44px);
+    }
+    .hero-line {
+      max-width: 660px; font-size: clamp(17px,1.6vw,21px);
+      font-weight: 400; line-height: 1.6;
+      color: rgba(25,23,18,0.78);
+      margin-bottom: clamp(44px,5vw,72px);
+    }
+    .hero-line em { font-style: normal; color: var(--green); }
+    /* Was fenced off from the hero line by a dash across the top. Now it is
+       simply further down: a run of air about two and a half times the old
+       padding, which separates the two harder than the line did and leaves
+       the column unbroken. */
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 24px 56px;
+      padding-top: clamp(40px,5vw,72px);
+    }
+    .meta-k {
+      font: 500 9px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mute); margin-bottom: 9px;
+    }
+    .meta-v { font-size: 14px; font-weight: 480; letter-spacing: -0.01em; color: var(--dim); }
 
     /* ════════════════════════════════════════════════════════
-       CUSTOM: Workflow process flow (redrawn from diagram)
+       CARD DECK — each section stacks over the last
     ════════════════════════════════════════════════════════ */
-    .flow-diagram {
-      margin-top: 48px;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
+    /* Fallback (short/narrow viewports): cards are plain stacked blocks,
+       split by the same pixel dash the rest of the page uses.
+       padding-top clears the fixed nav in every non-stage case,
+       including a wide but short window, where the sticky stage and
+       its inset are both switched off. Stage mode zeroes it. */
+    .deck { position: relative; padding-top: 100px; padding-bottom: 8vh; --n: 10; }
+    .card {
+      --enter: 0; --cover: 0;
+      background-color: var(--card);
+      border-radius: var(--r);
+      padding: var(--pad);
+      display: flex; flex-direction: column;
+      /* Stacked, one card used to be told from the next by a dash along its
+         top edge and 2px of margin. The dash is gone and the margin does the
+         whole job instead — the cards already carry their own ground and
+         their own radius, so a real gap between them is enough to read as
+         two things. Stage mode zeroes this and stacks them absolutely, so
+         it costs nothing where the cards slide. */
+      margin-bottom: clamp(10px,2vw,22px);
     }
-    .flow-step {
-      padding: clamp(24px,3vw,36px) clamp(18px,2.5vw,28px) clamp(24px,3vw,36px) 0;
-      border-right: 1px solid rgba(255,255,255,0.04);
+    .card::after { content: none; }
+
+    /* The bending frame stood here: an SVG dashed stroke around the stage
+       that leaned toward the pointer on a spring. It is gone, with its
+       markup and its hundred lines of script. It was drawing a room around
+       the page, and the page does not need one — the stage already reads as
+       a panel from its radius, its ground and the air the cards are set in.
+       A line around the outside of that is a line saying what the edges
+       already say. */
+
+    /* ── Stage mode: the stage is pinned, the cards move inside it ──
+       One inset, used top and bottom, so the stage sits equidistant from
+       both viewport edges — and it is the nav's own height, so the bar
+       ends exactly where the stage starts. */
+    @media (min-width: 860px) and (min-height: 640px) {
+      :root { --stage-inset: var(--nav-h); }
+      .deck { height: calc(var(--n) * 100vh); padding-top: 0; padding-bottom: 0; }
+      .stage {
+        position: sticky; top: var(--stage-inset);
+        height: calc(100vh - var(--stage-inset) * 2);
+        overflow: hidden;
+        border-radius: var(--r);
+        background: var(--bg);
+      }
+      /* No scale on the covered card: shrinking it lifts its bottom edge off
+         the stage floor and opens a hole the next card rises out of. Depth
+         comes from the dim instead. */
+      /* --enter / --cover are set to 0 or 1 only; the easing does the rest.
+         Expo-out: leaves fast, settles slowly — the curve that reads as
+         "weight" rather than "animation". */
+      .card {
+        position: absolute; inset: 0;
+        margin-bottom: 0;
+        overflow: hidden;
+        transform: translateY(calc(var(--enter) * 100%));
+        /* background-image: none stood here to switch off the stacking dash
+           that the fallback used. There is no dash to switch off. */
+        will-change: transform;
+        transition: transform 1180ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+      }
+      /* The dim leads the slide slightly, so the card behind darkens a beat
+         before the new one lands on it. */
+      .card::after {
+        transition: opacity 820ms cubic-bezier(0.33, 1, 0.68, 1);
+      }
+      /* Dimming veil — cheaper than filter, and it can't affect layout. */
+      .card::after {
+        content: ''; position: absolute; inset: 0; z-index: 2;
+        background: var(--veil); pointer-events: none;
+        opacity: calc(var(--cover) * 0.55);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .card, .card::after { transition: none; }
+        .card::after { opacity: 0; }
+      }
     }
-    .flow-step:first-child { padding-left: 0; }
-    .flow-step:last-child { border-right: none; }
-    .flow-step + .flow-step { padding-left: clamp(18px,2.5vw,28px); }
-    .flow-n {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(200,232,153,0.35);
-      display: block; margin-bottom: 14px;
+    .card-head {
+      display: flex; align-items: baseline; gap: 16px;
+      margin-bottom: clamp(22px,3vw,40px);
     }
-    .flow-title {
-      font-family: 'Helvetica Neue', Helvetica, sans-serif;
-      font-size: 15px; font-weight: 500;
-      color: rgba(195,195,195,0.82);
-      margin-bottom: 10px; line-height: 1.3;
+    .card-n {
+      font: 500 10px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; color: var(--green);
     }
-    .flow-desc {
-      font-family: 'Geist', sans-serif;
-      font-size: 13px; font-weight: 400;
-      line-height: 1.65; color: rgba(130,130,130,0.5);
+    .card-tag {
+      font: 500 10px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
+    }
+    .statement {
+      font-family: 'Geist', Arial, sans-serif;
+      font-size: clamp(30px,4.6vw,62px); font-weight: 480;
+      letter-spacing: -0.06em; line-height: 0.94;
+      color: var(--ink);
+      max-width: 15ch;
+      margin-bottom: clamp(18px,2vw,26px);
+    }
+    .statement.wide { max-width: 22ch; }
+    .support {
+      font-size: clamp(15px,1.35vw,18px); font-weight: 400; line-height: 1.62;
+      color: rgba(25,23,18,0.68); max-width: 62ch;
+    }
+    .support em { font-style: normal; color: var(--green); }
+    /* min-height:0 lets a dense body shrink instead of overflowing the frame. */
+    .card-body { margin-top: auto; padding-top: clamp(20px,2.6vw,38px); min-height: 0; }
+    .card > div:first-child { flex: 0 0 auto; }
+    .card-foot {
+      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mute); margin-top: 18px;
     }
 
-    /* ════════════════════════════════════════════════════════
-       CUSTOM: Outcome stats (redrawn impact block)
-    ════════════════════════════════════════════════════════ */
-    .outcome-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: rgba(255,255,255,0.045);
-      margin-top: clamp(40px,5vw,64px);
+    /* ── Hook card (01) ──────────────────────────────────────────
+       The diagram is the argument here, so the head runs short and
+       hands the picture the rest of the stage.
+
+       The card drops to the page cream, so blush stops being the
+       surface and becomes the accent. Both rect families stay filled,
+       one tier apart: sources in a pale blush (#fae4e2), loop steps in
+       the deck's own surface blush. #fae4e2 is used nowhere else. */
+    .card--hook { background-color: var(--bg); }
+    .card--hook .card-head { margin-bottom: clamp(16px,2vw,28px); }
+    /* Wider measure than the deck's 15ch: the statement stands alone here,
+       so two lines rather than three, and the diagram keeps the height. */
+    .card--hook .statement {
+      font-size: clamp(28px,3.7vw,52px); max-width: 24ch; margin-bottom: 0;
     }
-    .outcome-stat {
-      background: var(--bg);
-      padding: clamp(36px,4.5vw,56px) clamp(28px,3.5vw,44px);
-    }
-    .outcome-num {
-      font-family: 'Helvetica Neue', Helvetica, sans-serif;
-      font-size: clamp(52px,7vw,88px); font-weight: 700;
-      letter-spacing: -0.04em; line-height: 1;
-      color: rgba(218,218,218,0.9);
-      display: block; margin-bottom: 14px;
-    }
-    .outcome-unit {
-      font-size: clamp(22px,2.8vw,36px); font-weight: 300;
-      letter-spacing: -0.02em;
-      color: #8c8c8c;
-    }
-    .outcome-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--mute);
-      display: block; margin-top: 12px;
+    .card--hook .card-body { padding-top: clamp(16px,2vw,28px); }
+    /* On the pinned stage the card height is fixed, so the diagram takes
+       whatever the head leaves rather than a guessed vh cap — it scales
+       itself to fit (preserveAspectRatio) instead of being clipped. */
+    @media (min-width: 860px) and (min-height: 640px) {
+      .card--hook .card-body {
+        margin-top: 0; flex: 1 1 auto; min-height: 0;
+        display: flex; flex-direction: column;
+      }
+      .card--hook .loop { flex: 1 1 auto; min-height: 0; }
+      .card--hook .loop svg { height: 100%; max-height: none; }
     }
 
-    /* ── Desktop type bumps ─────────────────────────────────── */
-    @media (min-width: 960px) {
-      .sec-body > p,
-      .callout p,
-      .validate-body p { font-size: 18px; line-height: 1.65; }
-      .sec-body h3     { font-size: 22px; line-height: 1.18; }
-      .validate-q      { font-size: 22px; line-height: 1.20; }
-      .principle-title { font-size: 22px; line-height: 1.15; }
+    /* ── Pull line (02) ──
+       It had the pixel dash stood on end at its left, the way a blockquote
+       takes a rule. The indent is what actually said "this is held apart
+       from the column" — the line only decorated a thing the offset had
+       already done — so the indent stays, roughly doubled to carry the job
+       alone, and the line goes. */
+    .pull {
+      padding-left: clamp(30px,4vw,64px);
+      font-size: clamp(19px,2.1vw,29px); line-height: 1.36;
+      letter-spacing: -0.02em; color: var(--ink);
+      max-width: 28ch;
+    }
+    .pull em { color: var(--green); }
+
+    /* ── Code / rule block ──
+       The one place mono is still literal code, so it keeps a mono
+       face — DM Mono, the same one the nav speaks in. */
+    /* Its own ground is what marks it as code; the dash down the left was a
+       second way of saying so. The extra few pixels of left padding existed
+       only to clear that line, so the padding is even now. */
+    .rule-block {
+      background-color: var(--card-2);
+      padding: clamp(22px,2.6vw,34px);
+      font-family: 'DM Mono', monospace; font-size: clamp(12px,1.15vw,14px);
+      line-height: 1.85; color: rgba(25,23,18,0.78);
+    }
+    .rule-block .k { color: var(--green); font-weight: 500; }
+    .rule-block .c { color: rgba(25,23,18,0.44); }
+
+    /* ── Number strip (closing) ──────────────────────────────────
+       No cells and no rules: figures this size hold their own columns and
+       whitespace does the separating. That was already true between the
+       columns; the one rule left on top was the exception to its own idea,
+       so it is air now too. */
+    .num-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: clamp(26px,3.4vw,52px) clamp(20px,2.6vw,44px);
+      padding-top: clamp(40px,5vw,68px);
+    }
+    .num-v {
+      font-family: 'Geist', Arial, sans-serif;
+      font-size: clamp(30px,3.6vw,50px); font-weight: 480;
+      letter-spacing: -0.06em; line-height: 0.9;
+      color: var(--ink);
+    }
+    .num-k {
+      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mute); margin-top: 13px;
+    }
+
+    /* ── Loop diagram ── */
+    .loop svg { width: 100%; height: auto; max-height: 30vh; display: block; }
+    /* The hook diagram carries the whole system, so it gets the room. */
+    .loop--wide svg { max-height: 46vh; }
+    /* Two layouts of one diagram; the mobile one switches in below 860. */
+    .loop--wide .loop-mobile { display: none; }
+
+    /* ── Hook diagram · staged entrance ──────────────────────────
+       Plays whenever card 01 lands on the stage, in the order the
+       argument is made: the two sources, what they feed, then the
+       loop itself, node by node.
+
+       The hidden state is gated behind .js-anim, which the deck
+       script sets at startup. No script, no hiding — the diagram
+       can't be stranded invisible by a JS failure. */
+    @media (min-width: 860px) and (min-height: 640px) {
+      .js-anim .card--hook .dg,
+      .js-anim .card--hook .dg-conn,
+      .js-anim .card--hook .dg-arrow,
+      .js-anim .card--hook .dg-tip,
+      .js-anim .card--hook .dg-band { opacity: 0; }
+      /* Hidden by dash, not by opacity — this one gets drawn on. */
+      .js-anim .card--hook .dg-return {
+        stroke-dasharray: 1050; stroke-dashoffset: 1050;
+      }
+
+      .js-anim .card--hook.is-live .dg {
+        animation: dgIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .js-anim .card--hook.is-live .dg-conn { animation: dgConn 460ms ease both; }
+      .js-anim .card--hook.is-live .dg-arrow,
+      .js-anim .card--hook.is-live .dg-tip,
+      .js-anim .card--hook.is-live .dg-band { animation: dgFade 340ms ease both; }
+      .js-anim .card--hook.is-live .dg-return {
+        animation: dgDraw 880ms cubic-bezier(0.33, 1, 0.68, 1) both;
+      }
+
+      @keyframes dgIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: none; }
+      }
+      /* Lands at 0.62, not 1 — these stay quieter than the loop. */
+      @keyframes dgConn { from { opacity: 0; } to { opacity: 0.62; } }
+      @keyframes dgFade { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes dgDraw { to { stroke-dashoffset: 0; } }
+
+      @media (prefers-reduced-motion: reduce) {
+        .js-anim .card--hook .dg,
+        .js-anim .card--hook .dg-arrow,
+        .js-anim .card--hook .dg-tip,
+        .js-anim .card--hook .dg-band { opacity: 1; animation: none; }
+        .js-anim .card--hook .dg-conn { opacity: 0.62; animation: none; }
+        .js-anim .card--hook .dg-return {
+          stroke-dasharray: none; stroke-dashoffset: 0; animation: none;
+        }
+      }
+    }
+
+    /* ── MEDIA SLOTS (draft placeholders) ──
+       Nothing in this page uses these any more, but they are kept for the
+       next draft that does. Its ground alone now says a thing is missing,
+       which is all a placeholder has to say. */
+    .slot {
+      background-color: rgba(106,111,75,0.03);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px; padding: 28px; text-align: center;
+      min-height: 240px; height: 100%;
+    }
+    .slot-tag {
+      font: 500 9px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--green);
+    }
+    .slot-desc {
+      font-size: 13.5px; line-height: 1.65;
+      color: rgba(25,23,18,0.60); max-width: 460px;
+    }
+    .slot-desc b { color: var(--green); font-weight: 500; }
+    .slot-big { min-height: clamp(240px, 34vh, 400px); }
+
+    /* ── Screens and clips ───────────────────────────────────────
+       The clip is the argument on these cards, so it takes whatever the
+       head leaves and scales itself down rather than being cropped. (The
+       other two case studies still mount their screenshots in a bordered
+       panel; when they come across to this language they lose it the same
+       way these just did.) */
+    .shot { display: flex; flex-direction: column; gap: clamp(14px,1.6vw,20px); min-height: 0; }
+    /* The picture used to be mounted: a tinted panel, fenced on all four
+       sides by the dash, with the image floated in the middle of it. Three
+       things were then competing at the edge of one photograph — the card's
+       ground, the mount's ground, and a line between them — and a screenshot
+       is already a rectangle with its own edges. So the mount is gone and the
+       image is set straight onto the card.
+
+       Left, not centred, and this is the composition doing the work the
+       border used to: the caption under it is left-aligned, the statement
+       above it is left-aligned, and an image centred between them was the
+       one element on the card hung off a different axis. Ranged left, the
+       whole card reads down one edge and whatever air is left falls to the
+       right, where it belongs. */
+    .shot-frame {
+      flex: 1 1 auto; min-height: 0;
+      display: flex; align-items: center; justify-content: flex-start;
+    }
+    .shot-frame img, .shot-frame video {
+      display: block; width: auto; height: auto;
+      max-width: 100%; max-height: 100%; object-fit: contain;
+    }
+    .shot-cap {
+      flex: none;
+      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
+    }
+    /* A clip card gives its head less room than a text card: the statement
+       drops a step and the support runs wide and short, so the recording
+       keeps the height. */
+    .card--shot .card-head { margin-bottom: clamp(13px,1.6vw,22px); }
+    .card--shot .statement {
+      font-size: clamp(28px,3.7vw,52px); max-width: 24ch;
+      margin-bottom: clamp(10px,1.2vw,16px);
+    }
+    .card--shot .support { max-width: 82ch; font-size: clamp(14px,1.15vw,16px); }
+    .card--shot .card-body { padding-top: clamp(13px,1.6vw,22px); }
+    @media (min-width: 860px) and (min-height: 640px) {
+      .card--shot .card-body {
+        margin-top: 0; flex: 1 1 auto; min-height: 0;
+        display: flex; flex-direction: column;
+      }
+      .card--shot .shot { flex: 1 1 auto; min-height: 0; }
+    }
+
+    /* ── Split: words left, the recording right ───────────────────
+       These cards ran down the page: a block of type, then the clip under
+       it, both the full width of the card. The clip needed that width, but
+       the type did not — a support line stopping at 82ch on a 1300px card
+       leaves a third of the row empty beside it, and the eye reads that gap
+       as the card being unfinished rather than as air.
+
+       So the type takes a column of its own, narrow enough that it wraps
+       the way a column of prose should, and the clip takes everything left
+       over. The text column is a width, not a fraction: prose needs about
+       forty characters and no more, and every pixel past that is better
+       spent on the picture. A 1fr/1fr split would hand the type width it
+       cannot use and take it off the one thing that wants it.
+
+       The trade is honest and worth saying: a 2:1 recording is wider than
+       it is tall, so putting it in a column costs it width and pays back in
+       height. On a 1440px window it comes out around 870px across instead
+       of 1140. What it buys is a card with no dead quarter in it. */
+    @media (min-width: 980px) {
+      .card--shot {
+        display: grid;
+        grid-template-columns: clamp(250px,26vw,400px) minmax(0,1fr);
+        /* One row, told to be the card's height rather than its contents'.
+           On the pinned stage the card has a definite height and the clip
+           should grow into all of it; stacked, the card is auto and this
+           resolves to the content height, which is the old behaviour. */
+        grid-template-rows: minmax(0,1fr);
+        column-gap: clamp(34px,4.4vw,84px);
+      }
+      /* Centred against the full-height clip beside it. Top-aligning the two
+         is the other reading — one word here — but it leaves the whole
+         lower half of the text column empty, which is the problem this
+         layout was opened to fix, just moved. */
+      .card--shot > div:first-child { align-self: center; }
+      .card--shot .card-body {
+        margin-top: 0; padding-top: 0; min-height: 0;
+        display: flex; flex-direction: column;
+      }
+      .card--shot .shot { flex: 1 1 auto; min-height: 0; }
+      /* The column does the constraining now, so the ch limits come off and
+         the display size comes down a step to wrap sensibly inside it. */
+      .card--shot .statement {
+        font-size: clamp(26px,2.45vw,38px); max-width: none;
+        margin-bottom: clamp(12px,1.4vw,18px);
+      }
+      .card--shot .support {
+        font-size: clamp(13.5px,1.02vw,15px); max-width: none;
+      }
+      .card--shot .card-foot { margin-top: 14px; }
+    }
+    /* Stacked, the frame has no height to fill, so it needs a floor. */
+    @media (max-width: 859px) { .shot-frame { min-height: 180px; } }
+
+    /* ── A clip cut straight into the card ───────────────────────
+       No frame, no caption, no padding: the card is the frame. It runs
+       edge to edge on `contain`, not `cover` — the recording is 2:1 and
+       the stage rarely is, and cropping a UI slices the sidebar's labels
+       in half. So the clip keeps its whole frame and the blush shows
+       above and below it as the ground it is cut into.
+
+       display:block overrides the deck's flex column, and height:100%
+       resolves against the card's definite height on the pinned stage.
+       Stacked, that height is auto, so the percentage falls back to auto
+       and the clip simply keeps its own ratio. */
+    .card--full { display: block; padding: 0; overflow: hidden; }
+    .card--full video {
+      display: block; width: 100%; height: 100%;
+      object-fit: contain; object-position: center;
     }
 
     /* ════════════════════════════════════════════════════════
        RESPONSIVE
     ════════════════════════════════════════════════════════ */
-    @media (max-width: 959px) {
-      #site-nav { padding: 12px 24px; }
-      :root { --gutter: clamp(20px,4vw,40px); --label-w: 80px; --col-gap: 28px; }
-      .sys-map { grid-template-columns: 1fr 40px 1fr 40px 1fr; }
-      .flow-diagram { grid-template-columns: repeat(3, 1fr); }
-      .flow-step:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.04); padding-left: 0; }
-      .flow-step:nth-child(5) { border-top: 1px solid rgba(255,255,255,0.04); }
+    @media (max-width: 1099px) {
+      .num-grid { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (max-width: 699px) {
-      .cs-section { grid-template-columns: 1fr; }
-      .sec-label { position: static; padding-top: 0; margin-bottom: 16px; }
-      .approach-item { grid-template-columns: 36px 1fr; gap: 0 16px; }
-      .sys-map { grid-template-columns: 1fr; }
-      .sys-arrow { display: none; }
-      .sys-col + .sys-col { margin-top: 2px; }
-      .flow-diagram { grid-template-columns: 1fr 1fr; }
-      .flow-step:nth-child(5) { grid-column: 1 / -1; border-right: none; }
-      .outcome-stats { grid-template-columns: 1fr; }
-      .token-spec { grid-template-columns: 1fr; gap: 4px 0; }
+    @media (max-width: 859px) {
+      /* No pinned frame down here: the cards stack and scroll, so the bar
+         needs a ground of its own or the deck runs under the type. This
+         is the one place the nav isn't the about page's — there the stage
+         is inset on phones too, and never passes beneath it. */
+      #site-nav {
+        height: 60px; padding: 14px 21px; pointer-events: auto;
+        background: rgba(237,230,202,0.9);
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      }
+      .menu { top: 21px; }
+      .menu a { padding: 4px 9px; font-size: 9px; }
+      .menu a::after { right: 9px; left: 9px; }
+
+      /* The stage's inset does this on desktop, but the fallback stacks
+         from y=0 and the nav is fixed, so card 00 landed underneath it. */
+      .deck { padding-top: 84px; }
+      .card { padding: clamp(26px,5vw,40px); margin-bottom: 12px; }
+      .statement { max-width: 20ch; }
+      .card--hook .statement { margin-bottom: 0; max-width: 20ch; }
+      .card-body { padding-top: 36px; }
+
+      /* A 2.5:1 diagram can't shrink to a phone: at ~283px of card width
+         its 11px labels land near 3px. Below 860 the portrait layout
+         takes over instead, same topology re-routed for a tall frame. */
+      .loop--wide .loop-desktop { display: none; }
+      .loop--wide .loop-mobile { display: block; }
+      .loop--wide svg { max-height: none; }
+
+      /* The snippet's line breaks are hard <br>s and can't rewrap. */
+      .rule-block { overflow-x: auto; }
     }
     @media (max-width: 599px) {
-      .nav-right { display: none; }
-      .logo-word { display: none; }
-      #site-footer { padding: 14px 20px; }
-      .footer-label { display: none; }
-      .footer-nav { flex-wrap: wrap; gap: 10px 16px; }
-      .footer-nav a { font-size: 8px; letter-spacing: 0.12em; }
-      :root { --gutter: 20px; }
-      .cs-hero h1 { font-size: clamp(60px,18vw,96px); }
-      .meta-grid { gap: 20px 40px; }
-      .sys-col { padding: 24px 20px; }
-      .flow-diagram { grid-template-columns: 1fr; }
-      .flow-step {
-        border-right: none; padding-left: 0;
-        border-bottom: 1px solid rgba(255,255,255,0.04);
-      }
-      .flow-step:last-child { border-bottom: none; }
-      .flow-step + .flow-step { padding-left: 0; }
+      .num-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .mark, .menu a::after { transition: none; }
     }
   </style>
 </head>
@@ -423,360 +661,348 @@
 
   <div id="veil"></div>
 
-  <!-- ── Nav ── -->
-  <nav id="site-nav" class="will-animate">
-    <a class="nav-logo" href="index.html">
-      <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
-        <rect x="0"  y="0"  width="5" height="5"/>
-        <rect x="6"  y="0"  width="5" height="5"/>
-        <rect x="12" y="0"  width="5" height="5"/>
-        <rect x="18" y="0"  width="5" height="5"/>
-        <rect x="0"  y="6"  width="5" height="5"/>
-        <rect x="24" y="6"  width="5" height="5"/>
-        <rect x="0"  y="12" width="5" height="5"/>
-        <rect x="24" y="12" width="5" height="5"/>
-        <rect x="0"  y="18" width="5" height="5"/>
-        <rect x="6"  y="18" width="5" height="5"/>
-        <rect x="12" y="18" width="5" height="5"/>
-        <rect x="18" y="18" width="5" height="5"/>
-        <rect x="0"  y="24" width="5" height="5"/>
-        <rect x="0"  y="30" width="5" height="5"/>
-        <rect x="0"  y="36" width="5" height="5"/>
-      </svg>
-    </a>
-    <div class="nav-right">
-      <a href="projects.html">Work</a>
-      <a href="#">About</a>
-      <a href="mailto:azadielshan@gmail.com">Contact</a>
-    </div>
+  <nav id="site-nav">
+    <a class="mark" href="index.html"><span>pixeland</span><span>prompt</span></a>
+    <div class="menu">
+      <a href="index.html#intro">About</a>
+      <a href="index.html#projects" aria-current="page">Work</a>
+      <a href="index.html#contact">Say hi</a>
+    </div>
+    <div class="availability"><span class="role">Designer &#183; Builder</span><span class="role">in Berlin</span></div>
   </nav>
-  <!-- ══════════════════════════════════════════════════════════
-       HERO
-  ══════════════════════════════════════════════════════════ -->
-  <div class="cs-hero wrap will-animate">
-    <div class="hero-eyebrow">
-      <span class="hero-num">04</span>
-      <span class="hero-tag">Product Design<span>·</span>2025<span>·</span>lilaquadrat</span>
-    </div>
-    <h1>Design System</h1>
-    <p class="hero-subtitle">A production design system where Figma and Vue share the same source of truth. No handoff. No drift.</p>
-    <div class="meta-grid">
-      <div class="meta-item">
-        <div class="meta-label">Role</div>
-        <div class="meta-value">Product Designer</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">Domain</div>
-        <div class="meta-value">SaaS · Design Tooling</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">Tools</div>
-        <div class="meta-value">Figma · Vue · Claude Code · Figma MCP</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">Type</div>
-        <div class="meta-value">Shipped product</div>
-      </div>
-    </div>
 
-    <!-- REDRAWN: system architecture — Figma → Tokens → Vue -->
-    <div class="sys-map">
-      <div class="sys-col">
-        <span class="sys-col-tag">Source</span>
-        <div class="sys-col-title">Figma</div>
-        <div class="sys-col-item">Variable Collections</div>
-        <div class="sys-col-item">Light + Dark mode</div>
-        <div class="sys-col-item">32 semantic color tokens</div>
-        <div class="sys-col-item">Spacing · Radius · Typography</div>
+  <!-- ══════════ DECK ══════════
+       Reading order: hook (two sources, one loop) → why it had to exist
+       (drift) → the reference → the rulebook → the verdict → the loop in
+       detail → the sweep → the numbers.
+  ─────────────────────────────────────────────────────────────── -->
+  <div class="wrap deck">
+   <div class="stage">
+    <!-- 00 · HERO ──────────────────────────────────────── -->
+    <section class="card card--hero">
+      <div>
+        <div class="eyebrow">
+          <span class="eyebrow-num">04</span>
+          <span class="eyebrow-tag">Design Systems<span>·</span>2026<span>·</span>lilaquadrat</span>
+        </div>
+        <h1>No<br><em>Handoff</em></h1>
+        <p class="hero-line">Figma describes a product. Code <em>is</em> the product. A description drifts from the thing it describes unless something forces them back together, and on a team of one nothing does. So the design system, the rulebook and the shipped product are <em>one artifact</em>. Nothing to translate, nothing to drift.</p>
       </div>
-      <div class="sys-arrow" aria-hidden="true">
-        <span class="sys-arrow-glyph">→</span>
-      </div>
-      <div class="sys-col">
-        <span class="sys-col-tag">Bridge</span>
-        <div class="sys-col-title">Design Tokens</div>
-        <div class="sys-col-item">CSS custom properties</div>
-        <div class="sys-col-item">Token names match Figma variables</div>
-        <div class="sys-col-item">No hardcoded values, anywhere</div>
-        <div class="sys-col-item">Single source of truth</div>
-      </div>
-      <div class="sys-arrow" aria-hidden="true">
-        <span class="sys-arrow-glyph">→</span>
-      </div>
-      <div class="sys-col">
-        <span class="sys-col-tag">Output</span>
-        <div class="sys-col-title">Vue</div>
-        <div class="sys-col-item">16 component sets</div>
-        <div class="sys-col-item">Variant-bound in Figma</div>
-        <div class="sys-col-item">Generated by Claude Code via MCP</div>
-        <div class="sys-col-item">Audited on a schedule</div>
-      </div>
-    </div>
-
-    <div class="scroll-hint" aria-hidden="true">
-      <div class="sc-px"></div>
-      <div class="sc-px"></div>
-      <div class="sc-px"></div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════
-       01 PROBLEM
-  ══════════════════════════════════════════════════════════ -->
-  <div class="wrap">
-    <div class="cs-section">
-      <div class="sec-label">01<br>Problem</div>
-      <div class="sec-body">
-        <h2>Broken workflow</h2>
-        <p>lilaquadrat builds content management tools for creative agencies. As the product scaled, the gap between Figma and the Vue codebase grew. Design decisions weren't reaching production accurately and there was no structured way to catch the drift.</p>
-        <div class="approach-list">
-          <div class="approach-item">
-            <span class="approach-n">01</span>
-            <div>
-              <div class="approach-title">No shared token layer</div>
-              <div class="approach-desc">Colors and spacing were hardcoded across Vue files. Any brand change required manual updates in dozens of places – tedious and error-prone.</div>
-            </div>
-          </div>
-          <div class="approach-item">
-            <span class="approach-n">02</span>
-            <div>
-              <div class="approach-title">Design–code drift</div>
-              <div class="approach-desc">Figma was used for handoff, not as a living reference. The codebase gradually diverged from design intent with no mechanism to detect it.</div>
-            </div>
-          </div>
-          <div class="approach-item">
-            <span class="approach-n">03</span>
-            <div>
-              <div class="approach-title">No governance</div>
-              <div class="approach-desc">Updates traveled through Slack messages that got buried. There was no structured process to know how far things had drifted or who was responsible for keeping them aligned.</div>
-            </div>
-          </div>
+      <div class="card-body">
+        <div class="meta-row">
+          <div><div class="meta-k">Role</div><div class="meta-v">Product Designer · sole design owner</div></div>
+          <div><div class="meta-k">Product</div><div class="meta-v">Studio · B2B content platform</div></div>
+          <div><div class="meta-k">Built with</div><div class="meta-v">Vue · Less · Claude Code</div></div>
+          <div><div class="meta-k">Status</div><div class="meta-v">Shipped · in daily use</div></div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       02 FOUNDATIONS
-  ══════════════════════════════════════════════════════════ -->
-  <div class="wrap">
-    <div class="cs-section">
-      <div class="sec-label">02<br>Foundations</div>
-      <div class="sec-body">
-        <h2>Tokens first: everything follows</h2>
-        <p>Before a single component was built, the token architecture was defined in Figma as four variable collections. Every color, spacing value, and radius in the system references a variable. No hardcoded values, anywhere. Change a token in Figma and the change propagates everywhere it is referenced in code.</p>
-        <div class="token-specs">
-          <div class="token-spec">
-            <span class="token-spec-name">Color</span>
-            <span class="token-spec-val">32 semantic tokens · Light + Dark mode support</span>
-          </div>
-          <div class="token-spec">
-            <span class="token-spec-name">Spacing</span>
-            <span class="token-spec-val">4px base unit · 22-step scale</span>
-          </div>
-          <div class="token-spec">
-            <span class="token-spec-name">Radius</span>
-            <span class="token-spec-val">7-step scale · radius-md (4px) applied universally</span>
-          </div>
-          <div class="token-spec">
-            <span class="token-spec-name">Typography</span>
-            <span class="token-spec-val">Size scale + weight tokens · no hardcoded values</span>
-          </div>
+    <!-- 01 · THE HOOK ───────────────────────────────────
+         Two sources of truth feeding one loop. The top band is the
+         two sources (outlined = artifacts); the bottom band is the
+         loop (filled = steps). The connectors are deliberately
+         quieter than the loop's own arrows.
+    ─────────────────────────────────────────────────────── -->
+    <section class="card card--hook" style="--i:0">
+      <div>
+        <div class="card-head"><span class="card-n">01</span><span class="card-tag">The whole system</span></div>
+        <h2 class="statement">What the <em>loop</em> runs on.</h2>
+      </div>
+      <div class="card-body">
+        <div class="loop loop--wide">
+          <svg class="loop-desktop" viewBox="0 0 1180 472" role="img" aria-label="Two sources of truth feed one loop. The reference renders the real shipped partials and feeds the Design in the product step; the rulebook holds 21 patterns and 25 machine-checkable rules and feeds the design-check audit. The loop runs from Design in the product to design-check to design-push to the developers' design-review, then returns to the start so nothing drifts between one pass and the next.">
+            <defs>
+              <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
+              </marker>
+              <marker id="ah-q" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
+              </marker>
+            </defs>
+
+            <!-- ── TOP BAND · the two sources of truth ──
+                 Type runs one step up from the page's own scale: the SVG
+                 gets scaled DOWN to fit the card, so 9px here landed
+                 nearer 7px on screen. Sized in viewBox units to survive
+                 that. -->
+            <g class="dg" style="animation-delay:0ms">
+              <rect x="0.5" y="26.5" width="569" height="128" rx="5" fill="#fae4e2"/>
+              <text x="30" y="60" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE REFERENCE</text>
+              <text x="539" y="60" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">VISIBLE</text>
+              <text x="30" y="98" font-family="Geist, Arial, sans-serif" font-size="22" font-weight="500" fill="rgba(25,23,18,0.82)">Renders the real shipped partials</text>
+              <text x="30" y="126" font-family="Geist, Arial, sans-serif" font-size="15" fill="rgba(25,23,18,0.52)">what you see is what ships</text>
+            </g>
+
+            <g class="dg" style="animation-delay:80ms">
+              <rect x="610.5" y="26.5" width="569" height="128" rx="5" fill="#fae4e2"/>
+              <text x="640" y="60" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE RULEBOOK</text>
+              <text x="1149" y="60" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">ENFORCEABLE</text>
+              <text x="640" y="98" font-family="Geist, Arial, sans-serif" font-size="22" font-weight="500" fill="rgba(25,23,18,0.82)">21 patterns · 25 machine-checkable rules</text>
+              <text x="640" y="126" font-family="Geist, Arial, sans-serif" font-size="15" fill="rgba(25,23,18,0.52)">every rule restated so a machine can read it</text>
+            </g>
+
+            <!-- ── CONNECTORS · the sources feeding the loop ──
+                 Dashed and dimmed so the loop below still reads as
+                 the primary motion. A dashed stroke can't be drawn on
+                 with dashoffset — that just marches the dashes — so
+                 these fade instead. -->
+            <g class="dg-conn" opacity="0.62" style="animation-delay:300ms">
+              <path d="M 285 155 L 285 200 L 132 200 L 132 233.5" fill="none" stroke="#6a6f4b" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#ah-q)"/>
+              <text x="208" y="192" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">design against what ships</text>
+            </g>
+            <g class="dg-conn" opacity="0.62" style="animation-delay:380ms">
+              <path d="M 895 155 L 895 200 L 437 200 L 437 233.5" fill="none" stroke="#6a6f4b" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#ah-q)"/>
+              <text x="666" y="192" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">the audit reads the rules</text>
+            </g>
+
+            <!-- ── BOTTOM BAND · the loop ──
+                 Node, arrow, node, arrow — so the eye is handed along
+                 the loop in the order the work actually happens. -->
+            <g class="dg" style="animation-delay:490ms">
+              <rect x="0.5" y="240.5" width="264" height="100" rx="5" fill="#f8d5d1"/>
+              <text x="26" y="274" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">DESIGNER</text>
+              <text x="26" y="312" font-family="Geist, Arial, sans-serif" font-size="20" font-weight="500" fill="rgba(25,23,18,0.82)">Design in the product</text>
+            </g>
+            <line class="dg-arrow" style="animation-delay:620ms" x1="272" y1="290.5" x2="298" y2="290.5" stroke="#6a6f4b" stroke-width="1" marker-end="url(#ah)"/>
+
+            <g class="dg" style="animation-delay:680ms">
+              <rect x="305.5" y="240.5" width="264" height="100" rx="5" fill="#f8d5d1"/>
+              <text x="331" y="274" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AGENT</text>
+              <text x="331" y="312" font-family="DM Mono, monospace" font-size="19" font-weight="700" fill="#6a6f4b">/design-check</text>
+            </g>
+            <line class="dg-arrow" style="animation-delay:810ms" x1="577" y1="290.5" x2="603" y2="290.5" stroke="#6a6f4b" stroke-width="1" marker-end="url(#ah)"/>
+
+            <g class="dg" style="animation-delay:870ms">
+              <rect x="610.5" y="240.5" width="264" height="100" rx="5" fill="#f8d5d1"/>
+              <text x="636" y="274" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AGENT</text>
+              <text x="636" y="312" font-family="DM Mono, monospace" font-size="19" font-weight="700" fill="#6a6f4b">/design-push</text>
+            </g>
+            <line class="dg-arrow" style="animation-delay:1000ms" x1="882" y1="290.5" x2="908" y2="290.5" stroke="#6a6f4b" stroke-width="1" marker-end="url(#ah)"/>
+
+            <g class="dg" style="animation-delay:1060ms">
+              <rect x="915.5" y="240.5" width="264" height="100" rx="5" fill="#f8d5d1"/>
+              <text x="941" y="274" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">DEVELOPERS</text>
+              <text x="941" y="312" font-family="DM Mono, monospace" font-size="19" font-weight="700" fill="#6a6f4b">/design-review</text>
+            </g>
+
+            <!-- The return is the one line long enough to be worth drawing.
+                 Its arrowhead is a real element, not a marker: a marker
+                 renders at the path's end vertex from frame one, so it
+                 would sit there waiting while the line crawled toward it. -->
+            <path class="dg-return" style="animation-delay:1220ms" d="M 1047 340.5 L 1047 409 L 132 409 L 132 347.5" fill="none" stroke="#6a6f4b" stroke-width="1"/>
+            <path class="dg-tip" style="animation-delay:2060ms" d="M 132 347.5 L 128.5 354.5 L 135.5 354.5 Z" fill="#6a6f4b"/>
+
+            <g class="dg-band" style="animation-delay:2120ms">
+              <rect x="380" y="395" width="420" height="28" fill="#ede6ca"/>
+              <text x="590" y="414" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" font-weight="500" letter-spacing="1.5" fill="rgba(25,23,18,0.62)">WHERE THE GAP CLOSES</text>
+              <text x="590" y="455" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="15" fill="rgba(25,23,18,0.55)">Every lap ends where it started, so nothing drifts between one pass and the next</text>
+            </g>
+          </svg>
+
+          <!-- ══ PORTRAIT LAYOUT · under 860px ══════════════════
+               Same argument, re-routed for a tall frame: the two
+               sources sit side by side at the top, the loop runs
+               down the page, and the return climbs the left gutter
+               back to the first step. The connectors' labels sit in
+               the vertical gaps between boxes, which is the only
+               place a 150-unit string fits at this width.
+          ─────────────────────────────────────────────────────── -->
+          <svg class="loop-mobile" viewBox="0 0 520 940" role="img" aria-label="Two sources of truth feed one loop. The reference renders the real shipped partials and feeds the Design in the product step; the rulebook holds 21 patterns and 25 machine-checkable rules and feeds the design-check audit. The loop runs from Design in the product to design-check to design-push to the developers' design-review, then returns to the start so nothing drifts between one pass and the next.">
+            <defs>
+              <marker id="mah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
+              </marker>
+              <marker id="mah-q" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
+              </marker>
+            </defs>
+
+            <!-- ── The two sources ── -->
+            <rect x="0.5" y="0.5" width="252" height="160" rx="5" fill="#fae4e2"/>
+            <text x="20" y="32" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE REFERENCE</text>
+            <text x="232" y="32" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">VISIBLE</text>
+            <text x="20" y="72" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Renders the real</text>
+            <text x="20" y="92" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">shipped partials</text>
+            <text x="20" y="120" font-family="Geist, Arial, sans-serif" font-size="12.5" fill="rgba(25,23,18,0.52)">what you see is what ships</text>
+
+            <rect x="267.5" y="0.5" width="252" height="160" rx="5" fill="#fae4e2"/>
+            <text x="287" y="32" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE RULEBOOK</text>
+            <text x="499.5" y="32" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">ENFORCEABLE</text>
+            <text x="287" y="72" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">21 patterns · 25</text>
+            <text x="287" y="92" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">machine-checkable rules</text>
+            <text x="287" y="120" font-family="Geist, Arial, sans-serif" font-size="12.5" fill="rgba(25,23,18,0.52)">every rule restated so a</text>
+            <text x="287" y="137" font-family="Geist, Arial, sans-serif" font-size="12.5" fill="rgba(25,23,18,0.52)">machine can read it</text>
+
+            <!-- ── Connectors ──
+                 The reference drops straight into step one. The rulebook
+                 runs down the right gutter, clearing the first node, and
+                 enters the audit from the side. -->
+            <g opacity="0.62">
+              <path d="M 180 160.5 L 180 243" fill="none" stroke="#6a6f4b" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#mah-q)"/>
+              <text x="192" y="210" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">design against what ships</text>
+
+              <path d="M 500 160.5 L 500 444 L 488 444" fill="none" stroke="#6a6f4b" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#mah-q)"/>
+              <text x="488" y="375" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">the audit reads the rules</text>
+            </g>
+
+            <!-- ── The loop, running down the page ── -->
+            <rect x="100.5" y="250" width="380" height="96" rx="5" fill="#f8d5d1"/>
+            <text x="124" y="282" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">DESIGNER</text>
+            <text x="124" y="316" font-family="Geist, Arial, sans-serif" font-size="19" font-weight="500" fill="rgba(25,23,18,0.82)">Design in the product</text>
+
+            <rect x="100.5" y="396" width="380" height="96" rx="5" fill="#f8d5d1"/>
+            <text x="124" y="428" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AGENT</text>
+            <text x="124" y="462" font-family="DM Mono, monospace" font-size="18" font-weight="700" fill="#6a6f4b">/design-check</text>
+
+            <rect x="100.5" y="542" width="380" height="96" rx="5" fill="#f8d5d1"/>
+            <text x="124" y="574" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AGENT</text>
+            <text x="124" y="608" font-family="DM Mono, monospace" font-size="18" font-weight="700" fill="#6a6f4b">/design-push</text>
+
+            <rect x="100.5" y="688" width="380" height="96" rx="5" fill="#f8d5d1"/>
+            <text x="124" y="720" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">DEVELOPERS</text>
+            <text x="124" y="754" font-family="DM Mono, monospace" font-size="18" font-weight="700" fill="#6a6f4b">/design-review</text>
+
+            <line x1="290" y1="352" x2="290" y2="390" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mah)"/>
+            <line x1="290" y1="498" x2="290" y2="536" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mah)"/>
+            <line x1="290" y1="644" x2="290" y2="682" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mah)"/>
+
+            <!-- ── The return, up the left gutter ── -->
+            <path d="M 290 784 L 290 828 L 50 828 L 50 298 L 92 298" fill="none" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mah)"/>
+
+            <text x="290" y="872" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" font-weight="500" letter-spacing="1.5" fill="rgba(25,23,18,0.62)">WHERE THE GAP CLOSES</text>
+            <text x="290" y="901" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="14" fill="rgba(25,23,18,0.55)">Every lap ends where it started, so nothing</text>
+            <text x="290" y="921" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="14" fill="rgba(25,23,18,0.55)">drifts between one pass and the next</text>
+          </svg>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <div class="wrap img-block">
-    <div class="img-pair">
-      <div class="img-pair-item">
-        <img src="projects/design%20system/primitive.png"
-             alt="Primitive variable collection in Figma showing 24 raw color values grouped into brand, grey, white, status, and accent"
-             loading="lazy" />
-        <div class="img-caption">Primitive collection · 24 raw values · brand · grey · status</div>
+    <!-- 02 · THE STYLE GUIDE, FULL BLEED ────────────────
+         An experiment: no head, no caption, no frame. The clip is cut
+         straight into the card, so the deck's own blush panel is the
+         only thing holding it. Same file as card 03, so it costs one
+         download between them.
+    ─────────────────────────────────────────────────────── -->
+    <section class="card card--full" style="--i:1">
+      <video muted loop playsinline preload="metadata"
+             poster="projects/design-system%20v2/styleguide-poster.jpg"
+             aria-label="The style guide scrolling: a sidebar of foundations, actions, form controls, navigation, chrome and data, and beside it every component rendered in each of its variants and states from the real shipped partials.">
+        <source src="projects/design-system%20v2/styleguide.mp4" type="video/mp4">
+      </video>
+    </section>
+
+    <!-- 03 · THE REFERENCE ─────────────────────────────── -->
+    <section class="card card--shot" style="--i:2">
+      <div>
+        <div class="card-head"><span class="card-n">03</span><span class="card-tag">The reference · visible</span></div>
+        <h2 class="statement">What you see is what <em>ships</em>.</h2>
+        <p class="support">Not a Storybook of isolated stories, not a hand-maintained copy. <em>A route inside the product that mounts the real partials</em>. Because it runs, it holds what a frame cannot: a row that opens its edit form inline, and the same component answering at phone width in the window beside it.</p>
       </div>
-      <div class="img-pair-item">
-        <img src="projects/design%20system/semantic.png"
-             alt="Semantic token collection in Figma showing 18 tokens referencing primitives, grouped into state, border, surface, and text"
-             loading="lazy" />
-        <div class="img-caption">Semantic tokens · 18 tokens · references primitives · state · border · surface · text</div>
+      <div class="card-body">
+        <figure class="shot">
+          <div class="shot-frame">
+            <video muted loop playsinline preload="metadata"
+                   poster="projects/design-system%20v2/components-live-poster.jpg"
+                   aria-label="Components being used inside the style guide itself: the company picker opens its tile overlay and the elements-crumbs rows are added and edited inline on the desktop specimen, while a phone-width window open beside it runs the same partials at that size.">
+              <source src="projects/design-system%20v2/components-live.mp4" type="video/mp4">
+            </video>
+          </div>
+          <figcaption class="shot-cap">One partial, used live · desktop and phone, side by side</figcaption>
+        </figure>
+        <div class="card-foot">4,040 lines · one route · 113 tokens · 41 components · renders the shipped code</div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       03 COMPONENTS
-  ══════════════════════════════════════════════════════════ -->
-  <div class="wrap">
-    <div class="cs-section">
-      <div class="sec-label">03<br>Components</div>
-      <div class="sec-body">
-        <h2>A library, not a collection of frames</h2>
-        <p>Every component is a Figma ComponentSet with named variant properties, variable-bound fills, and documented states. No loose frames, no static mockups. Each component in Figma has a direct counterpart in the Vue codebase, generated and kept in sync through Claude Code reading design intent directly from the file.</p>
-        <p>16 component sets, each in a labeled section frame with a full variant matrix. Every state documented. Every fill token-bound. No ambiguity in handoff – because there is no handoff.</p>
+    <!-- 04 · THE RULES ─────────────────────────────────── -->
+    <section class="card" style="--i:3">
+      <div>
+        <div class="card-head"><span class="card-n">04</span><span class="card-tag">The rulebook · enforceable</span></div>
+        <h2 class="statement">Written for a <em>machine</em>.</h2>
+        <p class="support">Every pattern carries a <em>Check:</em> line, the rule restated so a machine can verify it. That single constraint is what turns a reference into something enforceable.</p>
       </div>
-    </div>
-  </div>
+      <div class="card-body">
+        <div class="rule-block">
+          <span class="c">### 3 &nbsp;Spacing — the page edge</span><br>
+          The page edge is <span class="k">@page-inset</span> — 20&nbsp;px, one value at every<br>
+          breakpoint. Three surfaces have to agree on it: the top nav's<br>
+          content row, the sub-header, and the page body. They stack, so<br>
+          any one of them using its own number shows as a misaligned<br>
+          left edge down the whole screen.<br><br>
+          <span class="k">Check:</span> no hardcoded page-edge padding where <span class="k">@page-inset</span><br>
+          belongs; no element other than <span class="k">.main-content</span> declaring a<br>
+          horizontal page inset.
+        </div>
+        <div class="card-foot">22 patterns · 27 machine-checkable rules · updated in the same commit as the change</div>
+      </div>
+    </section>
 
-  <div class="wrap img-block">
-    <div class="img-full">
-      <img src="projects/design%20system/Design%20tokens.png"
-           alt="Foundation tokens and base styles defined in Figma as the grounding layer for all components"
-           loading="lazy" />
-    </div>
-    <div class="img-caption">Foundations · base tokens · grounding layer for all components</div>
-  </div>
+    <!-- 05 · ENFORCEMENT · the peak ────────────────────── -->
+    <section class="card card--shot" style="--i:4">
+      <div>
+        <div class="card-head"><span class="card-n">05</span><span class="card-tag">Enforcement</span></div>
+        <h2 class="statement">A <em>verdict</em>, with line numbers.</h2>
+        <p class="support">This is what <em>/design-check</em> actually returns: every file in the change, audited against the rulebook, each violation handed back with the line and the rule it broke. I run it, developers run it, and the rulebook does not care whose code it is. Not an opinion about the work. <em>A finding.</em></p>
+      </div>
+      <div class="card-body">
+        <figure class="shot">
+          <div class="shot-frame">
+            <video muted loop playsinline preload="metadata"
+                   poster="projects/design-system%20v2/design-check-poster.jpg"
+                   aria-label="A real /design-check run: the agent loads the rulebook, sweeps the changed files, and returns five findings — five violations and three candidates for the rulebook — each named with the rule it broke.">
+              <source src="projects/design-system%20v2/design-check-4x.mp4" type="video/mp4">
+            </video>
+          </div>
+          <figcaption class="shot-cap">A real run at 4× · the sweep, then 5 findings · nothing staged</figcaption>
+        </figure>
+      </div>
+    </section>
 
-  <div class="wrap img-block" style="padding-top: 0;">
-    <div class="img-full">
-      <img src="projects/design%20system/compnentslilquadrat.png"
-           alt="16 component sets in Figma with variant matrices and labeled section frames"
-           loading="lazy" />
-    </div>
-    <div class="img-caption">Component library · 16 component sets · variant matrices · labeled sections</div>
-  </div>
+    <!-- 06 · THE LOOP IN DETAIL ────────────────────────── -->
+    <section class="card card--shot" style="--i:5">
+      <div>
+        <div class="card-head"><span class="card-n">06</span><span class="card-tag">The loop, in detail</span></div>
+        <h2 class="statement">The handoff is <em>one command</em>.</h2>
+        <p class="support">Branching, merging, conflict resolution, review packaging, cleanup, all of it carried by three skills I wrote. <em>I never touch git; developers never reverse-engineer a mockup.</em></p>
+      </div>
+      <div class="card-body">
+        <figure class="shot">
+          <div class="shot-frame">
+            <video muted loop playsinline preload="metadata"
+                   poster="projects/design-system%20v2/design-push-poster.jpg"
+                   aria-label="A real /design-push run: the command checks the branch, commits the design work, merges the team's latest, confirms nothing was replaced, and reports what the push changed.">
+              <source src="projects/design-system%20v2/design-push-4x.mp4" type="video/mp4">
+            </video>
+          </div>
+          <figcaption class="shot-cap">A real run at 4× · commit, merge, publish · git never touched by hand</figcaption>
+        </figure>
+        <div class="card-foot">146 review handoffs · 142 commits · 139 files · neither side waits on the other</div>
+      </div>
+    </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       04 WORKFLOW
-  ══════════════════════════════════════════════════════════ -->
-  <div class="wrap">
-    <div class="cs-section">
-      <div class="sec-label">04<br>Workflow</div>
-      <div class="sec-body">
-        <h2>Design and code, always in sync</h2>
-        <p>A bidirectional workflow between Figma and Vue. Claude Code reads design intent directly from the Figma file via MCP, generates Vue components with CSS variables mapped to Figma token names, and syncs changes back. No handoff step. No redlines. No translation layer between design and code.</p>
-
-        <!-- REDRAWN: 5-step process flow -->
-        <div class="flow-diagram">
-          <div class="flow-step">
-            <span class="flow-n">01</span>
-            <div class="flow-title">Design Tokens</div>
-            <div class="flow-desc">Token architecture defined in Figma as variable collections</div>
-          </div>
-          <div class="flow-step">
-            <span class="flow-n">02</span>
-            <div class="flow-title">Claude Code</div>
-            <div class="flow-desc">Reads Figma via MCP, generates Vue components from design spec</div>
-          </div>
-          <div class="flow-step">
-            <span class="flow-n">03</span>
-            <div class="flow-title">Real App</div>
-            <div class="flow-desc">Components tested in context, edge cases surface, refinements happen</div>
-          </div>
-          <div class="flow-step">
-            <span class="flow-n">04</span>
-            <div class="flow-title">Figma MCP</div>
-            <div class="flow-desc">Design updates pushed back to Figma, keeping documentation current</div>
-          </div>
-          <div class="flow-step">
-            <span class="flow-n">05</span>
-            <div class="flow-title">Governance Audit</div>
-            <div class="flow-desc">Scheduled check: Figma tokens vs code, component coverage, drift report</div>
-          </div>
+    <!-- 07 · CLOSING STRIP ─────────────────────────────── -->
+    <section class="card" style="--i:6">
+      <div>
+        <div class="card-head"><span class="card-n">07</span><span class="card-tag">By the numbers</span></div>
+        <h2 class="statement wide">One designer, no team, and it <em>can't drift</em>.</h2>
+        <p class="support">Three months inside the product the system describes. Every number below is something the loop keeps true <em>without anyone remembering to check.</em></p>
+      </div>
+      <div class="card-body">
+        <div class="num-grid">
+          <div class="num"><div class="num-v">113</div><div class="num-k">Semantic tokens</div></div>
+          <div class="num"><div class="num-v">41</div><div class="num-k">Shared components</div></div>
+          <div class="num"><div class="num-v">0</div><div class="num-k">Hex in a component</div></div>
+          <div class="num"><div class="num-v">21</div><div class="num-k">Documented patterns</div></div>
+          <div class="num"><div class="num-v">25</div><div class="num-k">Machine-checkable rules</div></div>
+          <div class="num"><div class="num-v">146</div><div class="num-k">Review handoffs</div></div>
+          <div class="num"><div class="num-v">3</div><div class="num-k">Months</div></div>
+          <div class="num"><div class="num-v">1</div><div class="num-k">Designer</div></div>
         </div>
       </div>
-    </div>
+    </section>
+
+   </div>
   </div>
-
-  <div class="wrap img-block">
-    <div class="img-full">
-      <img src="projects/design%20system/claude%20code%20reading%20design%20intent.avif"
-           alt="Claude Code reading design intent directly from the Figma file via MCP"
-           loading="lazy" />
-    </div>
-    <div class="img-caption">Claude Code · reading design intent · directly from Figma via MCP</div>
-  </div>
-
-  <div class="wrap img-block" style="padding-top: 0;">
-    <div class="img-full">
-      <img src="projects/design%20system/generated%20vue%20componentes.avif"
-           alt="Generated Vue component with CSS custom properties mapped directly to Figma token names"
-           loading="lazy" />
-    </div>
-    <div class="img-caption">Generated Vue component · CSS vars mapped to Figma token names · no manual translation</div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════
-       05 GOVERNANCE
-  ══════════════════════════════════════════════════════════ -->
-  <div class="wrap">
-    <div class="cs-section">
-      <div class="sec-label">05<br>Governance</div>
-      <div class="sec-body">
-        <h2>A repeatable audit, not a Slack message</h2>
-        <p>Building the system was one challenge. Keeping it accurate as the product evolved required a different approach. Instead of informal communication that gets buried, a structured audit runs on a schedule – three checks, each with a clear pass or fail.</p>
-        <div class="approach-list">
-          <div class="approach-item">
-            <span class="approach-n">01</span>
-            <div>
-              <div class="approach-title">Token alignment</div>
-              <div class="approach-desc">Figma variable names checked against CSS custom properties in the codebase. Any mismatch is a drift warning.</div>
-            </div>
-          </div>
-          <div class="approach-item">
-            <span class="approach-n">02</span>
-            <div>
-              <div class="approach-title">Component coverage</div>
-              <div class="approach-desc">Every Figma ComponentSet verified against a Vue file in <code style="font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(200,232,153,0.5)">/src/components/</code>. Missing components surface immediately.</div>
-            </div>
-          </div>
-          <div class="approach-item">
-            <span class="approach-n">03</span>
-            <div>
-              <div class="approach-title">Naming drift</div>
-              <div class="approach-desc">Variant property names in Figma checked against CSS conventions in code. Consistency enforced at the naming level, not just the visual.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="wrap img-block">
-    <div class="img-full">
-      <img src="projects/design%20system/audit.avif"
-           alt="Design system audit showing token alignment, component coverage, and naming drift checks"
-           loading="lazy" />
-    </div>
-    <div class="img-caption">Governance audit · token alignment · component coverage · naming drift</div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════
-       REDRAWN: Outcome / impact block
-  ══════════════════════════════════════════════════════════ -->
-  <div class="wrap">
-    <div class="pull-quote">
-      <p>A design system that doesn't drift. <em>Token-bound in Figma, enforced in code, audited on a schedule.</em></p>
-    </div>
-  </div>
-
-  <div class="wrap img-block" style="padding-top: 0;">
-    <div class="outcome-stats">
-      <div class="outcome-stat">
-        <span class="outcome-num">32<span class="outcome-unit"> tokens</span></span>
-        <span class="outcome-label">Semantic color tokens · Light + Dark</span>
-      </div>
-      <div class="outcome-stat">
-        <span class="outcome-num">16<span class="outcome-unit"> sets</span></span>
-        <span class="outcome-label">Component sets · variable-bound fills</span>
-      </div>
-      <div class="outcome-stat">
-        <span class="outcome-num">0<span class="outcome-unit"> steps</span></span>
-        <span class="outcome-label">Manual handoff · no redlines · no translation</span>
-      </div>
-    </div>
-  </div>
-
-  <div style="padding-bottom: 80px;"></div>
-
-  <!-- ── Footer ── -->
-  <footer id="site-footer" class="will-animate">
-    <span class="footer-label">Elshan Azadi</span>
-    <nav class="footer-nav">
-      <a href="mailto:azadielshan@gmail.com">Contact</a>
-      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
-    </nav>
-  </footer>
 
   <script>
     window.addEventListener('load', () => {
@@ -785,87 +1011,117 @@
         veil.style.opacity = '0';
         setTimeout(() => veil.remove(), 950);
       });
-      document.querySelectorAll('.will-animate').forEach((el, i) => {
-        setTimeout(() => {
-          el.classList.remove('will-animate');
-          el.classList.add('animate-in');
-        }, 700 + i * 100);
-      });
     });
 
+    /* ── Deck motion ──────────────────────────────────────────────
+       The stage is pinned and never moves. Scrolling the deck moves
+       a playhead `t` across the cards: card i sits fully off-stage
+       below at t = i-1, and fully landed at t = i. Once landed it
+       stays put and recedes as the next one covers it.
+
+       Scroll is driven, never hijacked — the page still scrolls at
+       whatever speed the reader's input says.
+    ─────────────────────────────────────────────────────────────── */
     (() => {
-      const DUR  = '0.72s';
-      const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+      const deck  = document.querySelector('.deck');
+      const stage = document.querySelector('.stage');
+      if (!deck || !stage) return;
 
-      function prep(el) {
-        el.style.opacity   = '0';
-        el.style.transform = 'translateY(32px)';
-      }
-      function reveal(el, delay) {
-        if (!el) return;
-        el.style.transition = `opacity ${DUR} ${EASE} ${delay}ms, transform ${DUR} ${EASE} ${delay}ms`;
-        el.style.opacity    = '1';
-        el.style.transform  = 'translateY(0)';
-      }
+      const cards = [...stage.querySelectorAll('.card')];
+      if (!cards.length) return;
 
-      const secObs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (!e.isIntersecting) return;
-          secObs.unobserve(e.target);
-          const sec = e.target;
-          let t = 0;
+      deck.style.setProperty('--n', cards.length);
+      cards.forEach((c, i) => { c.style.zIndex = i + 1; });
 
-          reveal(sec.querySelector('.sec-label'), t); t += 55;
+      // Opts the diagram into its hidden-then-played state. Set from JS
+      // so a script failure leaves the diagram plainly visible instead.
+      deck.classList.add('js-anim');
 
-          const body = sec.querySelector('.sec-body');
-          if (body) {
-            [...body.children].forEach(child => {
-              const tag = child.tagName;
-              const cls = child.classList;
-              if (tag === 'H2') { reveal(child, t); t += 65; }
-              else if (tag === 'P')  { reveal(child, t); t += 38; }
-              else if (cls.contains('pull-quote')) { reveal(child, t); t += 65; }
-            });
-            body.querySelectorAll('.approach-item').forEach((el, i) => reveal(el, 80 + i * 70));
-            body.querySelectorAll('.token-spec').forEach((el, i)    => reveal(el, 60 + i * 40));
-            body.querySelectorAll('.flow-step').forEach((el, i)     => reveal(el, 60 + i * 55));
+      const clamp = v => v < 0 ? 0 : v > 1 ? 1 : v;
+
+      let queued = false;
+      let shown  = -1;   // index currently on top; -1 = nothing placed yet
+
+      function place(active) {
+        if (active === shown) return;   // nothing to do — don't touch the DOM
+        shown = active;
+        for (let i = 0; i < cards.length; i++) {
+          // Binary targets only. Scroll decides WHICH card is on top;
+          // the CSS transition decides how it gets there, at its own
+          // velocity, independent of how fast the reader scrolled.
+          cards[i].style.setProperty('--enter', i <= active ? '0' : '1');
+          cards[i].style.setProperty('--cover', i <  active ? '1' : '0');
+          // Drives the hook diagram's entrance. Add-only, never removed:
+          // taking it off would blank the diagram the moment the next
+          // card starts sliding over this one, which is 1180ms of very
+          // visible nothing. So it plays once and holds.
+          if (i === active) cards[i].classList.add('is-live');
+
+          // A clip runs only while its card is the one on the stage, and
+          // restarts when it lands — every card in the deck is in the DOM
+          // at once, so left alone they would all decode in parallel and
+          // the reader would arrive halfway through a run.
+          const clip = cards[i].querySelector('video');
+          if (clip) {
+            if (i === active) { clip.currentTime = 0; clip.play().catch(() => {}); }
+            else clip.pause();
           }
-        });
-      }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+        }
+      }
 
-      document.querySelectorAll('.cs-section').forEach(sec => {
-        sec.querySelectorAll(
-          '.sec-label, .sec-body > h2, .sec-body > p, .pull-quote, .approach-item, .token-spec, .flow-step'
-        ).forEach(prep);
-        secObs.observe(sec);
-      });
+      /* Fallback mode has no card on top, so the clips follow the viewport
+         instead. Wired the first time we land there, dropped on the way out. */
+      let roving = null;
+      function rovingClips(on) {
+        if (on && !roving) {
+          roving = new IntersectionObserver(entries => entries.forEach(e => {
+            if (e.isIntersecting) e.target.play().catch(() => {});
+            else e.target.pause();
+          }), { threshold: 0.4 });
+          stage.querySelectorAll('video').forEach(v => roving.observe(v));
+        } else if (!on && roving) {
+          roving.disconnect();
+          roving = null;
+        }
+      }
 
-      const imgObs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (!e.isIntersecting) return;
-          reveal(e.target, 0);
-          imgObs.unobserve(e.target);
-        });
-      }, { threshold: 0.04 });
+      function paint() {
+        queued = false;
 
-      document.querySelectorAll('.img-block, .pull-quote').forEach(el => {
-        prep(el); imgObs.observe(el);
-      });
-
-      document.querySelectorAll('.outcome-stat').forEach((el, i) => {
-        prep(el);
-        const obs = new IntersectionObserver(entries => {
-          entries.forEach(e => {
-            if (!e.isIntersecting) return;
-            reveal(e.target, i * 80);
-            obs.unobserve(e.target);
+        // Fallback mode: the stage isn't pinned, so leave the cards alone.
+        if (getComputedStyle(stage).position !== 'sticky') {
+          cards.forEach(c => {
+            c.style.removeProperty('--enter');
+            c.style.removeProperty('--cover');
           });
-        }, { threshold: 0.1 });
-        obs.observe(el);
-      });
+          shown = -1;
+          rovingClips(true);
+          return;
+        }
+        rovingClips(false);
+
+        const range = deck.offsetHeight - stage.offsetHeight;
+        if (range <= 0) return;
+
+        const progress = clamp(-deck.getBoundingClientRect().top / range);
+        const t = progress * (cards.length - 1);
+
+        // Round: the card flips at the midpoint of its slot, so the
+        // transition fires while the reader is still moving.
+        place(Math.max(0, Math.min(cards.length - 1, Math.round(t))));
+      }
+
+      function request() {
+        if (!queued) { queued = true; requestAnimationFrame(paint); }
+      }
+
+      addEventListener('scroll', request, { passive: true });
+      addEventListener('resize', request);
+      paint();
     })();
+
   </script>
 
-  <script src="floating-nav.js" defer></script>
+<script src="tuner.js" defer></script>
 </body>
 </html>

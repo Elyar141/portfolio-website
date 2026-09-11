@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <title>About – Elshan Azadi</title>
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('../../fonts/Geist-Variable.woff2') format('woff2');
+      font-weight: 100 900; font-style: normal;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      /* ── Palette: LIGHT experiment ──────────────────────────────
+         --veil is what a covered card washes toward. It sits on the far
+         side of --bg from --card, so "receding" means the same thing in
+         either theme: dark theme pushed past black, light past white. */
+      --bg:      #ede6ca;   /* warm cream · prev: #e7ebc5 */
+      --card:    #fdd7d4;   /* prev: #fcbcb8 · orig: #f2f5da */
+      --card-2:  #f9c8c4;   /* prev: #f7a8a3 · orig: #dfe4b4 */
+      --ink:     #141301;
+      --green:   #6a6f4b;   /* dusty earthy olive */
+      --veil:    #ffffff;
+
+      --line:    rgba(20,19,1,0.16);
+      --mute:    rgba(20,19,1,0.55);
+      --dim:     rgba(20,19,1,0.66);
+      --gutter:  clamp(20px, 4vw, 56px);
+      --pad:     clamp(28px, 3.6vw, 64px);
+      --r:       14px;
+    }
+
+    /* `overflow-x: clip`, never `hidden` — `hidden` makes these scroll
+       containers and silently kills the stage's position: sticky. */
+    html { background: var(--bg); scroll-behavior: smooth; overflow-x: clip; }
+    body {
+      background: var(--bg); min-height: 100vh;
+      font-family: 'Geist', sans-serif; color: var(--dim);
+      -webkit-font-smoothing: antialiased; overflow-x: clip;
+    }
+
+    #veil {
+      position: fixed; inset: 0; background: var(--bg);
+      z-index: 999; transition: opacity 0.9s ease; pointer-events: none;
+    }
+
+    /* ── Nav ── */
+    #site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+      padding: 14px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(237,230,202,0.82); backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+    .logo-mark rect { fill: #6a6f4b; transition: fill 0.22s; }
+    .nav-logo:hover .logo-mark rect { fill: rgba(106,111,75,0.5); }
+    .nav-right { display: flex; align-items: center; gap: 30px; }
+    .nav-right a {
+      font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(20,19,1,0.55); text-decoration: none; transition: color 0.18s;
+    }
+    .nav-right a:hover { color: rgba(20,19,1,0.82); }
+
+    /* Full-bleed: the page fills the viewport, 20px of air each side. */
+    .wrap { max-width: none; margin: 0; padding: 0 20px; }
+
+    /* ════════════════════════════════════════════════════════
+       HERO — the first card in the deck
+    ════════════════════════════════════════════════════════ */
+    .eyebrow {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: clamp(24px,3vw,40px);
+    }
+    .eyebrow-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; color: var(--green);
+    }
+    .eyebrow-tag {
+      font-size: 10px; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--mute);
+    }
+    .eyebrow-tag span { margin: 0 6px; opacity: 0.4; }
+    .card--hero h1 {
+      font-family: 'Helvetica Neue', Helvetica, 'Geist', sans-serif;
+      font-size: clamp(62px,11vw,168px); font-weight: 700;
+      letter-spacing: -0.045em; line-height: 0.84;
+      color: rgba(20,19,1,0.92);
+      margin-bottom: clamp(24px,3vw,44px);
+    }
+    .hero-line {
+      max-width: 660px; font-size: clamp(17px,1.6vw,21px);
+      font-weight: 400; line-height: 1.6;
+      color: rgba(20,19,1,0.78);
+      margin-bottom: clamp(44px,5vw,72px);
+    }
+    .hero-line em { font-style: normal; color: var(--green); }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 24px 56px;
+      padding-top: 28px; border-top: 1px solid rgba(20,19,1,0.14);
+    }
+    .meta-k {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--mute); margin-bottom: 7px;
+    }
+    .meta-v { font-size: 14px; color: var(--dim); }
+
+    /* ════════════════════════════════════════════════════════
+       CARD DECK — each section stacks over the last
+    ════════════════════════════════════════════════════════ */
+    /* Fallback (short/narrow viewports): cards are plain stacked blocks. */
+    .deck { position: relative; padding-bottom: 8vh; --n: 10; }
+    .card {
+      --enter: 0; --cover: 0;
+      background: var(--card);
+      border-top: 1px solid rgba(20,19,1,0.16);
+      border-radius: var(--r);
+      padding: var(--pad);
+      display: flex; flex-direction: column;
+      margin-bottom: 2px;
+    }
+    .card::after { content: none; }
+
+
+    /* ── Doodle: pen-drawn desert scene ────────────────────────
+       Every stroke carries pathLength="1", so one dasharray value
+       works for all of them regardless of real length — that is what
+       makes the staggered draw-on possible without measuring anything. */
+    /* The scene lives in the stage, behind every card, so a transparent
+       card is a window onto it rather than owning a copy. */
+    .scene {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 66%;
+      z-index: 0; pointer-events: none;
+    }
+    .doodle { width: 100%; height: 100%; display: block; overflow: visible; }
+    /* Scenery that arrives later in the drive. */
+    .scene [data-from] { opacity: 0; transition: opacity 900ms ease; }
+    /* Colour arrives with the story: the drawing gets painted in as the
+       driver starts seeing more of the road. Fills sit before the strokes
+       in document order so the pen lines always stay on top. */
+    .doodle .paint { fill: var(--card); stroke: none; }
+    .scene [data-from].show { opacity: 1; }
+
+    /* Story cards: no fill, no dimming veil — the scene shows through. */
+    .card--clear { background: transparent; border-top: none; }
+    .card--clear::after { display: none !important; }
+    /* No veil on a transparent card, so the content itself has to leave —
+       otherwise every landed card's text stays stacked on the scene. */
+    .card--clear > * {
+      opacity: calc(1 - var(--cover));
+      transition: opacity 620ms ease;
+    }
+    .story {
+      font-family: 'Helvetica Neue', Helvetica, 'Geist', sans-serif;
+      font-size: clamp(24px,3.1vw,46px); font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.14;
+      color: rgba(20,19,1,0.92); max-width: 18ch;
+    }
+    .story span { display: block; }
+    .story span + span { color: rgba(20,19,1,0.62); }
+    .doodle g, .doodle path, .doodle circle, .doodle line {
+      fill: none;
+      stroke: rgba(20,19,1,0.82);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .doodle .ink { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.1s ease-out forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    /* road markings flow toward the viewer once the scene is drawn */
+    .doodle .flow {
+      stroke-dasharray: 0.07 0.06;
+      opacity: 0; animation: flow-in 0.5s ease-out 2.1s forwards, flow 2.4s linear 2.1s infinite;
+    }
+    @keyframes flow-in { to { opacity: 1; } }
+    @keyframes flow { to { stroke-dashoffset: -0.26; } }
+
+    .doodle .car { animation: bob 1.9s ease-in-out 2.6s infinite; transform-origin: 500px 360px; }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0)     rotate(0deg);    }
+      25%      { transform: translateY(-3px)  rotate(-0.7deg); }
+      60%      { transform: translateY(2px)   rotate(0.6deg);  }
+    }
+    .doodle .sun { animation: spin 34s linear 2.4s infinite; transform-origin: 830px 96px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .doodle .bird { animation: flap 3.2s ease-in-out 2.8s infinite; transform-origin: 250px 90px; }
+    @keyframes flap {
+      0%,100% { transform: translate(0,0);     }
+      50%     { transform: translate(26px,-8px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .doodle .ink { animation: none; stroke-dashoffset: 0; }
+      .doodle .flow { animation: none; opacity: 1; }
+      .doodle .car, .doodle .sun, .doodle .bird { animation: none; }
+    }
+
+    /* ── Frame: sits above the cards, so the border stays lit while the
+       cards slide and dim underneath it. ──
+       The border is an SVG stroke, not CSS: a dashed stroke is the only
+       thing that renders exact 5px squares AND follows the corner radius.
+       stroke-width == dash length == one pixel of the site's glyph. */
+    .frame {
+      position: absolute; inset: 0; z-index: 50;
+      pointer-events: none;
+    }
+    .frame svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .frame rect, .frame path {
+      fill: none;
+      stroke: var(--green);
+      stroke-width: 5;
+      stroke-dasharray: 5 6;
+      opacity: 1;
+    }
+    /* The <rect> is the static border; JS swaps to <path> so it can bend.
+       CSS geometry properties, with the element's attributes as fallback. */
+    .frame rect {
+      x: 3px; y: 3px;
+      width: calc(100% - 6px); height: calc(100% - 6px);
+      rx: calc(var(--r) - 3px);
+    }
+    .frame path { display: none; }
+    .frame.bendable rect { display: none; }
+    .frame.bendable path { display: block; }
+    @media (max-width: 859px) { .frame { display: none; } }
+
+    /* ── Stage mode: the frame is pinned, the cards move inside it ──
+       One inset, used top and bottom, so the frame sits equidistant from
+       both viewport edges. It has to clear the 69px nav, which is what
+       sets the floor on how small it can go. */
+    @media (min-width: 860px) and (min-height: 640px) {
+      :root { --stage-inset: 88px; }
+      .deck { height: calc(var(--n) * 100vh); padding-bottom: 0; }
+      .stage {
+        position: sticky; top: var(--stage-inset);
+        height: calc(100vh - var(--stage-inset) * 2);
+        overflow: hidden;
+        border-radius: var(--r);
+        background: var(--bg);
+      }
+      /* No scale on the covered card: shrinking it lifts its bottom edge off
+         the stage floor and opens a hole the next card rises out of. Depth
+         comes from the dim instead. */
+      /* --enter / --cover are set to 0 or 1 only; the easing does the rest.
+         Expo-out: leaves fast, settles slowly — the curve that reads as
+         "weight" rather than "animation". */
+      .card {
+        position: absolute; inset: 0;
+        margin-bottom: 0;
+        overflow: hidden;
+        /* The frame draws the edge here; the stacking border is fallback-only. */
+        border-top: none;
+        transform: translateY(calc(var(--enter) * 100%));
+        will-change: transform;
+        transition: transform 1180ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+      }
+      /* The dim leads the slide slightly, so the card behind darkens a beat
+         before the new one lands on it. */
+      .card::after {
+        transition: opacity 820ms cubic-bezier(0.33, 1, 0.68, 1);
+      }
+      /* Dimming veil — cheaper than filter, and it can't affect layout. */
+      .card::after {
+        content: ''; position: absolute; inset: 0; z-index: 2;
+        background: var(--veil); pointer-events: none;
+        opacity: calc(var(--cover) * 0.55);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .card, .card::after { transition: none; }
+        .card::after { opacity: 0; }
+      }
+    }
+    .card-head {
+      display: flex; align-items: baseline; gap: 16px;
+      margin-bottom: clamp(22px,3vw,40px);
+    }
+    .card-n {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.16em; color: #6a6f4b;
+    }
+    .card-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase; color: rgba(20,19,1,0.55);
+    }
+    .statement {
+      font-family: 'Helvetica Neue', Helvetica, 'Geist', sans-serif;
+      font-size: clamp(30px,4.6vw,62px); font-weight: 700;
+      letter-spacing: -0.035em; line-height: 1.02;
+      color: rgba(20,19,1,0.92);
+      max-width: 15ch;
+      margin-bottom: clamp(18px,2vw,26px);
+    }
+    .statement.wide { max-width: 22ch; }
+    .support {
+      font-size: clamp(15px,1.35vw,18px); font-weight: 400; line-height: 1.62;
+      color: rgba(20,19,1,0.68); max-width: 62ch;
+    }
+    .support em { font-style: normal; color: #6a6f4b; }
+    /* min-height:0 lets a dense body shrink instead of overflowing the frame. */
+    .card-body { margin-top: auto; padding-top: clamp(20px,2.6vw,38px); min-height: 0; }
+    .card > div:first-child { flex: 0 0 auto; }
+    .card-foot {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(20,19,1,0.46); margin-top: 18px;
+    }
+
+    /* ── Swatch wall ── */
+    .swatch-row { display: grid; grid-template-columns: repeat(8, 1fr); gap: 1px; }
+    .swatch-row + .swatch-row { margin-top: 22px; }
+    .swatch-chip { height: clamp(64px,7vw,108px); }
+    .swatch-name {
+      font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700;
+      color: rgba(20,19,1,0.80); margin-top: 10px; word-break: break-all; line-height: 1.4;
+    }
+    .swatch-hex {
+      font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 400;
+      color: rgba(20,19,1,0.48); margin-top: 2px;
+    }
+
+    /* ── Name grid (components / anti-patterns) ── */
+    .name-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: 1px; background: rgba(20,19,1,0.11);
+      border: 1px solid rgba(20,19,1,0.11);
+    }
+    .name-grid.killed { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+    .name {
+      background: var(--card); padding: 13px 16px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 400;
+      color: rgba(20,19,1,0.72); line-height: 1.4;
+    }
+    .name-grid.killed .name {
+      color: rgba(20,19,1,0.46); text-decoration: line-through;
+      text-decoration-color: #6a6f4b; text-decoration-thickness: 1px;
+    }
+
+    /* ── Code / rule block ── */
+    .rule-block {
+      background: var(--card-2); border-left: 2px solid #6a6f4b;
+      padding: clamp(22px,2.6vw,34px);
+      font-family: 'JetBrains Mono', monospace; font-size: clamp(12px,1.15vw,14px);
+      line-height: 1.85; color: rgba(20,19,1,0.78);
+    }
+    .rule-block .k { color: #6a6f4b; font-weight: 700; }
+    .rule-block .c { color: rgba(20,19,1,0.44); }
+
+    /* ── Two-up split ── */
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(20,19,1,0.12); }
+    .split > div { background: var(--card); padding: clamp(22px,2.6vw,32px); }
+    .split-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: #6a6f4b; display: block; margin-bottom: 14px;
+    }
+    .split-text { font-size: 15px; line-height: 1.7; color: rgba(20,19,1,0.74); }
+    .split-text strong { color: rgba(20,19,1,0.90); font-weight: 500; }
+
+    /* ── Command row ── */
+    .cmd-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(20,19,1,0.12); }
+    .cmd { background: var(--card); padding: clamp(20px,2.4vw,30px); }
+    .cmd-name {
+      font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700;
+      color: var(--green); display: block; margin-bottom: 12px;
+    }
+    .cmd-desc { font-size: 13.5px; line-height: 1.6; color: rgba(20,19,1,0.58); }
+
+    /* ── Cost lines ── */
+    .cost-line {
+      display: grid; grid-template-columns: 40px 1fr;
+      gap: 0 clamp(16px,2vw,32px);
+      padding: clamp(18px,2vw,26px) 0;
+      border-bottom: 1px solid rgba(20,19,1,0.12);
+    }
+    .cost-line:first-of-type { border-top: 1px solid rgba(20,19,1,0.12); }
+    .cost-n {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+      color: #6a6f4b; padding-top: 4px;
+    }
+    .cost-t { font-size: clamp(16px,1.5vw,20px); line-height: 1.5; color: rgba(20,19,1,0.84); }
+
+    /* ── Loop diagram ── */
+    .loop svg { width: 100%; height: auto; max-height: 30vh; display: block; }
+
+    /* ── MEDIA SLOTS (draft placeholders) ── */
+    .slot {
+      border: 1px dashed #6a6f4b;
+      background: rgba(106,111,75,0.022);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px; padding: 28px; text-align: center;
+      min-height: 240px; height: 100%;
+    }
+    .slot-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase; color: #6a6f4b;
+    }
+    .slot-desc {
+      font-size: 13.5px; line-height: 1.65;
+      color: rgba(20,19,1,0.60); max-width: 460px;
+    }
+    .slot-desc b { color: #6a6f4b; font-weight: 500; }
+    .slot-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .slot-big { min-height: clamp(240px, 34vh, 400px); }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════════════════════ */
+    @media (max-width: 1099px) {
+      .name-grid { grid-template-columns: repeat(3, 1fr); }
+      .swatch-row { grid-template-columns: repeat(4, 1fr); gap: 1px 1px; }
+      .swatch-row > div { margin-bottom: 14px; }
+    }
+    @media (max-width: 859px) {
+      #site-nav { padding: 12px 22px; }
+      .card { padding: clamp(26px,5vw,40px); }
+      .statement { max-width: 20ch; }
+      .cmd-row, .split, .slot-pair { grid-template-columns: 1fr; }
+      .name-grid { grid-template-columns: repeat(2, 1fr); }
+      .card-body { padding-top: 36px; }
+    }
+    @media (max-width: 599px) {
+      .nav-right { gap: 18px; }
+      .nav-right a { font-size: 10px; letter-spacing: 0.14em; }
+      .swatch-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="veil"></div>
+
+  <nav id="site-nav">
+    <a class="nav-logo" href="../index.html" aria-label="Home">
+      <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
+        <rect x="0" y="0" width="5" height="5"/><rect x="6" y="0" width="5" height="5"/>
+        <rect x="12" y="0" width="5" height="5"/><rect x="18" y="0" width="5" height="5"/>
+        <rect x="0" y="6" width="5" height="5"/><rect x="24" y="6" width="5" height="5"/>
+        <rect x="0" y="12" width="5" height="5"/><rect x="24" y="12" width="5" height="5"/>
+        <rect x="0" y="18" width="5" height="5"/><rect x="6" y="18" width="5" height="5"/>
+        <rect x="12" y="18" width="5" height="5"/><rect x="18" y="18" width="5" height="5"/>
+        <rect x="0" y="24" width="5" height="5"/><rect x="0" y="30" width="5" height="5"/>
+        <rect x="0" y="36" width="5" height="5"/>
+      </svg>
+    </a>
+    <div class="nav-right">
+      <a href="../projects.html">Work</a>
+      <a href="../about.html">About</a>
+      <a href="mailto:azadielshan@gmail.com">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ══════════ DECK ══════════ -->
+  <div class="wrap deck">
+   <div class="stage">
+    <div class="scene" aria-hidden="true">
+      <svg class="doodle" viewBox="0 0 1000 430" role="img" aria-label="A pen drawing of a car driving down a desert road">
+        <g class="paints">
+          <path class="paint" data-from="1" d="M 205 428 Q 330 344 492 254 L 508 254 Q 668 344 795 428 Z"/>
+          <circle class="paint" data-from="3" cx="830" cy="96" r="38"/>
+          <path class="paint" data-from="4" d="M 758 196 L 828 194 L 830 164 L 760 166 Z"/>
+          <path class="paint" data-from="6" d="M 60 250 L 132 196 L 186 234 L 236 188 L 300 250 Z"/>
+          <path class="paint" data-from="6" d="M 640 250 L 700 206 L 748 250 Z"/>
+          <path class="paint" data-from="5" d="M 428 388 L 428 356 Q 428 346 440 346 L 562 346 Q 574 346 574 356 L 574 388 Z"/>
+          <path class="paint" data-from="5" d="M 466 346 L 477 314 Q 479 307 488 307 L 514 307 Q 523 307 525 314 L 536 346 Z"/>
+        </g>
+
+
+        <!-- horizon -->
+        <path class="ink" pathLength="1" style="animation-delay:0s"
+              d="M 30 250 Q 180 244 330 250 T 640 247 T 970 252"/>
+
+        <!-- road edges, converging on the vanishing point -->
+        <path class="ink" pathLength="1" style="animation-delay:.45s"
+              d="M 205 428 Q 330 344 492 254"/>
+        <path class="ink" pathLength="1" style="animation-delay:.45s"
+              d="M 795 428 Q 668 344 508 254"/>
+
+        <!-- centre line, flowing -->
+        <path class="flow" pathLength="1" d="M 500 428 L 500 258"/>
+
+        <!-- cacti -->
+        <g class="ink" pathLength="1" style="animation-delay:1.05s">
+          <path pathLength="1" d="M 120 250 L 121 178"/>
+          <path pathLength="1" d="M 120 222 L 96 221 L 95 192"/>
+          <path pathLength="1" d="M 121 206 L 146 205 L 147 184"/>
+        </g>
+        <g class="ink" pathLength="1" style="animation-delay:1.3s">
+          <path pathLength="1" d="M 900 251 L 901 202"/>
+          <path pathLength="1" d="M 900 230 L 882 229 L 881 212"/>
+        </g>
+
+        <!-- sun -->
+        <g class="sun">
+          <circle class="ink" pathLength="1" style="animation-delay:1.5s" cx="830" cy="96" r="38"/>
+          <g class="ink" pathLength="1" style="animation-delay:1.7s">
+            <path pathLength="1" d="M 830 40 L 830 26"/>
+            <path pathLength="1" d="M 830 166 L 830 152"/>
+            <path pathLength="1" d="M 774 96 L 760 96"/>
+            <path pathLength="1" d="M 900 96 L 886 96"/>
+            <path pathLength="1" d="M 870 56 L 880 46"/>
+            <path pathLength="1" d="M 790 136 L 780 146"/>
+            <path pathLength="1" d="M 870 136 L 880 146"/>
+            <path pathLength="1" d="M 790 56 L 780 46"/>
+          </g>
+        </g>
+
+        <!-- birds -->
+        <g class="bird">
+          <g class="ink" pathLength="1" style="animation-delay:1.9s">
+            <path pathLength="1" d="M 232 92 Q 244 82 256 92"/>
+            <path pathLength="1" d="M 256 92 Q 268 82 280 92"/>
+            <path pathLength="1" d="M 296 118 Q 305 110 314 118"/>
+            <path pathLength="1" d="M 314 118 Q 323 110 332 118"/>
+          </g>
+        </g>
+
+        <!-- roadside sign · act 2 -->
+        <g data-from="2">
+          <path d="M 792 250 L 792 196"/>
+          <path d="M 758 196 L 828 194 L 830 164 L 760 166 Z"/>
+        </g>
+        <!-- distant range · act 5 -->
+        <g data-from="5">
+          <path d="M 60 250 L 132 196 L 186 234 L 236 188 L 300 250"/>
+          <path d="M 640 250 L 700 206 L 748 250"/>
+        </g>
+        <!-- car, seen from behind -->
+        <g class="car">
+          <g class="ink" pathLength="1" style="animation-delay:2.0s">
+            <path pathLength="1" d="M 466 346 L 477 314 Q 479 307 488 307 L 514 307 Q 523 307 525 314 L 536 346"/>
+            <path pathLength="1" d="M 428 388 L 428 356 Q 428 346 440 346 L 562 346 Q 574 346 574 356 L 574 388"/>
+            <path pathLength="1" d="M 428 388 L 574 388"/>
+            <path pathLength="1" d="M 484 318 L 518 318"/>
+            <path pathLength="1" d="M 440 366 L 456 366"/>
+            <path pathLength="1" d="M 546 366 L 562 366"/>
+          </g>
+          <g class="ink" pathLength="1" style="animation-delay:2.25s">
+            <circle pathLength="1" cx="452" cy="392" r="13"/>
+            <circle pathLength="1" cx="550" cy="392" r="13"/>
+            <circle pathLength="1" cx="501" cy="330" r="9"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="frame" aria-hidden="true">
+      <svg><rect width="100%" height="100%" rx="14" /><path /></svg>
+    </div>
+
+    <!-- 00 · HERO ──────────────────────────────────────── -->
+    
+
+    <section class="card card--clear">
+      <div>
+        <p class="story"><span>I keep thinking I will arrive. And I do.</span><span>Then I look up and the road just keeps going.</span><span>Turns out that is the whole job.</span></p>
+      </div>
+    </section>
+
+    <section class="card card--clear">
+      <div>
+        <p class="story"><span>The first drive, I barely see the road.</span><span>Just enough of it to stay on.</span></p>
+      </div>
+    </section>
+
+    <section class="card card--clear">
+      <div>
+        <p class="story"><span>Second time through, things start showing up.</span><span>A sign I drove straight past. A turn that was always there.</span></p>
+      </div>
+    </section>
+
+    <section class="card card--clear">
+      <div>
+        <p class="story"><span>Nobody puts that part on the map.</span><span>You have to drive it a few times before you can see it.</span></p>
+      </div>
+    </section>
+
+    <section class="card card--clear">
+      <div>
+        <p class="story"><span>And everything I finally see, I paint in.</span><span>The small things. The ones nobody notices until they go missing.</span></p>
+      </div>
+    </section>
+
+    <section class="card card--clear">
+      <div>
+        <p class="story"><span>The road never gets finished.</span><span>It just gets more coloured in.</span></p>
+      </div>
+    </section>
+
+    <section class="card card--clear">
+      <div>
+        <p class="story"><span>So I keep driving.</span><span>Same road. I can just see more of it now.</span></p>
+      </div>
+    </section>
+
+   </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      const veil = document.getElementById('veil');
+      requestAnimationFrame(() => {
+        veil.style.opacity = '0';
+        setTimeout(() => veil.remove(), 950);
+      });
+    });
+
+    /* ── Deck motion ──────────────────────────────────────────────
+       The stage is pinned and never moves. Scrolling the deck moves
+       a playhead `t` across the cards: card i sits fully off-stage
+       below at t = i-1, and fully landed at t = i. Once landed it
+       stays put and recedes as the next one covers it.
+
+       Scroll is driven, never hijacked — the page still scrolls at
+       whatever speed the reader's input says.
+    ─────────────────────────────────────────────────────────────── */
+    (() => {
+      const deck  = document.querySelector('.deck');
+      const stage = document.querySelector('.stage');
+      if (!deck || !stage) return;
+
+      const cards = [...stage.querySelectorAll('.card')];
+      if (!cards.length) return;
+
+      deck.style.setProperty('--n', cards.length);
+      cards.forEach((c, i) => { c.style.zIndex = i + 1; });
+
+      const clamp = v => v < 0 ? 0 : v > 1 ? 1 : v;
+
+      let queued = false;
+      let shown  = -1;   // index currently on top; -1 = nothing placed yet
+
+      function place(active) {
+        if (active === shown) return;   // nothing to do — don't touch the DOM
+        shown = active;
+        for (let i = 0; i < cards.length; i++) {
+          // Binary targets only. Scroll decides WHICH card is on top;
+          // the CSS transition decides how it gets there, at its own
+          // velocity, independent of how fast the reader scrolled.
+          cards[i].style.setProperty('--enter', i <= active ? '0' : '1');
+          cards[i].style.setProperty('--cover', i <  active ? '1' : '0');
+        }
+        stage.querySelectorAll('.scene [data-from]').forEach(el => {
+          el.classList.toggle('show', active >= +el.dataset.from);
+        });
+      }
+
+      function paint() {
+        queued = false;
+
+        // Fallback mode: the stage isn't pinned, so leave the cards alone.
+        if (getComputedStyle(stage).position !== 'sticky') {
+          cards.forEach(c => {
+            c.style.removeProperty('--enter');
+            c.style.removeProperty('--cover');
+          });
+          shown = -1;
+          return;
+        }
+
+        const range = deck.offsetHeight - stage.offsetHeight;
+        if (range <= 0) return;
+
+        const progress = clamp(-deck.getBoundingClientRect().top / range);
+        const t = progress * (cards.length - 1);
+
+        // Round: the card flips at the midpoint of its slot, so the
+        // transition fires while the reader is still moving.
+        place(Math.max(0, Math.min(cards.length - 1, Math.round(t))));
+      }
+
+      function request() {
+        if (!queued) { queued = true; requestAnimationFrame(paint); }
+      }
+
+      addEventListener('scroll', request, { passive: true });
+      addEventListener('resize', request);
+      paint();
+    })();
+
+    /* ── Bendable border ──────────────────────────────────────────
+       The frame's outline is sampled into points, each with an outward
+       normal and its own spring. The pointer pulls nearby points along
+       their normal; springs are underdamped, so letting go overshoots
+       and settles — the bounce.
+    ─────────────────────────────────────────────────────────────── */
+    (() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const stage = document.querySelector('.stage');
+      const frame = document.querySelector('.frame');
+      const path  = frame && frame.querySelector('path');
+      if (!stage || !path) return;
+
+      const INSET  = 3;     // matches the static rect
+      const STEP   = 14;    // sample spacing along the outline, px
+      const REACH  = 90;    // how far from the border the pointer is felt
+      const MAXPULL= 26;    // furthest a point will travel
+      const STIFF  = 0.16;  // spring constant
+      const DAMP   = 0.74;  // < 1 leaves energy behind → overshoot
+
+      let pts = [], w = 0, h = 0, r = 0;
+      let mx = -1e4, my = -1e4, live = false, running = false;
+
+      function build() {
+        const b = frame.getBoundingClientRect();
+        w = b.width  - INSET * 2;
+        h = b.height - INSET * 2;
+        r = Math.max(1, parseFloat(getComputedStyle(frame).getPropertyValue('--r')) - INSET);
+        if (w <= 0 || h <= 0) { pts = []; return; }
+
+        pts = [];
+        const add = (x, y, nx, ny) => pts.push({ x, y, nx, ny, off: 0, v: 0 });
+        const arc = (cx, cy, a0, a1) => {
+          const s = STEP / r;
+          for (let a = a0; a < a1; a += s) {
+            const c = Math.cos(a), n = Math.sin(a);
+            add(cx + r * c, cy + r * n, c, n);
+          }
+        };
+
+        for (let x = r; x < w - r; x += STEP) add(x, 0, 0, -1);
+        arc(w - r, r, -Math.PI / 2, 0);
+        for (let y = r; y < h - r; y += STEP) add(w, y, 1, 0);
+        arc(w - r, h - r, 0, Math.PI / 2);
+        for (let x = w - r; x > r; x -= STEP) add(x, h, 0, 1);
+        arc(r, h - r, Math.PI / 2, Math.PI);
+        for (let y = h - r; y > r; y -= STEP) add(0, y, -1, 0);
+        arc(r, r, Math.PI, Math.PI * 1.5);
+
+        frame.classList.add('bendable');
+        draw();
+      }
+
+      function draw() {
+        if (!pts.length) return;
+        let d = '';
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i];
+          const x = (p.x + p.nx * p.off + INSET).toFixed(1);
+          const y = (p.y + p.ny * p.off + INSET).toFixed(1);
+          d += (i ? 'L' : 'M') + x + ' ' + y;
+        }
+        path.setAttribute('d', d + 'Z');
+      }
+
+      function tick() {
+        let moving = false;
+
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i];
+          let target = 0;
+
+          if (live) {
+            const dx = mx - p.x, dy = my - p.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < REACH * 2.2) {
+              // gaussian falloff, signed by which side of the border the
+              // pointer is on, so the line bends toward the cursor
+              const g = Math.exp(-(dist * dist) / (2 * REACH * REACH));
+              const proj = dx * p.nx + dy * p.ny;
+              target = Math.max(-MAXPULL, Math.min(MAXPULL, proj)) * g;
+            }
+          }
+
+          p.v += (target - p.off) * STIFF;
+          p.v *= DAMP;
+          p.off += p.v;
+
+          if (Math.abs(p.v) > 0.02 || Math.abs(p.off) > 0.02) moving = true;
+        }
+
+        draw();
+
+        if (moving || live) requestAnimationFrame(tick);
+        else running = false;
+      }
+
+      function wake() {
+        if (!running) { running = true; requestAnimationFrame(tick); }
+      }
+
+      stage.addEventListener('pointermove', e => {
+        const b = frame.getBoundingClientRect();
+        mx = e.clientX - b.left - INSET;
+        my = e.clientY - b.top  - INSET;
+        live = true;
+        wake();
+      }, { passive: true });
+
+      stage.addEventListener('pointerleave', () => { live = false; wake(); });
+
+      addEventListener('resize', build);
+      build();
+    })();
+  </script>
+</body>
+</html>

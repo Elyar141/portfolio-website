@@ -20,3 +20,10 @@ projects/Onboarding/login_cropped.gif
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Source screen recordings — 74MB to 469MB. Two are over GitHub's 100MB
+# limit; the web encodes beside them are what the site ships.
+projects/design-system v2/Design push.mp4
+projects/design-system v2/design-check2.mp4
+projects/design-system v2/main gif.mp4
+projects/design-system v2/interaction.mp4

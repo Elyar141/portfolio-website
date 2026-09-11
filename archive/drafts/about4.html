@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <title>About – Elshan Azadi</title>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('../../fonts/Geist-Variable.woff2') format('woff2');
+      font-weight: 100 900; font-style: normal;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:    #ede6ca;
+      --card:  #fdd7d4;
+      --blush: #fabab6;
+      --ink:   #141301;
+      --pen:   #2b2620;   /* graphite, a shade warmer than the UI ink */
+      --green: #6a6f4b;
+      --line:  rgba(20,19,1,0.16);
+      --r:     14px;
+    }
+
+    html, body { background: var(--bg); overflow-x: clip; }
+    body {
+      min-height: 100vh; font-family: 'Geist', sans-serif;
+      color: rgba(20,19,1,0.66); -webkit-font-smoothing: antialiased;
+      display: flex; flex-direction: column;
+    }
+
+    #veil {
+      position: fixed; inset: 0; background: var(--bg);
+      z-index: 999; transition: opacity 0.9s ease; pointer-events: none;
+    }
+
+    /* ── Nav ── */
+    #site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+      padding: 23.5px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(237,230,202,0.82); backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+    .logo-mark rect { fill: #6a6f4b; transition: fill 0.22s; }
+    .nav-logo:hover .logo-mark rect { fill: rgba(106,111,75,0.5); }
+    .nav-right { display: none; }
+
+    body #float-nav {
+      top: 19px; bottom: auto; left: 50%; transform: translateX(-50%);
+      z-index: 65; background: transparent;
+      border: 3px solid var(--blush);
+      box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+      padding: 7px; gap: 4px;
+    }
+    #float-nav .fn-item {
+      width: auto; height: 30px; padding: 0 15px; border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      white-space: nowrap; text-decoration: none; color: var(--green);
+      transition: background 0.2s ease, color 0.2s ease, transform 0.24s cubic-bezier(0.22,1,0.36,1);
+    }
+    #float-nav .fn-item:hover { background: var(--card); color: var(--ink); transform: translateY(-1px); }
+    #float-nav .fn-item.is-active { background: var(--green); color: var(--card); }
+
+    /* ── The panel ───────────────────────────────────────────────
+       Same footprint as the deck's stage — 20px gutters, seated
+       between the 88px nav and an equal margin below — but flat
+       blush with no frame around it. */
+    main {
+      display: flex; align-items: center; justify-content: center;
+      padding: 88px 20px;
+    }
+    .panel {
+      position: relative;
+      width: 100%; height: calc(100vh - 176px); min-height: 480px;
+      background: var(--card);
+      border-radius: var(--r);
+      overflow: hidden;
+      /* Keeps the multiply layers blending against the panel's own
+         blush and nothing behind it. */
+      isolation: isolate;
+    }
+
+    /* ── Texture ─────────────────────────────────────────────────
+       The halftone dots are gone; the stage is flat blush now, and
+       the paper carries all the texture in the composition. This is
+       the only layer left: a fine tooth on multiply, low enough to
+       be invisible as a pattern and only there to stop a large flat
+       field of one colour from banding. */
+    .grain {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      z-index: 1; pointer-events: none;
+      opacity: 0.11; mix-blend-mode: multiply;
+    }
+    .panel::after {
+      content: ''; position: absolute; inset: 0; z-index: 2;
+      pointer-events: none;
+      background: radial-gradient(118% 88% at 50% 44%,
+                  transparent 46%, rgba(20,19,1,0.13) 100%);
+    }
+    /* ── The note ────────────────────────────────────────────────
+       Tucked into the bottom-right corner and run a little past both
+       edges, so the panel crops it and it reads as slipped under the
+       frame rather than placed inside it. Only the margins are lost:
+       the writing sits in the upper left of the sheet, and the crop
+       takes 8% off a bottom quarter that was always blank.
+
+       Not rotated. The paper inside the photograph is already sitting
+       about eleven degrees off square, and a sheet that is tilted as
+       well as cropped stops reading as attached to the edge.
+
+       It sits below the collage in the stack, so the sheets land over
+       it — and it no longer leaves when the cord is pulled. In scene
+       one it is clear and readable; in scene two the work lands on
+       top of it, veiled by vellum rather than hidden. */
+    .note-holder { position: absolute; inset: 0; z-index: 3; }
+    .plate {
+      position: absolute; right: -2%; bottom: -8%;
+      display: block; height: 62%; width: auto; max-width: 34%;
+      overflow: visible;
+    }
+
+    /* ── The pull ────────────────────────────────────────────────
+       Hangs from above the panel, and comes down as soon as the page
+       does — waiting for the writing to finish made the only way in
+       invisible to anyone who wasn't going to wait seven seconds.
+
+       Four things move it, which is why it is four nested elements:
+       the button drops it in and shakes on hover (CSS), the swing
+       idles (CSS), and the arm takes the pointer's tilt (JS). Nesting
+       lets them all rotate about the same top anchor without ever
+       fighting over one transform. */
+    .pull {
+      position: absolute; top: 0; right: 9%; z-index: 55;
+      width: 52px; padding: 0 4px 26px; border: 0; background: none;
+      display: flex; flex-direction: column; align-items: center;
+      cursor: grab; touch-action: none;
+      transform: translateY(-102%); transform-origin: 50% 0;
+      transition: transform 900ms cubic-bezier(0.22, 1.12, 0.38, 1);
+      --pull: 0;
+    }
+    .pull.is-in { transform: translateY(0); }
+    .pull.is-dragging { cursor: grabbing; }
+
+    /* Brushed on the way past: the whole cord swings from its anchor
+       and settles, rather than the knob sliding sideways on its own.
+       Suppressed while dragging, where the pointer is already saying
+       exactly where the cord should be. */
+    .pull.is-in:hover { animation: nudge 700ms cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+    .pull.is-in.is-dragging:hover { animation: none; }
+    @keyframes nudge {
+      0%   { transform: rotate(0deg); }
+      16%  { transform: rotate(2.8deg); }
+      36%  { transform: rotate(-2.1deg); }
+      56%  { transform: rotate(1.3deg); }
+      76%  { transform: rotate(-0.6deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .pull:focus-visible { outline: none; }
+    .pull:focus-visible .knob { outline: 2px dashed var(--green); outline-offset: 4px; border-radius: 4px; }
+
+    .pull-swing, .pull-arm {
+      display: flex; flex-direction: column; align-items: center;
+      transform-origin: 50% 0;
+    }
+    .pull-swing { animation: sway 7.5s ease-in-out infinite; }
+    .pull.is-dragging .pull-swing { animation-play-state: paused; }
+    @keyframes sway {
+      0%, 100% { transform: rotate(-1deg); }
+      50%      { transform: rotate(1.05deg); }
+    }
+
+    /* Braided cord: two opposing diagonal repeats over a barrel
+       gradient. Cheaper than an image and it can be any length,
+       which it has to be — the length *is* the interaction. */
+    .cord {
+      width: 7px; height: calc(74px + var(--pull) * 1px);
+      border-radius: 0 0 2px 2px;
+      background:
+        repeating-linear-gradient(-56deg, rgba(255,255,255,0.85) 0 2px, rgba(255,255,255,0) 2px 5px),
+        repeating-linear-gradient(56deg,  rgba(20,19,1,0.16)  0 2px, rgba(20,19,1,0)  2px 5px),
+        linear-gradient(90deg, #c2beb4 0%, #f3f1ea 42%, #e4e0d6 68%, #b9b5aa 100%);
+      box-shadow: 0 0 0 0.5px rgba(20,19,1,0.06);
+    }
+    .knob {
+      display: block; width: 44px; height: auto; margin-top: -3px;
+      filter: drop-shadow(0 6px 10px rgba(20,19,1,0.26));
+      pointer-events: none; user-select: none; -webkit-user-drag: none;
+    }
+    .pull-hint {
+      margin-top: 9px;
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase; color: rgba(20,19,1,0.42);
+      opacity: 0; transition: opacity 500ms ease;
+    }
+    .pull.is-hinting .pull-hint { opacity: 1; }
+
+    /* ── The collage ─────────────────────────────────────────────
+       Sheets of paper laid over the stage, in two stocks: one opaque,
+       the rest vellum. The vellum is the whole idea — it is genuinely
+       translucent, so each sheet shows what is underneath it, the
+       note included, and the overlaps do the composing.
+
+       The box is pulled off the left edge and stops well short of
+       it, so the stage keeps an empty quarter on that side and the
+       sheets read as put down somewhere rather than laid out edge to
+       edge. Positions are percentages of that box, so the overlaps survive
+       every panel size, and type is sized in cqw off the same box, so
+       the collage scales as one object instead of reflowing. */
+    .collage {
+      position: absolute; left: 30%; right: 2%; top: 50%;
+      height: min(660px, 96%); transform: translateY(-50%);
+      z-index: 4; pointer-events: none;
+      container-type: size;
+    }
+    .ccard {
+      position: absolute; text-decoration: none; color: inherit;
+      will-change: transform;
+      /* Scene one: not hidden, parked. Each sheet sits roughly half
+         out of the top of the panel, so the first thing on the page
+         already shows there is more of it. */
+      transform: translateY(var(--peek)) rotate(calc(var(--rot) * 1deg + 3deg));
+      transition: transform 620ms cubic-bezier(0.6, 0, 0.85, 0.35) var(--dx);
+    }
+    .panel.is-cards .ccard {
+      transform: translateY(0) rotate(calc(var(--rot) * 1deg));
+      transition: transform 900ms cubic-bezier(0.2, 1.22, 0.4, 1) var(--d);
+      pointer-events: auto;
+    }
+
+    /* ── The paper ───────────────────────────────────────────────
+       Split from .ccard on purpose: the card is the positioner and
+       owns the long, bouncy drop, the sheet is the material and owns
+       the short hover lift. One element could not do both without
+       the hover inheriting the drop's 900ms bounce.
+
+       Square corners. Every other surface on this site is rounded,
+       but a sheet of paper is cut, and a 9px radius was the single
+       thing making these read as UI cards sitting on a photograph
+       rather than as paper lying on it. */
+    .sheet {
+      position: relative; display: flex; flex-direction: column;
+      align-items: flex-start; text-align: left;
+      width: 100%; height: 100%;
+      padding: clamp(16px, 2.5cqw, 32px) clamp(15px, 2.3cqw, 30px) clamp(14px, 2.1cqw, 26px);
+      /* The fibre carries its own alpha, so it can lie over a
+         translucent sheet without filling it in. */
+      background-image: url('../fibre.webp');
+      background-size: 128px 128px;
+      background-color: var(--wash);
+      border: 1px solid rgba(20,19,1,0.05);
+      box-shadow: 0 20px 30px -24px rgba(20,19,1,0.45),
+                  0 2px 4px -3px rgba(20,19,1,0.18);
+      transition: transform 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 320ms ease;
+    }
+    .ccard:hover .sheet {
+      transform: translateY(-7px);
+      box-shadow: 0 32px 42px -26px rgba(20,19,1,0.46),
+                  0 3px 6px -3px rgba(20,19,1,0.2);
+    }
+
+    /* Tints. The stage is blush, so a sheet only reads as its own
+       object if its wash sits somewhere else on the wheel — hence
+       sage and rose rather than four shades of cream. One sheet is
+       left opaque and put in the middle of the cascade, to give the
+       vellum on either side of it something solid to show through. */
+    .sheet--opaque { --wash: #f2eede; }
+    .sheet--cream  { --wash: rgba(247,244,232,0.50); }
+    .sheet--sage   { --wash: rgba(196,208,176,0.44); }
+    .sheet--rose   { --wash: rgba(233,158,150,0.38); }
+    .sheet--ochre  { --wash: rgba(226,201,144,0.40); }
+
+    /* Vellum: a low-alpha wash plus a blur of whatever is behind it.
+       The blur is what separates tracing paper from tinted glass —
+       without it you read the sheet underneath too clearly and the
+       front sheet stops looking like paper. */
+    .sheet--vellum {
+      backdrop-filter: blur(2.4px) brightness(1.06) saturate(0.8);
+      -webkit-backdrop-filter: blur(2.4px) brightness(1.06) saturate(0.8);
+      box-shadow: 0 14px 22px -20px rgba(20,19,1,0.38),
+                  0 1px 3px -2px rgba(20,19,1,0.15);
+    }
+    /* One fold, not three. A crease is a place where the paper
+       doubles, which is why it is a dark line with a lit edge just
+       below it — but at this strength it is a hint, not a feature. */
+    .sheet--vellum::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, transparent calc(52% - 2px),
+                  rgba(20,19,1,0.035) 52%, rgba(255,255,255,0.26) calc(52% + 1px),
+                  transparent calc(52% + 4px));
+    }
+
+    /* ── The arrangement ─────────────────────────────────────────
+       No two sheets share a size, a proportion, a top or a bottom —
+       the last of those is what stops four cards reading as a row.
+       The overlaps are deliberately heavy, around a third of a sheet
+       in places, so the group holds together as one pile instead of
+       spreading into a line, and two sheets run up past the top of
+       the box for the panel to crop.
+
+       --peek parks each sheet with about 45% of its own height still
+       showing. It has to be per card: the shift answers both the
+       height and where the sheet eventually lands, so one shared
+       percentage would leave four different amounts on show. */
+    .c-p1 { left: 0;   top:  6%; width: 30%; height: 62%; --rot: -2.6; --peek: -68%; --d: 0ms;   --dx: 240ms; z-index: 1; }
+    .c-p2 { left: 20%; top: -8%; width: 33%; height: 82%; --rot: 1.5;  --peek: -48%; --d: 110ms; --dx: 160ms; z-index: 2; }
+    .c-p3 { left: 47%; top: 22%; width: 29%; height: 70%; --rot: -1.2; --peek: -89%; --d: 220ms; --dx: 80ms;  z-index: 3; }
+    .c-p4 { left: 68%; top: -2%; width: 32%; height: 76%; --rot: 2.4;  --peek: -55%; --d: 330ms; --dx: 0ms;   z-index: 4; }
+
+    /* ── Type ────────────────────────────────────────────────────
+       The site's own voice, not a borrowed one: JetBrains Mono caps
+       for the labels, the tight Helvetica statement for the title,
+       Geist for the prose, all ranged left. The eyebrow opens with a
+       5px olive square — one pixel of the logo's glyph, the same
+       unit the dashed frame is built from. */
+    .s-head { display: flex; align-items: center; gap: 9px; }
+    .s-dot { width: 5px; height: 5px; background: var(--green); flex: none; }
+    .s-tag, .s-foot {
+      font-family: 'JetBrains Mono', monospace; font-weight: 700;
+      font-size: clamp(7.5px, 0.9cqw, 10px); letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .s-tag  { color: rgba(20,19,1,0.5); }
+    .s-foot { color: var(--green); margin-top: clamp(12px, 1.8cqw, 22px); }
+    .ccard:hover .s-foot { color: var(--ink); }
+
+    /* The title block is pushed to the foot of the sheet rather than
+       centred in it, so four sheets of four different heights still
+       agree on where their type starts from. */
+    .s-body { margin-top: auto; }
+    .s-title {
+      display: block;
+      font-family: 'Helvetica Neue', Helvetica, 'Geist', sans-serif;
+      font-weight: 700; font-size: clamp(19px, 2.9cqw, 42px);
+      letter-spacing: -0.04em; line-height: 1.0;
+      color: rgba(20,19,1,0.92);
+    }
+    .s-desc {
+      display: block; margin-top: clamp(9px, 1.3cqw, 17px); max-width: 26ch;
+      font-size: clamp(11px, 1.28cqw, 16px); line-height: 1.5;
+      color: rgba(20,19,1,0.62);
+    }
+
+    /* ── Frame ───────────────────────────────────────────────────
+       The site's border: an SVG stroke rather than a CSS one,
+       because a dashed stroke is the only thing that renders exact
+       5px squares AND follows the corner radius. stroke-width ==
+       dash length == one pixel of the logo's glyph.
+       The <rect> is the static border; JS swaps to <path> so it
+       can bend under the pointer. */
+    .frame { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+    .frame svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .frame rect, .frame path {
+      fill: none; stroke: var(--green);
+      stroke-width: 5; stroke-dasharray: 5 6;
+    }
+    .frame rect {
+      x: 3px; y: 3px;
+      width: calc(100% - 6px); height: calc(100% - 6px);
+      rx: calc(var(--r) - 3px);
+    }
+    .frame path { display: none; }
+    .frame.bendable rect { display: none; }
+    .frame.bendable path { display: block; }
+    @media (max-width: 859px) { .frame { display: none; } }
+
+    /* One dasharray value covers every stroke because pathLength
+       normalises them all to 1, whatever their real length.
+       Duration and delay come from JS per stroke — the pacing is
+       the whole point. The easing is gentle at both ends because a
+       pen accelerates off the paper and slows into a stop. */
+    .stroke {
+      fill: none; stroke: var(--pen);
+      stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 1; stroke-dashoffset: 1;
+      animation: write 200ms cubic-bezier(0.35, 0, 0.7, 1) both;
+    }
+    @keyframes write { to { stroke-dashoffset: 0; } }
+
+    .replay {
+      position: absolute; z-index: 5; left: 20px; bottom: 14px;
+      transition: opacity 0.3s ease;
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(20,19,1,0.42); background: none; border: 0;
+      cursor: pointer; padding: 6px 2px;
+    }
+    .replay:hover { color: var(--green); }
+
+    @media (max-width: 859px) {
+      #site-nav { padding: 12px 22px; }
+      body #float-nav { top: 7.5px; }
+      main { padding: 78px 14px 20px; }
+      .panel { height: calc(100vh - 150px); min-height: 420px; }
+      /* There is no room for a note beside a collage on a phone, so
+         the note goes back to being the whole of scene one — centred,
+         and sized off width rather than height, which is the binding
+         constraint here. */
+      .plate { right: -4%; bottom: -5%; height: auto; width: 78%; max-width: none; max-height: 56%; }
+      .pull { right: 3%; width: 42px; }
+      .knob { width: 34px; }
+      .cord { height: calc(58px + var(--pull) * 1px); }
+
+      /* The cascade turns ninety degrees: a pile of letters down the
+         page rather than four sheets across it. Stacked like this
+         they can't each be half out of the top, so parked they fan
+         into a stack of edges instead — same promise, less room to
+         make it in. */
+      .collage { left: 3%; right: 3%; height: 94%; }
+      .c-p1 { left: 2%;  top: -4%; width: 86%; height: 34%; --rot: -1.6; --peek: -24%;  }
+      .c-p2 { left: 10%; top: 20%; width: 88%; height: 33%; --rot: 1.2;  --peek: -109%; }
+      .c-p3 { left: 0;   top: 44%; width: 84%; height: 30%; --rot: -1;   --peek: -207%; }
+      .c-p4 { left: 8%;  top: 65%; width: 90%; height: 35%; --rot: 1.7;  --peek: -266%; }
+      .sheet { padding: 15px 20px; }
+      .s-desc { max-width: 40ch; }
+    }
+    @media (max-width: 599px) {}
+
+    @media (prefers-reduced-motion: reduce) {
+      .stroke { animation: none; stroke-dashoffset: 0; }
+      .pull-swing { animation: none; }
+      .pull.is-in:hover { animation: none; }
+      .pull, .ccard, .panel.is-cards .ccard,
+      .sheet { transition-duration: 1ms; transition-delay: 0ms; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="veil"></div>
+
+  <nav id="site-nav">
+    <a class="nav-logo" href="../index.html" aria-label="Home">
+      <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none">
+        <rect x="0" y="0" width="5" height="5"/><rect x="6" y="0" width="5" height="5"/>
+        <rect x="12" y="0" width="5" height="5"/><rect x="18" y="0" width="5" height="5"/>
+        <rect x="0" y="6" width="5" height="5"/><rect x="24" y="6" width="5" height="5"/>
+        <rect x="0" y="12" width="5" height="5"/><rect x="24" y="12" width="5" height="5"/>
+        <rect x="0" y="18" width="5" height="5"/><rect x="6" y="18" width="5" height="5"/>
+        <rect x="12" y="18" width="5" height="5"/><rect x="18" y="18" width="5" height="5"/>
+        <rect x="0" y="24" width="5" height="5"/><rect x="0" y="30" width="5" height="5"/>
+        <rect x="0" y="36" width="5" height="5"/>
+      </svg>
+    </a>
+    <div class="nav-right"></div>
+  </nav>
+
+  <main>
+    <div class="panel">
+
+      <!-- feTurbulence for the fine tooth: no asset to load, and it
+           tiles seamlessly at any panel size. -->
+      <svg class="grain" aria-hidden="true">
+        <filter id="grainf">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+          <feColorMatrix type="saturate" values="0"/>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#grainf)" opacity="0.55"/>
+      </svg>
+
+      <div class="note-holder">
+        <!-- The viewBox is the note image's own cropped pixel space, so
+             every coordinate below is measured off the real photograph
+             rather than guessed. -->
+        <svg class="plate" viewBox="0 0 1015 1186" preserveAspectRatio="xMaxYMax meet" role="img"
+             aria-label="A handwritten note: I design products that improve when you use them. The work is in seeing what gets better each time.">
+          <image href="../note.webp" x="0" y="0" width="1015" height="1186"/>
+          <!-- The paper is a rectangle 820 x 1045 rotated -11.26 degrees,
+               with its top-left corner at (0, 160) of the crop. Measured
+               by scanning the source pixels for beige only — the first
+               pass traced the white mat behind the note and came out a
+               degree off. Putting that transform on the text means
+               everything inside is laid out in the paper's own space:
+               x runs along the sheet, y down it. -->
+          <g id="ink" transform="translate(0 160) rotate(-11.26)"></g>
+        </svg>
+      </div>
+
+      <!-- The rest of the About page, hanging above the stage until
+           the cord brings it down. -->
+      <!-- The rest of the About page, parked half out of the top of
+           the stage until the cord brings it down. -->
+      <div class="collage" id="collage">
+
+        <a class="ccard c-p1" href="../verity.html">
+          <span class="sheet sheet--opaque">
+            <span class="s-head"><i class="s-dot"></i><span class="s-tag">UX Research &middot; 2026</span></span>
+            <span class="s-body">
+              <span class="s-title">Verity</span>
+              <span class="s-desc">Designing trust in AI-assisted compliance review. Making a system that is sometimes wrong feel safe to act on.</span>
+            </span>
+            <span class="s-foot">Case study &rarr;</span>
+          </span>
+        </a>
+
+        <a class="ccard c-p2" href="../designsystem.html">
+          <span class="sheet sheet--vellum sheet--sage">
+            <span class="s-head"><i class="s-dot"></i><span class="s-tag">Design Systems &middot; 2025</span></span>
+            <span class="s-body">
+              <span class="s-title">Design System</span>
+              <span class="s-desc">Figma and Vue sharing one source of truth. Built with Claude Code and the Figma MCP.</span>
+            </span>
+            <span class="s-foot">Case study &rarr;</span>
+          </span>
+        </a>
+
+        <a class="ccard c-p3" href="../betterwords.html">
+          <span class="sheet sheet--vellum sheet--rose">
+            <span class="s-head"><i class="s-dot"></i><span class="s-tag">Shipped Experiment &middot; 2025</span></span>
+            <span class="s-body">
+              <span class="s-title">Better Words</span>
+              <span class="s-desc">An AI speech coach with voice cloning. One button.</span>
+            </span>
+            <span class="s-foot">Case study &rarr;</span>
+          </span>
+        </a>
+
+        <a class="ccard c-p4" href="../globalencounters.html">
+          <span class="sheet sheet--vellum sheet--cream">
+            <span class="s-head"><i class="s-dot"></i><span class="s-tag">UX/UI Design &middot; 2026</span></span>
+            <span class="s-body">
+              <span class="s-title">Global Encounters</span>
+              <span class="s-desc">A dated, bureaucratic application platform turned into something worthy of its community.</span>
+            </span>
+            <span class="s-foot">Case study &rarr;</span>
+          </span>
+        </a>
+
+      </div>
+
+      <div class="frame" aria-hidden="true">
+        <svg><rect width="100%" height="100%" rx="14" /><path /></svg>
+      </div>
+
+      <button class="pull" id="pull" type="button"
+              aria-expanded="false" aria-controls="collage"
+              aria-label="Pull the cord to show the rest of the page">
+        <span class="pull-swing">
+          <span class="pull-arm">
+            <span class="cord"></span>
+            <img class="knob" src="../pull.webp" alt="" draggable="false" />
+          </span>
+        </span>
+        <span class="pull-hint" aria-hidden="true">Pull</span>
+      </button>
+
+      <button class="replay" id="replay" type="button">Write again</button>
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener('load', () => {
+      const veil = document.getElementById('veil');
+      requestAnimationFrame(() => {
+        veil.style.opacity = '0';
+        setTimeout(() => veil.remove(), 950);
+      });
+    });
+
+    /* ════════════════════════════════════════════════════════════
+       HAND LETTERING
+
+       Rough capitals authored as monoline strokes on a 100-unit cap
+       height, baseline at y=100. Every glyph is the path a pen would
+       actually take, in the order a hand would take it — which is
+       what lets the animation be a real draw-on rather than a wipe
+       across finished type.
+
+       Composed, not set: each letter gets its own tilt and baseline
+       wobble from a seeded generator, so repeated letters are never
+       identical. That irregularity is the whole difference between
+       this and a handwriting font.
+    ════════════════════════════════════════════════════════════ */
+    (() => {
+      const NS = 'http://www.w3.org/2000/svg';
+
+      const GLYPH = {
+        'A': { w:76, s:['M 4 100 L 38 4 L 72 100','M 16 68 L 60 68'] },
+        'B': { w:66, s:['M 6 4 L 6 100','M 6 6 C 46 2 60 16 56 30 C 52 44 38 50 6 50','M 6 50 C 50 48 64 60 60 76 C 56 92 40 100 6 100'] },
+        'C': { w:70, s:['M 64 20 C 52 4 22 2 12 30 C 2 58 12 94 38 98 C 54 100 62 92 68 82'] },
+        'D': { w:70, s:['M 6 4 L 6 100','M 6 4 C 48 2 66 22 66 52 C 66 82 46 102 6 100'] },
+        'E': { w:58, s:['M 54 6 L 6 6 L 6 100 L 56 97','M 6 52 L 42 50'] },
+        'F': { w:54, s:['M 6 100 L 6 5 L 52 7','M 6 51 L 40 49'] },
+        'G': { w:74, s:['M 66 20 C 52 4 20 2 11 32 C 2 62 15 96 41 98 C 58 99 68 88 68 66 L 44 65'] },
+        'H': { w:70, s:['M 6 4 L 6 100','M 64 2 L 64 100','M 6 52 L 64 50'] },
+        'I': { w:20, s:['M 10 4 L 10 100'] },
+        'J': { w:46, s:['M 36 4 L 38 74 C 39 92 27 102 15 96 C 9 93 6 85 6 78'] },
+        'K': { w:66, s:['M 6 4 L 6 100','M 62 5 L 9 56','M 26 42 L 64 100'] },
+        'L': { w:52, s:['M 6 4 L 6 100 L 50 96'] },
+        'M': { w:90, s:['M 4 100 L 9 4 L 45 66 L 79 4 L 86 100'] },
+        'N': { w:74, s:['M 6 100 L 8 4 L 66 96 L 68 2'] },
+        'O': { w:78, s:['M 38 4 C 15 6 4 30 6 58 C 8 84 22 100 40 98 C 60 96 73 76 72 48 C 71 22 59 3 38 4'] },
+        'P': { w:62, s:['M 6 100 L 6 4','M 6 6 C 46 2 62 16 60 32 C 58 48 42 58 6 56'] },
+        'Q': { w:78, s:['M 38 4 C 15 6 4 30 6 58 C 8 84 22 100 40 98 C 60 96 73 76 72 48 C 71 22 59 3 38 4','M 46 74 L 76 106'] },
+        'R': { w:66, s:['M 6 100 L 6 4','M 6 6 C 44 2 60 16 58 32 C 56 48 40 55 6 54','M 30 54 L 62 100'] },
+        'S': { w:62, s:['M 56 18 C 47 5 21 1 14 16 C 7 31 19 42 35 50 C 51 58 62 69 55 84 C 48 99 19 100 8 87'] },
+        'T': { w:64, s:['M 4 7 L 60 4','M 32 6 L 32 100'] },
+        'U': { w:70, s:['M 6 4 L 8 70 C 10 91 24 100 38 98 C 55 96 64 83 63 67 L 62 2'] },
+        'V': { w:72, s:['M 4 4 L 36 100 L 68 2'] },
+        'W': { w:96, s:['M 4 4 L 22 100 L 48 32 L 70 100 L 90 2'] },
+        'X': { w:68, s:['M 6 4 L 62 100','M 62 4 L 6 100'] },
+        'Y': { w:68, s:['M 4 4 L 34 52 L 64 2','M 34 52 L 34 100'] },
+        'Z': { w:64, s:['M 6 7 L 58 4 L 8 98 L 60 95'] },
+        '.': { w:20, s:['M 9 95 L 10 98'] },
+        ',': { w:20, s:['M 10 92 L 5 110'] },
+        "'": { w:16, s:['M 9 4 L 6 26'] }
+      };
+      const SPACE = 32;
+
+      /* Seeded, so the wobble is identical on every reload. Random
+         each time would mean never being able to judge a change. */
+      let seed;
+      const rnd = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
+
+      /* Laid out in paper space: 820 wide, 1045 tall, with the
+         perforated tabs eating the top ~100. Left aligned against a
+         72-unit margin, because nobody centres a note. */
+      const M = 72, MAXW = 686;
+      const LINES = [
+        { text: 'I DESIGN',          cap: 60, base: 240, weight: 5.1 },
+        { text: 'PRODUCTS THAT',     cap: 60, base: 334, weight: 5.1 },
+        { text: 'IMPROVE WHEN',      cap: 60, base: 428, weight: 5.1 },
+        { text: 'YOU USE THEM.',     cap: 60, base: 522, weight: 5.1 },
+        { text: 'THE WORK IS IN',    cap: 33, base: 668, weight: 2.9 },
+        { text: 'SEEING WHAT GETS',  cap: 33, base: 722, weight: 2.9 },
+        { text: 'BETTER EACH TIME',  cap: 33, base: 776, weight: 2.9 }
+      ];
+
+      const TRACK = 11;   // letter spacing, in glyph units
+
+      /* ── Pacing ──────────────────────────────────────────────
+         One pen can only be in one place, so strokes run strictly
+         in sequence and each one's duration comes from its own
+         measured length — a long sweep takes longer than a
+         crossbar. Then the pen lifts between strokes, waits a
+         little longer between words, and takes a breath at the
+         end of a line. */
+      const TOTAL   = 7000;   // ms for the whole note
+      const LIFT    = 18;     // pen off the paper, between strokes
+      const WORD    = 95;     // between words
+      const NEWLINE = 320;    // travelling back to the left margin
+      const MINDUR  = 55;     // even a full stop needs to be seen
+
+      const measure = text => {
+        let w = 0;
+        for (const ch of text) w += ((GLYPH[ch] || { w: SPACE }).w) + TRACK;
+        return w - TRACK;
+      };
+
+      function write() {
+        seed = 20260816;
+        const ink = document.getElementById('ink');
+        ink.textContent = '';
+
+        // Pass one lays the ink down. Nothing can be timed yet: a
+        // path has to be in the document before it will report its
+        // own length.
+        const strokes = [];
+
+        for (const L of LINES) {
+          // Fit first. A line that runs off the paper is worse than
+          // one a few points smaller than its neighbours.
+          let cap = L.cap;
+          const raw = measure(L.text) * (cap / 100);
+          if (raw > MAXW) cap = cap * (MAXW / raw);
+
+          const s = cap / 100;
+          let x = M;
+
+          for (const ch of L.text) {
+            const g = GLYPH[ch];
+            const gw = g ? g.w : SPACE;
+            if (g) {
+              const jr = (rnd() * 2 - 1) * 2.4;   // letter tilt
+              const jy = (rnd() * 2 - 1) * 2.8;   // baseline wobble
+              const t  = 'translate(' + x.toFixed(2) + ' ' + (L.base + jy - cap).toFixed(2) +
+                         ') scale(' + s.toFixed(4) + ') rotate(' + jr.toFixed(2) + ' ' + (gw / 2) + ' 50)';
+              for (const d of g.s) {
+                const p = document.createElementNS(NS, 'path');
+                p.setAttribute('class', 'stroke');
+                p.setAttribute('d', d);
+                p.setAttribute('transform', t);
+                p.setAttribute('pathLength', '1');
+                // Stroke width is given in glyph units, so the scale
+                // has to be divided back out for it to land on target.
+                p.setAttribute('stroke-width', (L.weight / s).toFixed(2));
+                ink.appendChild(p);
+                strokes.push({ el: p, scale: s, gap: LIFT });
+              }
+            } else if (strokes.length) {
+              strokes[strokes.length - 1].gap = WORD;   // a space costs time, not ink
+            }
+            x += (gw + TRACK) * s;
+          }
+
+          // The rule under the headline.
+          if (L === LINES[3]) {
+            const r = document.createElementNS(NS, 'path');
+            r.setAttribute('class', 'stroke');
+            r.setAttribute('d', 'M 70 572 C 250 567 500 575 690 569');
+            r.setAttribute('pathLength', '1');
+            r.setAttribute('stroke-width', '3.2');
+            ink.appendChild(r);
+            strokes.push({ el: r, scale: 1, gap: NEWLINE });
+          } else if (strokes.length) {
+            strokes[strokes.length - 1].gap = NEWLINE;
+          }
+        }
+
+        if (!strokes.length) return;
+
+        /* Pass two: measure, then time. getTotalLength reports a path
+           in its own coordinates, before the transform, so it has to
+           be scaled back up to get the distance the pen really
+           travels — otherwise the small lines would draw at the same
+           rate as the big ones and the single-hand illusion breaks. */
+        let travel = 0, pauses = 0;
+        for (const st of strokes) {
+          st.len = st.el.getTotalLength() * st.scale;
+          travel += st.len;
+          pauses += st.gap;
+        }
+
+        // Whatever is left after the pauses is drawing time, shared
+        // out in proportion to distance: one pen, one speed.
+        const perUnit = Math.max(0.25, (TOTAL - pauses) / travel);
+
+        let at = 0;
+        for (const st of strokes) {
+          const dur = Math.max(MINDUR, st.len * perUnit);
+          st.el.style.animationDelay = at.toFixed(0) + 'ms';
+          st.el.style.animationDuration = dur.toFixed(0) + 'ms';
+          at += dur + st.gap;
+        }
+      }
+
+      write();
+      document.getElementById('replay').addEventListener('click', write);
+    })();
+  </script>
+
+  <script>
+    /* ════════════════════════════════════════════════════════════
+       THE CORD
+
+       Lowered in once the note has been written, then it drives the
+       whole switch: the note goes up, four cards come down, and
+       pulling again puts it back.
+
+       The cord's length is the interaction, so it is a plain number
+       on --pull that everything else reads off. While the pointer is
+       down that number tracks the pointer exactly — anything springy
+       here would feel like lag rather than weight. The spring only
+       runs after release, underdamped so it overshoots past its rest
+       length and settles, which is the whole recoil.
+    ════════════════════════════════════════════════════════════ */
+    (() => {
+      const panel   = document.querySelector('.panel');
+      const pull    = document.getElementById('pull');
+      const collage = document.getElementById('collage');
+      if (!panel || !pull) return;
+
+      const CALM  = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const MAX   = 165;   // cord can't be pulled past this
+      const GIVE  = 90;    // beyond here it resists — the mechanism is near its end
+      const FIRE  = 66;    // pulled this far and it counts
+      const TAP   = 118;   // how far a click or a keypress pulls it
+
+      let len = 0, vel = 0, target = 0, tilt = 0, tiltTarget = 0;
+      let dragging = false, running = false, moved = 0, sx = 0, sy = 0;
+      let cards = false, busy = false;
+
+      const resist = d => d <= GIVE ? d : Math.min(MAX, GIVE + (d - GIVE) * 0.42);
+
+      const arm = pull.querySelector('.pull-arm');
+      function paint() {
+        pull.style.setProperty('--pull', len.toFixed(1));
+        arm.style.transform = 'rotate(' + tilt.toFixed(2) + 'deg)';
+      }
+      function tick() {
+        // Stiff and heavily damped while held (it should feel bolted to
+        // the pointer); loose and bouncy once let go.
+        vel += (target - len) * (dragging ? 0.9 : 0.17);
+        vel *= dragging ? 0.45 : 0.78;
+        len += vel;
+        tilt += (tiltTarget - tilt) * 0.2;
+        paint();
+        const still = Math.abs(vel) < 0.05 && Math.abs(target - len) < 0.2
+                                          && Math.abs(tiltTarget - tilt) < 0.02;
+        if (dragging || !still) requestAnimationFrame(tick);
+        else { len = target; tilt = tiltTarget; paint(); running = false; }
+      }
+      function wake() { if (!running) { running = true; requestAnimationFrame(tick); } }
+
+      /* Parked sheets are half off the top of the panel and mostly
+         unreadable, so they stay out of the tab order until the cord
+         has actually brought them in. */
+      function offstage() { if (collage) collage.inert = !cards; }
+
+      /* ── The switch ──────────────────────────────────────────
+         busy holds for the length of the slowest leg so a second
+         pull can't land mid-swap and strand a card off-stage. */
+      function toggle() {
+        if (busy) return;
+        busy = true;
+        cards = !cards;
+        panel.classList.toggle('is-cards', cards);
+        pull.setAttribute('aria-expanded', String(cards));
+        pull.setAttribute('aria-label', cards
+          ? 'Pull the cord to bring the note back'
+          : 'Pull the cord to show the rest of the page');
+        pull.classList.remove('is-hinting');
+        offstage();
+        // The note stays put through the swap now, so it keeps the
+        // writing it already has. Re-inking is the replay button's
+        // job and nothing else's.
+        setTimeout(() => { busy = false; }, CALM ? 30 : 1350);
+      }
+
+      // A click or a keypress gets the same pull, just performed for
+      // you — no separate code path, so it can't drift out of sync.
+      function yank() {
+        if (busy) return;
+        target = TAP; wake();
+        setTimeout(() => { target = 0; toggle(); wake(); }, 190);
+      }
+
+      pull.addEventListener('pointerdown', e => {
+        if (busy) return;
+        pull.setPointerCapture(e.pointerId);
+        dragging = true; moved = 0; sx = e.clientX; sy = e.clientY;
+        pull.classList.add('is-dragging');
+        wake();
+      });
+      pull.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const dy = e.clientY - sy;
+        moved = Math.max(moved, Math.abs(dy), Math.abs(e.clientX - sx));
+        target = resist(Math.max(0, dy));
+        // A sideways drag swings the whole arm, so the cord stays
+        // attached to the pointer rather than just getting longer.
+        tiltTarget = Math.max(-7, Math.min(7, (e.clientX - sx) * 0.055));
+      });
+      function release() {
+        if (!dragging) return;
+        dragging = false;
+        pull.classList.remove('is-dragging');
+        const fired = target > FIRE;
+        target = 0; tiltTarget = 0; wake();
+        if (fired) toggle();
+        else if (moved < 5) yank();   // a click, not a drag
+      }
+      pull.addEventListener('pointerup', release);
+      pull.addEventListener('pointercancel', release);
+      // The button's own click would double-fire after a drag.
+      pull.addEventListener('click', e => e.preventDefault());
+      pull.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); yank(); }
+      });
+
+      /* Lowered in as soon as the veil is off, not after the writing.
+         The note takes seven seconds and the cord is the only way
+         into the rest of the page — hiding it for that long hides the
+         page from anyone who doesn't feel like waiting. The label
+         follows a beat later so the two don't arrive at once. */
+      offstage();
+      setTimeout(() => {
+        pull.classList.add('is-in');
+        setTimeout(() => {
+          if (!cards) pull.classList.add('is-hinting');
+        }, CALM ? 0 : 1200);
+      }, CALM ? 0 : 700);
+    })();
+  </script>
+
+  <script>
+    /* ── Bendable border ──────────────────────────────────────────
+       The frame's outline is sampled into points, each with an
+       outward normal and its own spring. The pointer pulls nearby
+       points along their normal; the springs are underdamped, so
+       letting go overshoots and settles — that is the bounce.
+    ─────────────────────────────────────────────────────────────── */
+    (() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const host  = document.querySelector('.panel');
+      const frame = document.querySelector('.frame');
+      const path  = frame && frame.querySelector('path');
+      if (!host || !path) return;
+
+      const INSET = 3, STEP = 14, REACH = 90, MAXPULL = 26, STIFF = 0.16, DAMP = 0.74;
+      let pts = [], w = 0, h = 0, r = 0;
+      let mx = -1e4, my = -1e4, live = false, running = false;
+
+      function build() {
+        const b = frame.getBoundingClientRect();
+        w = b.width - INSET * 2; h = b.height - INSET * 2;
+        r = Math.max(1, parseFloat(getComputedStyle(frame).getPropertyValue('--r')) - INSET);
+        if (w <= 0 || h <= 0) { pts = []; return; }
+        pts = [];
+        const add = (x, y, nx, ny) => pts.push({ x, y, nx, ny, off: 0, v: 0 });
+        const arc = (cx, cy, a0, a1) => {
+          const s = STEP / r;
+          for (let a = a0; a < a1; a += s) {
+            const c = Math.cos(a), n = Math.sin(a);
+            add(cx + r * c, cy + r * n, c, n);
+          }
+        };
+        for (let x = r; x < w - r; x += STEP) add(x, 0, 0, -1);
+        arc(w - r, r, -Math.PI / 2, 0);
+        for (let y = r; y < h - r; y += STEP) add(w, y, 1, 0);
+        arc(w - r, h - r, 0, Math.PI / 2);
+        for (let x = w - r; x > r; x -= STEP) add(x, h, 0, 1);
+        arc(r, h - r, Math.PI / 2, Math.PI);
+        for (let y = h - r; y > r; y -= STEP) add(0, y, -1, 0);
+        arc(r, r, Math.PI, Math.PI * 1.5);
+        frame.classList.add('bendable');
+        draw();
+      }
+      function draw() {
+        if (!pts.length) return;
+        let d = '';
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i];
+          d += (i ? 'L' : 'M') + (p.x + p.nx * p.off + INSET).toFixed(1) +
+               ' ' + (p.y + p.ny * p.off + INSET).toFixed(1);
+        }
+        path.setAttribute('d', d + 'Z');
+      }
+      function tick() {
+        let moving = false;
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i];
+          let target = 0;
+          if (live) {
+            const dx = mx - p.x, dy = my - p.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < REACH * 2.2) {
+              // gaussian falloff, signed by which side of the border
+              // the pointer is on, so the line bends toward the cursor
+              const g = Math.exp(-(dist * dist) / (2 * REACH * REACH));
+              target = Math.max(-MAXPULL, Math.min(MAXPULL, dx * p.nx + dy * p.ny)) * g;
+            }
+          }
+          p.v += (target - p.off) * STIFF;
+          p.v *= DAMP;
+          p.off += p.v;
+          if (Math.abs(p.v) > 0.02 || Math.abs(p.off) > 0.02) moving = true;
+        }
+        draw();
+        if (moving || live) requestAnimationFrame(tick); else running = false;
+      }
+      function wake() { if (!running) { running = true; requestAnimationFrame(tick); } }
+
+      host.addEventListener('pointermove', e => {
+        const b = frame.getBoundingClientRect();
+        mx = e.clientX - b.left - INSET;
+        my = e.clientY - b.top - INSET;
+        live = true; wake();
+      }, { passive: true });
+      host.addEventListener('pointerleave', () => { live = false; wake(); });
+
+      addEventListener('resize', build);
+      build();
+    })();
+  </script>
+
+  <script src="../floating-nav.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const nav = document.getElementById('float-nav');
+      if (!nav) return;
+      const labels = ['Work', 'About', 'Say hi'];
+      nav.querySelectorAll('.fn-item').forEach((el, i) => {
+        if (!labels[i]) return;
+        el.textContent = labels[i];
+        el.setAttribute('aria-label', labels[i]);
+        el.setAttribute('title', labels[i]);
+      });
+    });
+  </script>
+</body>
+</html>

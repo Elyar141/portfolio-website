@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <title>Elshan Azadi — Product Designer</title>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('../fonts/Geist-Variable.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #0a0a0a;
+      --panel:   #1a1a1a;
+      --line:    #2e2e2e;
+      --mute:    #8c8c8c;
+      --dim:     #a0a0a0;
+      --mid:     #c6c6c6;
+      --hi:      #f0f0f0;
+      --white:   #f7f7f7;
+      --green:        #c8e899;
+      --green-dim:    rgba(200,232,153,0.7);
+      --green-border: rgba(200,232,153,0.5);
+      --cream:   #ece6d3;
+      --ink:     #0a0a0a;
+    }
+
+    html { background: var(--bg); scroll-behavior: smooth; }
+
+    /* Lenis smooth-scroll hooks (classes set by the library at runtime) */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-stopped { overflow: hidden; }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      font-family: 'Geist', sans-serif;
+      color: var(--dim);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px;
+    }
+
+    /* ── Nav (global component) ─────────────────────────────────── */
+    #site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 30;
+      padding: 14px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+    .logo-mark rect { fill: var(--green); transition: fill 0.22s; }
+    .nav-logo:hover .logo-mark rect { fill: var(--green-border); }
+
+    /* ── Intro ──────────────────────────────────────────────────── */
+    #intro {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(100px, 14vh, 160px) clamp(24px, 5vw, 72px);
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .intro-text {
+      font-size: clamp(22px, 2.3vw, 34px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+      color: var(--hi);
+      max-width: 42ch;
+      text-wrap: pretty;
+    }
+    .intro-links {
+      display: flex;
+      gap: 26px;
+      margin-top: clamp(24px, 2.6vw, 34px);
+    }
+    .intro-links a,
+    .intro-links button {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--dim);
+      text-decoration: none;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: color 0.18s;
+    }
+    .intro-links a:hover,
+    .intro-links button:hover { color: var(--green); }
+    .intro-links svg { display: block; }
+
+    /* ── Filter bar ─────────────────────────────────────────────── */
+    #work {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 5vw, 72px) clamp(80px, 10vw, 140px);
+    }
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: clamp(24px, 3vw, 40px);
+    }
+    .filter-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--dim);
+      background: none;
+      border: 1px solid #626262;
+      border-radius: 4px;
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: color 0.18s, border-color 0.18s, background 0.18s;
+    }
+    .filter-btn:hover { color: var(--hi); border-color: #8a8a8a; }
+    .filter-btn.is-active {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--ink);
+    }
+
+    /* ── Project grid ───────────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(14px, 1.6vw, 24px);
+    }
+
+    .pc {
+      display: block;
+      text-decoration: none;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: clamp(10px, 1.1vw, 16px);
+      animation: pc-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      transition: border-color 0.2s;
+    }
+    .pc:hover { border-color: #3c3c3c; }
+    .pc.is-hidden { display: none; }
+    @keyframes pc-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* framed image + two-phase flip — same DNA as the current landing cards */
+    .pc-frame {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      perspective: 1400px;
+    }
+    .pc-front, .pc-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .pc-front {
+      background: var(--panel);
+      transition: transform 0.3s cubic-bezier(0.55, 0, 1, 0.45);
+    }
+    .pc-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .pc-back {
+      background: var(--green);
+      padding: clamp(18px, 2vw, 28px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform: rotateY(-90deg);
+      transition: transform 0.32s cubic-bezier(0, 0.55, 0.45, 1);
+    }
+    .pc:hover .pc-front,
+    .pc:focus-visible .pc-front { transform: rotateY(90deg); }
+    .pc:hover .pc-back,
+    .pc:focus-visible .pc-back  { transform: rotateY(0deg); transition-delay: 0.24s; }
+
+    .pc-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      padding: clamp(12px, 1.2vw, 16px) 4px 4px;
+    }
+    .pc-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: #d9d9d9;
+    }
+    .pc-cat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+      white-space: nowrap;
+    }
+    .pc-desc {
+      font-weight: 500;
+      font-size: clamp(13px, 1.15vw, 18px);
+      line-height: 1.45;
+      color: var(--ink);
+      text-wrap: pretty;
+      max-width: 44ch;
+    }
+    .pc-open {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .pc-px { display: block; max-width: 60%; }
+    .pc-arrow {
+      display: block;
+      flex-shrink: 0;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    /* face lands at ~0.56s; small pause after, then the grow is visible on the
+       settled face — synced with the pixel burst (620ms) as one beat */
+    .pc:hover .pc-arrow,
+    .pc:focus-visible .pc-arrow {
+      transform: scale(1.18) translate(3px, -3px);
+      transition-delay: 0.62s;
+    }
+
+    /* empty filter result */
+    #grid-empty {
+      display: none;
+      padding: 64px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--mute);
+      text-align: center;
+    }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .pc-frame { aspect-ratio: 16 / 11; }
+      #site-nav { padding: 14px 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .pc { animation: none; }
+      .status-dot { animation: none; }
+      .pc-front, .pc-back { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="site-nav">
+    <a class="nav-logo" href="index.html">
+      <svg class="logo-mark" width="29" height="41" viewBox="0 0 29 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0"  y="0"  width="5" height="5"/>
+        <rect x="6"  y="0"  width="5" height="5"/>
+        <rect x="12" y="0"  width="5" height="5"/>
+        <rect x="18" y="0"  width="5" height="5"/>
+        <rect x="0"  y="6"  width="5" height="5"/>
+        <rect x="24" y="6"  width="5" height="5"/>
+        <rect x="0"  y="12" width="5" height="5"/>
+        <rect x="24" y="12" width="5" height="5"/>
+        <rect x="0"  y="18" width="5" height="5"/>
+        <rect x="6"  y="18" width="5" height="5"/>
+        <rect x="12" y="18" width="5" height="5"/>
+        <rect x="18" y="18" width="5" height="5"/>
+        <rect x="0"  y="24" width="5" height="5"/>
+        <rect x="0"  y="30" width="5" height="5"/>
+        <rect x="0"  y="36" width="5" height="5"/>
+      </svg>
+    </a>
+  </nav>
+
+  <!-- ── Intro ── -->
+  <header id="intro">
+    <h1 class="intro-text">Hi, I'm Elshan, a product designer building scalable, human digital
+      products. I prototype fast, test with real behavior, and ship with AI-assisted workflows,
+      from research through production design systems.</h1>
+    <div class="intro-links">
+      <button id="copy-email" type="button" aria-label="Copy email address">
+        <span id="copy-email-label">EMAIL</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <rect x="0.5" y="0.5" width="7" height="7" stroke="currentColor"/>
+          <rect x="4.5" y="4.5" width="7" height="7" stroke="currentColor" fill="var(--bg)"/>
+        </svg>
+      </button>
+      <a href="https://www.linkedin.com/in/Elshan-Azadi">LINKEDIN ↗</a>
+    </div>
+  </header>
+
+  <!-- ── Work: filter bar + grid ── -->
+  <main id="work">
+    <div class="filter-bar" role="group" aria-label="Filter projects">
+      <button class="filter-btn is-active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="b2b">B2B</button>
+      <button class="filter-btn" data-filter="b2c">B2C</button>
+      <button class="filter-btn" data-filter="ai">AI</button>
+      <button class="filter-btn" data-filter="exp">Experimental</button>
+    </div>
+
+    <div class="grid" id="grid">
+
+      <a class="pc" href="verity.html" data-tags="b2b ai">
+        <div class="pc-frame">
+          <div class="pc-front">
+            <img class="pc-img" src="../projects/case study materials/live analysis.gif" alt="Verity live compliance analysis in action" style="object-position: left center;" loading="lazy" />
+          </div>
+          <div class="pc-back">
+            <p class="pc-desc">Designing trust in AI-assisted compliance review. Making a system that is sometimes wrong feel safe to act on.</p>
+            <div class="pc-open">
+              <canvas class="pc-px" width="180" height="48" aria-hidden="true"></canvas>
+              <svg class="pc-arrow" width="22" height="22" viewBox="0 0 64 64"><path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="6"/><path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="6" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="pc-caption">
+          <span class="pc-name">Verity</span>
+          <span class="pc-cat">UX Research · 2026</span>
+        </div>
+      </a>
+
+      <a class="pc" href="voya.html" data-tags="b2c">
+        <div class="pc-frame">
+          <div class="pc-front">
+            <img class="pc-img" src="../projects/Voja/heroimage.avif" alt="Voya travel booking mobile screens" loading="lazy" />
+          </div>
+          <div class="pc-back">
+            <p class="pc-desc">Redesigning a multi-step travel booking system into a guided mobile-first experience built around how people actually think.</p>
+            <div class="pc-open">
+              <canvas class="pc-px" width="180" height="48" aria-hidden="true"></canvas>
+              <svg class="pc-arrow" width="22" height="22" viewBox="0 0 64 64"><path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="6"/><path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="6" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="pc-caption">
+          <span class="pc-name">Voya</span>
+          <span class="pc-cat">UX/UI Design · 2023</span>
+        </div>
+      </a>
+
+      <a class="pc" href="designsystem.html" data-tags="b2b ai">
+        <div class="pc-frame">
+          <div class="pc-front">
+            <img class="pc-img" src="../projects/design system/compnentslilquadrat.png" alt="Component library — 16 component sets with variant matrices and labeled sections" loading="lazy" />
+          </div>
+          <div class="pc-back">
+            <p class="pc-desc">A production design system where Figma and Vue share the same source of truth. Built with Claude Code and the Figma MCP.</p>
+            <div class="pc-open">
+              <canvas class="pc-px" width="180" height="48" aria-hidden="true"></canvas>
+              <svg class="pc-arrow" width="22" height="22" viewBox="0 0 64 64"><path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="6"/><path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="6" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="pc-caption">
+          <span class="pc-name">Design System</span>
+          <span class="pc-cat">Design Systems · 2025</span>
+        </div>
+      </a>
+
+      <a class="pc" href="globalencounters.html" data-tags="b2c">
+        <div class="pc-frame">
+          <div class="pc-front">
+            <img class="pc-img" src="../projects/global encounter/newdashboard.png" alt="Global Encounters redesigned dashboard" loading="lazy" />
+          </div>
+          <div class="pc-back">
+            <p class="pc-desc">Transforming a dated, bureaucratic application platform into a warm, editorial experience worthy of its community.</p>
+            <div class="pc-open">
+              <canvas class="pc-px" width="180" height="48" aria-hidden="true"></canvas>
+              <svg class="pc-arrow" width="22" height="22" viewBox="0 0 64 64"><path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="6"/><path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="6" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="pc-caption">
+          <span class="pc-name">Global Encounters</span>
+          <span class="pc-cat">UX/UI Design · 2026</span>
+        </div>
+      </a>
+
+      <a class="pc" href="onboarding.html" data-tags="b2b">
+        <div class="pc-frame">
+          <div class="pc-front">
+            <img class="pc-img" src="../projects/onboarding/usecontent.avif" alt="Onboarding flow redesign" loading="lazy" />
+          </div>
+          <div class="pc-back">
+            <p class="pc-desc">Rethinking first-run experience so new users reach value before they reach friction.</p>
+            <div class="pc-open">
+              <canvas class="pc-px" width="180" height="48" aria-hidden="true"></canvas>
+              <svg class="pc-arrow" width="22" height="22" viewBox="0 0 64 64"><path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="6"/><path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="6" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="pc-caption">
+          <span class="pc-name">Onboarding</span>
+          <span class="pc-cat">UX Design · 2023</span>
+        </div>
+      </a>
+
+      <a class="pc" href="buttons.html" data-tags="ai exp">
+        <div class="pc-frame">
+          <div class="pc-front">
+            <img class="pc-img" src="../projects/buttons/image1.png" alt="But.tons creative button generator" loading="lazy" />
+          </div>
+          <div class="pc-back">
+            <p class="pc-desc">A creative button generator that combines curated ingredients with AI temperature to turn UI design into an act of exploration.</p>
+            <div class="pc-open">
+              <canvas class="pc-px" width="180" height="48" aria-hidden="true"></canvas>
+              <svg class="pc-arrow" width="22" height="22" viewBox="0 0 64 64"><path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="6"/><path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="6" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="pc-caption">
+          <span class="pc-name">But.tons</span>
+          <span class="pc-cat">Shipped Experiment · 2025</span>
+        </div>
+      </a>
+
+      <a class="pc" href="betterwords.html" data-tags="ai exp">
+        <div class="pc-frame">
+          <div class="pc-front">
+            <img class="pc-img" src="../projects/better words/hero.avif" alt="Better Words AI speech coach" loading="lazy" />
+          </div>
+          <div class="pc-back">
+            <p class="pc-desc">An AI speech coach with voice cloning. Record yourself speaking, get an improved version played back in your own voice. One button.</p>
+            <div class="pc-open">
+              <canvas class="pc-px" width="180" height="48" aria-hidden="true"></canvas>
+              <svg class="pc-arrow" width="22" height="22" viewBox="0 0 64 64"><path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="6"/><path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="6" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="pc-caption">
+          <span class="pc-name">Better Words</span>
+          <span class="pc-cat">Shipped Experiment · 2025</span>
+        </div>
+      </a>
+
+      <a class="pc" href="pushkin.html" data-tags="b2c">
+        <div class="pc-frame">
+          <div class="pc-front">
+            <img class="pc-img" src="../projects/pushkin/pp.jpg" alt="Café Puschkin brand identity" loading="lazy" />
+          </div>
+          <div class="pc-back">
+            <p class="pc-desc">Identity and web presence for a Berlin café — warm, literary, and unhurried.</p>
+            <div class="pc-open">
+              <canvas class="pc-px" width="180" height="48" aria-hidden="true"></canvas>
+              <svg class="pc-arrow" width="22" height="22" viewBox="0 0 64 64"><path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="6"/><path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="6" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="pc-caption">
+          <span class="pc-name">Café Puschkin</span>
+          <span class="pc-cat">Branding · Web · 2024</span>
+        </div>
+      </a>
+
+      <a class="pc" href="process.html" data-tags="ai">
+        <div class="pc-frame">
+          <div class="pc-front">
+            <img class="pc-img" src="../projects/process/new portfolio.png" alt="Authoring — the new portfolio system" loading="lazy" />
+          </div>
+          <div class="pc-back">
+            <p class="pc-desc">Replacing a CMS portfolio with a content-first, AI-assisted system. The portfolio treated as a product you design, ship, and iterate.</p>
+            <div class="pc-open">
+              <canvas class="pc-px" width="180" height="48" aria-hidden="true"></canvas>
+              <svg class="pc-arrow" width="22" height="22" viewBox="0 0 64 64"><path d="M 14 50 L 46 18" stroke="#0a0a0a" stroke-width="6"/><path d="M 14 18 L 46 18 L 46 50" stroke="#0a0a0a" stroke-width="6" fill="none"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="pc-caption">
+          <span class="pc-name">Authoring</span>
+          <span class="pc-cat">Self-Initiated · 2024</span>
+        </div>
+      </a>
+
+    </div>
+    <p id="grid-empty">No projects in this category yet.</p>
+  </main>
+
+  <script src="../vendor/lenis.min.js"></script>
+  <script>
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ── Lenis smooth scroll — weight without lag ──
+    // Short duration + sharp exponential ease-out: the page carries momentum
+    // but settles fast, so it never feels hijacked.
+    let lenis = null;
+    if (!reduceMotion && window.Lenis) {
+      lenis = new Lenis({
+        duration: 1.0,
+        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        anchors: true,
+        touchMultiplier: 1.5
+      });
+      requestAnimationFrame(function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      });
+    }
+
+    // ── Pixel keyword blocks on card backs (engine ported from index.html) ──
+    // Ink pixels sit bottom-left of the green face; hovering them bursts the
+    // grid apart and reveals one keyword per project behind the powder.
+    const KEYWORDS = {
+      'verity.html':           'TRUST',
+      'voya.html':             'TRAVEL',
+      'globalencounters.html': 'WARMTH',
+      'designsystem.html':     'TOKENS',
+      'process.html':          'PROCESS',
+      'buttons.html':          'PLAY',
+      'betterwords.html':      'VOICE',
+      'onboarding.html':       'FLOW',
+      'pushkin.html':          'BRAND'
+    };
+
+    document.fonts.ready.then(() => {
+      document.querySelectorAll('.pc').forEach((card, ci) => {
+        const canvas = card.querySelector('.pc-px');
+        if (!canvas) return;
+        const label = KEYWORDS[card.getAttribute('href')] || 'VIEW';
+        const seed  = ci + 1;
+        const W = canvas.width, H = canvas.height;
+        const ctx = canvas.getContext('2d');
+        const BLOCK = 7, GAP = 4, STEP = BLOCK + GAP;
+
+        const rand = n => {
+          const x = Math.sin(n * 9301 + seed * 49297) * 233280;
+          return x - Math.floor(x);
+        };
+
+        const particles = [];
+        let idx = 0;
+        for (let gy = 0; gy <= H - BLOCK; gy += STEP) {
+          for (let gx = 0; gx <= W - BLOCK; gx += STEP) {
+            if (rand(idx++) < 0.36) {
+              particles.push({ ox: gx, oy: gy, x: gx, y: gy, vx: 0, vy: 0, a: 1 });
+            }
+          }
+        }
+
+        let textA  = 0;
+        let rafId  = null;
+        let active = false;
+
+        function drawFrame() {
+          ctx.clearRect(0, 0, W, H);
+          ctx.fillStyle = '#0a0a0a';
+          for (const p of particles) {
+            if (p.a <= 0) continue;
+            ctx.globalAlpha = p.a;
+            ctx.fillRect(Math.round(p.x), Math.round(p.y), BLOCK, BLOCK);
+          }
+          if (textA > 0) {
+            ctx.globalAlpha  = textA;
+            ctx.fillStyle    = '#0a0a0a';
+            const fsize      = Math.max(11, Math.round(H * 0.3));
+            ctx.font         = `700 ${fsize}px "JetBrains Mono", monospace`;
+            ctx.textAlign    = 'left';
+            ctx.textBaseline = 'middle';
+            if ('letterSpacing' in ctx) ctx.letterSpacing = '2px';
+            ctx.fillText(label, 0, H / 2);
+          }
+          ctx.globalAlpha = 1;
+        }
+
+        function scatter() {
+          if (rafId) cancelAnimationFrame(rafId);
+          active = true;
+          particles.forEach((p, i) => {
+            p.x = p.ox; p.y = p.oy; p.a = 1;
+            p.vx = (rand(i * 7 + 1) - 0.5) * 10;
+            p.vy = -(2 + rand(i * 5 + 3) * 5.5);  /* upward burst */
+          });
+          const tick = () => {
+            if (!active) return;
+            let anyLive = false;
+            for (const p of particles) {
+              if (p.a <= 0) continue;
+              p.vy += 0.34;   /* gravity */
+              p.vx *= 0.97;   /* lateral drag */
+              p.x  += p.vx;
+              p.y  += p.vy;
+              const dist = Math.hypot(p.x - p.ox, p.y - p.oy);
+              p.a = Math.max(0, 1 - dist / (Math.max(W, H) * 0.52));
+              if (p.y > H + 18 || p.x < -24 || p.x > W + 24) p.a = 0;
+              if (p.a > 0) anyLive = true;
+            }
+            textA = Math.min(1, textA + 0.048);
+            drawFrame();
+            if (anyLive || textA < 1) rafId = requestAnimationFrame(tick);
+            else rafId = null;
+          };
+          rafId = requestAnimationFrame(tick);
+        }
+
+        function reform() {
+          if (rafId) cancelAnimationFrame(rafId);
+          active = false;
+          for (const p of particles) {
+            p.x = p.ox; p.y = p.oy; p.vx = 0; p.vy = 0; p.a = 0;
+          }
+          const tick = () => {
+            textA = Math.max(0, textA - 0.09);
+            for (const p of particles) p.a = Math.min(1, p.a + 0.07);
+            drawFrame();
+            const done = particles.every(p => p.a >= 1) && textA <= 0;
+            if (!done) rafId = requestAnimationFrame(tick);
+            else rafId = null;
+          };
+          rafId = requestAnimationFrame(tick);
+        }
+
+        drawFrame();
+
+        // scatter rides the card flip: fire once the green face has landed
+        // (flip = 0.24s delay + 0.32s turn), reform when the card flips back
+        if (!reduceMotion) {
+          let scatterTimer = null;
+          card.addEventListener('mouseenter', () => {
+            scatterTimer = setTimeout(scatter, 620);
+          });
+          card.addEventListener('mouseleave', () => {
+            clearTimeout(scatterTimer);
+            reform();
+          });
+        }
+      });
+    });
+
+    // ── Copy email ──
+    const copyBtn = document.getElementById('copy-email');
+    const copyLabel = document.getElementById('copy-email-label');
+    let copyTimer;
+    copyBtn.addEventListener('click', () => {
+      const email = 'azadielshan@gmail.com';
+      const done = () => {
+        copyLabel.textContent = 'COPIED';
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(() => { copyLabel.textContent = 'EMAIL'; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(done);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = email;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        done();
+      }
+    });
+
+    // ── Filtering ──
+    const buttons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.pc');
+    const emptyEl = document.getElementById('grid-empty');
+
+    function applyFilter(tag) {
+      let shown = 0;
+      cards.forEach((card, i) => {
+        const match = tag === 'all' || card.dataset.tags.split(' ').includes(tag);
+        card.classList.toggle('is-hidden', !match);
+        if (match) {
+          shown++;
+          if (!reduceMotion) {
+            // restart the entry animation with a small stagger
+            card.style.animation = 'none';
+            void card.offsetWidth;
+            card.style.animation = '';
+            card.style.animationDelay = (shown * 45) + 'ms';
+          }
+        }
+      });
+      emptyEl.style.display = shown === 0 ? 'block' : 'none';
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        applyFilter(btn.dataset.filter);
+      });
+    });
+
+    // initial stagger
+    cards.forEach((card, i) => { card.style.animationDelay = (i * 45) + 'ms'; });
+  </script>
+
+  <script src="floating-nav.js" defer></script>
+<script src="../tuner.js" defer></script>
+</body>
+</html>

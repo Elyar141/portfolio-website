@@ -11,7 +11,7 @@
   <style>
     @font-face {
       font-family: 'Geist';
-      src: url('fonts/Geist-Variable.woff2') format('woff2');
+      src: url('../fonts/Geist-Variable.woff2') format('woff2');
       font-weight: 100 900;
       font-style: normal;
     }
@@ -345,46 +345,6 @@
     }
     .nav-right a:hover { color: rgba(160,160,160,0.82); }
 
-    /* ── Footer ─────────────────────────────────────── */
-    #site-footer {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 24;
-      background: rgba(10,10,10,0.88);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid rgba(160,160,160,0.18);
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      pointer-events: all;
-    }
-    .footer-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(160,160,160,0.55);
-    }
-    .footer-nav {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    .footer-nav a {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(160,160,160,0.6);
-      text-decoration: none;
-      transition: color 0.18s ease;
-    }
-    .footer-nav a:hover { color: rgba(160,160,160,0.85); }
-
     /* ── Services section: normal scroll, below the hero ─────────── */
     #services-section {
       padding: clamp(80px, 11vw, 140px) clamp(24px, 5vw, 72px) 120px;
@@ -478,8 +438,7 @@
     }
     #cursor-dot.is-pressed { background: #ece6d3; }
 
-    @media (min-width: 960px) and (hover: hover) and (pointer: fine) {
-      body, .nc, #projects-cta, .nav-right a, .footer-nav a, #hamburger {
+    @media (min-width: 960px) and (hover: hover) and (pointer: fine) {body, .nc, #projects-cta, .nav-right a, #hamburger {
         cursor: none;
       }
     }
@@ -771,23 +730,6 @@
         display: inline; /* restore */
         font-size: 9px;
       }
-      /* Nav links already hidden globally; hamburger always visible */
-
-      /* Footer: mobile compact */
-      #site-footer {
-        padding: 0 20px;
-        height: 40px;
-      }
-      .footer-label { display: none; }
-      .footer-nav {
-        gap: 16px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-      }
-      .footer-nav a {
-        font-size: 8px;
-        letter-spacing: 0.12em;
-      }
     }
   </style>
 </head>
@@ -1077,17 +1019,6 @@
       });
     })();
   </script>
-
-  <footer id="site-footer">
-    <span class="footer-label">Elshan Azadi</span>
-    <nav class="footer-nav">
-      <a href="mailto:azadielshan@gmail.com">Contact</a>
-      <a href="https://www.linkedin.com/in/Elshan-Azadi">LinkedIn ↗</a>
-      <a href="mailto:azadielshan@gmail.com">Email ↗</a>
-    </nav>
-  </footer>
-
-
 
   <script>
     document.fonts.ready.then(() => {
@@ -1382,5 +1313,6 @@
   </script>
 
   <script src="floating-nav.js" defer></script>
+<script src="../tuner.js" defer></script>
 </body>
 </html>

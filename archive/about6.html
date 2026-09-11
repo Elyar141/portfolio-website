@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>About — Elshan Azadi</title>
+<script src="portrait-data.js"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:Geist;src:url('../fonts/Geist-Variable.woff2') format('woff2');font-weight:100 900}:root{--cream:#ede6ca;--blush:#f8d5d1;--ink:#191712;--olive:#6a6f4b;--muted:rgba(25,23,18,.48)}*{box-sizing:border-box}html{background:var(--cream);scroll-behavior:smooth;scroll-snap-type:y mandatory}body{margin:0;min-width:320px;background:var(--cream);color:var(--ink);font-family:Geist,Arial,sans-serif}a{color:inherit}#site-nav{position:fixed;z-index:30;inset:0 0 auto;height:64px;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;pointer-events:none}.mark{display:grid;grid-template-columns:repeat(5,5px);gap:2px;width:33px;pointer-events:auto}.mark i{display:block;width:5px;height:5px;background:var(--olive)}.mark i:nth-child(5),.mark i:nth-child(8),.mark i:nth-child(10){visibility:hidden}.menu{position:absolute;left:50%;top:19px;transform:translateX(-50%);display:flex;gap:4px;padding:7px;border:3px solid #fabab6;white-space:nowrap;pointer-events:auto}.menu a{padding:8px 15px;text-decoration:none;color:var(--olive);font:500 10px/1 'DM Mono',monospace;letter-spacing:.15em;text-transform:uppercase}.menu a:hover,.menu a[aria-current]{background:var(--olive);color:var(--blush)}main{position:relative;height:380vh;padding:64px 20px 64px}.snap{position:absolute;left:0;width:1px;height:1px;pointer-events:none;scroll-snap-align:start;scroll-snap-stop:always}#snap-2{top:140vh}#snap-3{top:252vh}.stage{position:sticky;top:64px;height:calc(100vh - 128px);min-height:520px;overflow:hidden;background:var(--blush);isolation:isolate}.frame{position:absolute;z-index:20;inset:0;pointer-events:none}.frame svg{width:100%;height:100%;overflow:visible}.frame rect,.frame path{fill:none;stroke:var(--edge,#fabab6);stroke-width:5;stroke-linecap:square;stroke-dasharray:1 8}.frame path{display:none}.frame.bendable rect{display:none}.frame.bendable path{display:block}.scene{position:absolute;inset:0;padding:clamp(56px,9vh,106px) clamp(40px,7vw,112px);transition:opacity .42s ease,transform .75s cubic-bezier(.22,1,.36,1),visibility 0s linear .42s}.intro{display:grid;grid-template-columns:1fr minmax(190px,30vw);grid-template-rows:1fr auto;opacity:1}.intro.is-gone{opacity:0;visibility:hidden;transform:translateY(-11%)}.statement{grid-column:1/-1;grid-row:2;align-self:end;max-width:1120px;margin-bottom:1vh;font-size:clamp(46px,5.7vw,105px);font-weight:480;letter-spacing:-.073em;line-height:.9}.statement .line{display:block;color:var(--ghost,rgba(25,23,18,.16));transition:color .24s ease}.statement .line.on{color:var(--ink)}.statement em{font-family:'Playfair Display',serif;font-weight:400;letter-spacing:-.09em}.availability{position:absolute;z-index:1;right:max(12px,calc(clamp(40px,7vw,112px) + var(--pix-box) / 2 - var(--pix-side)));bottom:calc(clamp(56px,9vh,106px) + 1vh + var(--pix-box) * var(--pix-over));width:var(--pix-side);color:var(--ink);font:500 12px/1.45 Geist,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}.availability span{display:block}.lap-only{display:none}.availability .role{color:var(--ink);letter-spacing:.05em}.projects{display:grid;grid-template-columns:minmax(320px,.85fr) minmax(300px,1.05fr);gap:clamp(50px,9vw,150px);align-items:center;align-content:safe center;opacity:0;visibility:hidden;transform:translateY(18%);pointer-events:none}.projects.is-here{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition-delay:0s}.projects-title{margin:0 0 26px;font-size:clamp(38px,4.8vw,84px);font-weight:480;letter-spacing:-.075em;line-height:.9}.projects-title em{font-family:'Playfair Display',serif;font-weight:400}.project{position:relative;display:block;padding:clamp(19px,1.5vw,30px) clamp(36px,3vw,56px) clamp(18px,1.4vw,28px) 0;border-bottom:3px dotted rgba(106,111,75,.55);text-decoration:none}.project:last-child{border-bottom:0}.project small{display:block;margin-bottom:5px;color:var(--muted);font:500 clamp(9px,.5vw,12px)/1 Geist,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase}.project strong{font-size:clamp(20px,1.95vw,46px);font-weight:480;letter-spacing:-.055em}.project:after{content:'↗';position:absolute;right:3px;top:50%;font-size:22px;opacity:0;transform:translate(-8px,-45%);transition:.25s ease}.project:hover:after,.project:focus-visible:after{opacity:1;transform:translate(0,-45%)}.project:hover strong,.project:focus-visible strong{font-style:italic}.preview{position:relative;display:flex;flex-direction:column}.preview-head{flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:flex-end;padding-bottom:clamp(20px,3.4vh,42px)}.preview-frame{position:relative;flex:none;min-height:0;height:56vh;max-height:620px;background:var(--panel-2,#f5d0cb);overflow:hidden}.preview-frame img{position:absolute;inset:28px 28px 52px;width:calc(100% - 56px);height:calc(100% - 80px);object-fit:contain;opacity:0;transform:scale(1.045);transition:opacity .35s ease,transform .8s cubic-bezier(.22,1,.36,1)}.preview-frame img.active{opacity:1;transform:scale(1)}.preview-label{position:absolute;z-index:2;left:28px;right:28px;bottom:18px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--muted);font:500 14px/1.45 Geist,Arial,sans-serif;letter-spacing:.01em}.contact{display:grid;grid-template-rows:auto 1fr;opacity:0;visibility:hidden;transform:translateY(18%);pointer-events:none}.contact.is-here{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition-delay:0s}.contact-foot{grid-row:2;align-self:end;width:100%}.contact-title{margin:0 0 clamp(26px,4.4vh,52px);font-size:clamp(46px,5.7vw,105px);font-weight:480;letter-spacing:-.073em;line-height:.88;color:var(--ink)}.contact-title em{font-family:'Playfair Display',serif;font-weight:400;letter-spacing:-.09em}.contact-rule{height:3px;background:repeating-linear-gradient(90deg,var(--rule,rgba(106,111,75,.58)) 0 3px,transparent 3px 9px)}.contact-list{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding-top:clamp(16px,2.6vh,28px)}.contact-row{display:flex;flex-direction:column;align-items:flex-start}.contact-row--end{align-items:flex-end;text-align:right}.contact-row-value{display:inline-flex;align-items:center;gap:12px;padding:0;border:0;background:none;cursor:pointer;text-decoration:none;font:inherit;color:var(--ink);font-size:clamp(17px,2vw,27px);font-weight:480;letter-spacing:-.035em;transition:color .22s ease}.contact-row-value:hover,.contact-row-value:focus-visible{color:var(--olive)}.contact-row-icon{position:relative;flex:none;width:18px;height:18px;color:var(--muted);transition:color .22s ease,transform .22s ease}.contact-row-icon svg{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s ease}.contact-row-icon .icon-check{opacity:0}.contact-row-value.is-copied{color:var(--olive)}.contact-row-value.is-copied .icon-copy{opacity:0}.contact-row-value.is-copied .icon-check{opacity:1}.contact-row-value--link:hover .contact-row-icon{transform:translate(2px,-2px)}.stage-note{position:absolute;right:38px;top:32px;z-index:21;color:var(--muted);font:500 9px/1 'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase}@media(max-width:720px){#site-nav{height:60px;padding:14px 21px}.menu{top:15px}.menu a{padding:8px 9px;font-size:9px}main{height:340vh;padding:60px 12px 60px}#snap-2{top:120vh}#snap-3{top:216vh}.stage{top:60px;height:calc(100vh - 120px)}.scene{padding:53px 28px}.intro{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto auto auto}.statement{grid-row:5;font-size:clamp(26px,8.6vw,62px);margin-bottom:4vh}.availability{grid-row:4;position:static;right:auto;bottom:auto;width:var(--pix-side);margin:0 0 0 auto}.availability .role{font-size:8px;letter-spacing:.04em}.projects{grid-template-columns:1fr;grid-template-rows:auto minmax(180px,.6fr);gap:28px}.projects-title{font-size:48px;margin-bottom:22px}.project{padding:14px 28px 14px 0}.project strong{font-size:25px}.preview-frame{min-height:180px;height:auto}.contact-title{font-size:44px;margin-bottom:24px}.contact-list{flex-direction:column;align-items:flex-start;gap:20px}.contact-row--end{align-items:flex-start;text-align:left}.contact-row-value{font-size:18px}.stage-note{right:26px;top:27px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+</style><style>
+/* Detail pass: the panel and its pixel border share one clipped silhouette. */
+.stage{border-radius:15px}.frame{clip-path:inset(0 round 15px)}
+.menu{top:23px;padding:0;border:0;gap:0}.menu a{position:relative;padding:4px 14px;color:var(--ink)}.menu a:after{content:'';position:absolute;right:14px;bottom:-1px;left:14px;height:3px;background:repeating-linear-gradient(90deg,var(--olive) 0 3px,transparent 3px 6px);clip-path:inset(0 100% 0 0);transition:clip-path .3s steps(7)}.menu a:hover,.menu a[aria-current]{background:none;color:var(--ink)}.menu a:hover:after,.menu a[aria-current]:after{clip-path:inset(0 0 0 0)}
+.mark{display:block;height:31px}.mark i{display:none}.mark svg{display:block;width:26px;height:31px}.mark rect{fill:var(--olive);transform-box:fill-box;transform-origin:center;transition:transform .34s cubic-bezier(.22,1,.36,1)}.mark:hover rect:nth-child(3n){transform:translateY(3px)}.mark:hover rect:nth-child(3n+1){transform:translateX(3px)}
+/* Project rows are split by pixel dashes, not dots: 3px squares on a 9px pitch,
+   in olive at .58 — the same ink as the old dotted rule, a shade denser. */
+.project{border-bottom:0;background:repeating-linear-gradient(90deg,var(--rule,rgba(106,111,75,.58)) 0 3px,transparent 3px 9px) left bottom/auto 3px repeat-x}.project:last-child{background:none}
+/* A row for work that is still being written: same rhythm, no link, no arrow.
+   It keeps .project so the hover preview still answers, but the name sits at
+   the muted weight so the list reads as three finished and one coming. */
+.project--soon{cursor:default}.project--soon:after{content:none}.project--soon strong{color:var(--muted)}.project--soon:hover strong{font-style:normal}
+.projects{align-items:end;grid-template-columns:minmax(260px,1fr) auto;grid-template-rows:minmax(0,1fr);gap:clamp(40px,4.5vw,88px)}.projects>div{align-self:end;min-height:0;transform:none;padding:0 0 2px}.project-list{max-width:clamp(360px,29vw,760px)}.projects-title:not(.projects-title--visual){display:none}.projects .preview{align-self:stretch;min-height:0;margin:0;justify-content:flex-end}.projects .preview-head{flex:0 0 auto;padding-bottom:clamp(28px,3.6vh,52px)}.projects .preview-frame{align-self:flex-end;flex:0 1 auto;width:auto;height:64vh;max-width:100%;max-height:none;min-height:0;aspect-ratio:1}.projects-title--visual{margin:0;text-align:right;color:var(--ink);font-size:clamp(32px,3.15vw,76px);line-height:.86;pointer-events:none}.stage-note{display:none}
+@media(max-width:720px){.menu{top:21px}.projects>div{transform:none;padding:0}.project-list{max-width:none}}
+/* The scene has a definite height, so the grid's single row must be told to
+   take it — minmax(0,1fr), not the implicit auto. Left as auto the row sized
+   itself to the preview column's natural height (the title, plus a frame asking
+   for 64vh) and overran the scene's bottom padding by about fifty pixels: the
+   gap above "Selected work" was the full padding while the gap under the image
+   was a third of it. Capped, the row is exactly the content box, the frame's
+   flex:0 1 auto finally has something to shrink against, and the two gaps
+   match. min-height:0 on both columns is what lets that shrink through.
+
+   The preview column still packs to the bottom, so on a window tall enough
+   that nothing has to shrink, the slack collects above the title — the frame
+   stays anchored to the list's baseline, which is the arrangement this wants. */
+/* The side-by-side list and preview need a wide column each; below 900 the
+   preview drops under the list instead of being squeezed into a sliver. */
+@media(max-width:900px){.projects{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);align-items:stretch;gap:20px}.projects>div{align-self:start;padding:0}.project-list{max-width:none}.projects-title:not(.projects-title--visual){display:block;margin:0 0 16px;font-size:clamp(30px,4.6vw,42px)}.preview-head{display:none}.projects .preview{min-height:0}.projects .preview-frame{align-self:stretch;width:auto;height:100%;min-height:0;max-height:none;aspect-ratio:auto}}
+/* Stacked and short: there is no room left for the preview, so the list takes the panel. */
+@media(max-width:900px) and (max-height:720px){.projects{grid-template-rows:auto}.projects .preview{display:none}}
+@media(max-height:620px){.stage{min-height:0}}
+/* Landscape phone, either orientation of rules: the panel is barely 260px tall, so
+   the type shrinks, the note goes, and the work list drops its preview. */
+@media(max-height:520px){.availability{display:none}.scene{padding:22px clamp(24px,7vw,112px)}.statement{font-size:clamp(20px,4.2vw,42px);margin-bottom:0}.contact-title{font-size:clamp(28px,5vw,52px);margin-bottom:16px}.pixtype{width:var(--pix-natural);bottom:calc(22px + 1vh);margin:0 0 6px auto}.projects{grid-template-columns:minmax(0,1fr);grid-template-rows:auto}.projects .preview{display:none}.projects-title:not(.projects-title--visual){display:none}.project{padding:7px 30px 7px 0}.project small{font-size:8px;margin-bottom:3px}.project strong{font-size:19px}}
+/* Smallest phone sideways (~320px of height): drop the row labels and the contact
+   intro so the list and the links still clear the panel. */
+@media(max-height:400px){.scene{padding:14px clamp(20px,6vw,112px)}.project{padding:5px 26px 5px 0}.project small{display:none}.project strong{font-size:17px}.contact-title{font-size:clamp(24px,4.4vw,40px);margin-bottom:10px}.contact-list{padding-top:10px;gap:14px}.contact-row-value{font-size:15px}}
+</style><style>
+/* Pixel shape type: parked in the bottom-right corner of the stage, its baseline
+   sitting on the same line as the last line of the statement. The mask bakes the ink
+   flush to the canvas's bottom edge, so matching the statement's bottom offset
+   (scene padding + its 1vh margin) lines the two up. */
+.pixtype{position:absolute;right:clamp(40px,7vw,112px);bottom:calc(clamp(56px,9vh,106px) + 1vh + var(--pix-cap) + 14px);display:block;width:var(--pix-natural);aspect-ratio:1;height:auto;margin:0;pointer-events:none}
+@media(max-width:720px){.pixtype{grid-row:3;position:static;right:auto;bottom:auto;width:var(--pix-natural);margin:-10px 0 10px auto}}
+@media(max-height:520px){.pixtype{width:var(--pix-natural);margin:0 0 6px auto}}
+/* Phone held sideways: the column has no room for the type at all. */
+@media(max-width:720px) and (max-height:520px){.pixtype{display:none}}
+/* ── The word that changes ────────────────────────────────────────────
+   One word of the statement types itself in, holds, wipes back out and
+   moves on. The rest of the sentence is fixed, so the line reads as one
+   claim being restated rather than three different sentences.
+
+   The word has its own line, which is the whole reason this works: nothing
+   sits to its right, so it grows and shrinks into empty space. No width has
+   to be reserved, nothing reflows, and the words can be any length. Putting
+   it mid-sentence forces a choice between the line moving on every keystroke
+   and a permanent gap holding the longest word's width.
+
+   The three lines are deliberately uneven — short, long, short. Set at
+   similar lengths they stack into a rectangle and the type stops reading as
+   a sentence.
+
+   The caret is currentColor, so it follows the type's own colour rather
+   than introducing one of its own. */
+em.cycle{white-space:nowrap}
+/* Direct children only: the title's own lines stack, but the word and its
+   screen-reader twin inside the em must stay inline or the caret drops to
+   a line of its own. */
+.contact-title>span{display:block}
+.cycle-word:after{
+  content:'';display:inline-block;
+  width:.07em;height:.62em;margin-left:.05em;
+  background:currentColor;
+  animation:caret 1.06s steps(1) infinite;
+}
+@keyframes caret{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){.cycle-word:after{display:none}}
+
+/* Reads to a screen reader, never to the eye. */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+/* ── The approach line ────────────────────────────────────────────────
+   The evidence for the claim the statement makes: the headline says what
+   the work is for, this says how it gets made. They belong on the same
+   screen, and this is the screen everyone sees.
+
+   It sits in the last scene, not the first. The About panel opens on the
+   claim and closes on the invitation, and the whole top half of the closing
+   panel was empty while its title and links sat along the bottom — so this
+   goes up there, top right, across the diagonal from them.
+
+   Right-hand column, flush-left type: the block is placed against the right
+   edge, but a paragraph still wants a straight left edge to start each line
+   on. Geist and sentence case, like the rest of the page; ink rather than
+   the lighter grey of a label, because it is a statement, not metadata. */
+.approach{
+  grid-column:1;grid-row:1;align-self:start;justify-self:end;
+  width:min(340px,32vw);margin:0;
+  color:var(--ink);text-align:left;
+  font:400 clamp(11px,0.9vw,14px)/1.6 Geist,Arial,sans-serif;
+  letter-spacing:0;text-transform:none;
+}
+/* One narrow column: nothing to sit beside, so it runs the full width. */
+@media (max-width:720px){
+  .approach{
+    justify-self:stretch;width:auto;max-width:none;
+    margin-bottom:26px;font-size:14px;line-height:1.5;
+  }
+}
+@media (max-height:520px){.approach{display:none}}
+</style><style>
+/* ── Arrival ──────────────────────────────────────────────────────────
+   The page holds on the bare cream until the fonts are in, then the
+   panel lands, the frame draws, and the statement's three lines are
+   pushed up out of their own edges one after the other. Nothing is
+   scrubbed by scroll here — it plays once, on load, and is over.
+
+   Two classes, both on <html>. `is-arriving` is written by a script in
+   the head, before anything paints, and is only the hidden state: it
+   holds every part of the entrance at its start. `is-arrived` replaces
+   it when the fonts resolve and attaches the animations; the swap is a
+   single classList.replace, so there is no frame between the two.
+
+   With JavaScript off neither class is ever written and the page is
+   simply there, which is the correct fallback.
+
+   The easing is the one the rest of the page already moves on. Delays
+   overlap rather than queue — each part starts while the one before it
+   is still travelling, which is what keeps this reading as one arrival
+   instead of a list of things appearing. */
+html.is-arriving .stage,
+html.is-arriving .frame svg,
+html.is-arriving .availability,
+html.is-arriving .pixtype,
+html.is-arriving .mark,
+html.is-arriving .menu a { opacity: 0 }
+html.is-arriving .line-in { transform: translateY(108%) }
+
+/* The lines ride inside their own overflow, so they arrive from behind
+   the line above rather than fading up through it. Line-height is .9,
+   so the box has to be opened up for the descenders first or "people
+   doing" loses its p and g to the clip. The padding is taken straight
+   back off as margin, so the type sits exactly where it did. */
+.statement .line { overflow: hidden; padding-bottom: .14em; margin-bottom: -.14em }
+.line-in { display: block }
+
+@keyframes arrive-panel { from { opacity: 0; transform: translateY(20px) scale(.985) } to { opacity: 1; transform: none } }
+@keyframes arrive-line  { from { transform: translateY(108%) } to { transform: none } }
+@keyframes arrive-rise  { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+@keyframes arrive-drop  { from { opacity: 0; transform: translateY(-8px) } to { opacity: 1; transform: none } }
+@keyframes arrive-fade  { from { opacity: 0 } to { opacity: 1 } }
+
+html.is-arrived .stage,
+html.is-arrived .frame svg,
+html.is-arrived .availability,
+html.is-arrived .pixtype,
+html.is-arrived .mark,
+html.is-arrived .menu a,
+html.is-arrived .line-in {
+  animation-duration: .82s;
+  animation-timing-function: cubic-bezier(.22,1,.36,1);
+  animation-fill-mode: both;
+}
+html.is-arrived .stage    { animation-name: arrive-panel; animation-duration: .95s }
+html.is-arrived .mark     { animation-name: arrive-drop; animation-delay: .16s; animation-duration: .6s }
+html.is-arrived .menu a   { animation-name: arrive-drop; animation-duration: .6s }
+html.is-arrived .menu a:nth-child(1) { animation-delay: .22s }
+html.is-arrived .menu a:nth-child(2) { animation-delay: .28s }
+html.is-arrived .menu a:nth-child(3) { animation-delay: .34s }
+html.is-arrived .frame svg { animation-name: arrive-fade; animation-delay: .28s }
+/* The statement is the sentence the page is here to make, so it gets the
+   longest travel and the widest spacing between its lines. */
+html.is-arrived .line-in { animation-name: arrive-line; animation-duration: 1s }
+html.is-arrived .line:nth-child(1) .line-in { animation-delay: .30s }
+html.is-arrived .line:nth-child(2) .line-in { animation-delay: .39s }
+html.is-arrived .line:nth-child(3) .line-in { animation-delay: .48s }
+html.is-arrived .availability { animation-name: arrive-rise; animation-delay: .66s; animation-duration: .7s }
+html.is-arrived .pixtype      { animation-name: arrive-fade; animation-delay: .78s }
+
+/* Asked for no motion: the gate still runs, so the type does not swap
+   fonts in front of anyone, but everything lands at once and still. */
+@media (prefers-reduced-motion: reduce) {
+  html.is-arrived .stage, html.is-arrived .frame svg, html.is-arrived .availability,
+  html.is-arrived .pixtype, html.is-arrived .mark, html.is-arrived .menu a,
+  html.is-arrived .line-in { animation: arrive-fade .25s both }
+}
+</style>
+<script>
+/* Written before the first paint, so nothing flashes in ahead of the
+   entrance. Only the hidden half — see the block above. A page restored
+   partway down is already past the intro, so there is nothing to arrive
+   and the class is never written. */
+if (!scrollY) document.documentElement.classList.add('is-arriving');
+</script>
+</head><body>
+<nav id="site-nav"><a class="mark" href="index.html" aria-label="Home"><svg viewBox="0 0 33 39" aria-hidden="true"><rect x="0" y="0" width="5" height="5"/><rect x="7" y="0" width="5" height="5"/><rect x="14" y="0" width="5" height="5"/><rect x="21" y="0" width="5" height="5"/><rect x="0" y="7" width="5" height="5"/><rect x="21" y="7" width="5" height="5"/><rect x="0" y="14" width="5" height="5"/><rect x="7" y="14" width="5" height="5"/><rect x="14" y="14" width="5" height="5"/><rect x="0" y="21" width="5" height="5"/><rect x="0" y="28" width="5" height="5"/><rect x="0" y="35" width="5" height="5"/></svg></a><div class="menu"><a href="#intro" data-scene="intro" aria-current="page">About</a><a href="#projects" data-scene="projects">Work</a><a href="#contact" data-scene="contact">Say hi</a></div></nav>
+<main><i class="snap" id="snap-1" aria-hidden="true"></i><i class="snap" id="snap-2" aria-hidden="true"></i><i class="snap" id="snap-3" aria-hidden="true"></i><section class="stage"><span class="stage-note" id="stage-note" aria-hidden="true"></span><div class="frame" aria-hidden="true"><svg><rect width="100%" height="100%" rx="15"/><path/></svg></div>
+<section class="scene intro" id="intro"><div class="availability"><span class="role">Designer<span class="lap-off" aria-hidden="true"> ·</span><br class="lap-only" aria-hidden="true"> Builder</span><span class="role">in Berlin</span></div><h1 class="statement"><span class="line"><span class="line-in">I design <em>clear</em> software</span></span><span class="line"><span class="line-in">for people doing</span></span><span class="line"><span class="line-in">complicated work.</span></span></h1><canvas class="pixtype" id="pixtype" aria-hidden="true"></canvas></section>
+<section class="scene projects" id="projects"><div><h2 class="projects-title">Selected <em>work</em></h2><div class="project-list"><a class="project" href="../designsystem.html" data-blurb="A production design system where Figma and Vue share one source of truth." data-image="system"><small>Design system · shipped</small><strong>No Handoff</strong></a><span class="project project--soon" data-blurb="Rebuilding a dated product surface around the way people actually work." data-image="studio"><small>Product redesign · in progress</small><strong>Studio, rebuilt</strong></span><a class="project" href="../verity.html" data-blurb="Making a system that is sometimes wrong feel safe to act on." data-image="verity"><small>AI trust UX · concept</small><strong>Verity</strong></a><a class="project" href="../globalencounters.html" data-blurb="A bureaucratic application platform, remade as something worth belonging to." data-image="global"><small>Application platform</small><strong>Global Encounters</strong></a></div></div><aside class="preview"><div class="preview-head"><h2 class="projects-title projects-title--visual">Selected <em>work</em></h2></div><div class="preview-frame"><img class="active" id="system" src="../projects/design-system%20v2/styleguide-poster.jpg" alt="Design system preview"><img id="studio" src="../projects/design-system%20v2/components-live-poster.jpg" alt="Studio redesign preview"><img id="verity" src="../projects/case%20study%20materials/dashboard.png" alt="Verity preview"><img id="global" src="../projects/global%20encounter/program%20selection.png" alt="Global Encounters preview"><span class="preview-label" id="preview-label">No Handoff</span></div></aside></section>
+<section class="scene contact" id="contact"><p class="approach">I prototype fast, test with real behavior, and ship with AI-assisted workflows, from research through production design systems.</p><div class="contact-foot"><h2 class="contact-title"><span>Let's make</span><span>something</span><span><em class="cycle"><span class="cycle-word" id="cycle" aria-hidden="true">worth maintaining</span><span class="vh">worth maintaining</span></em></span></h2><div class="contact-rule" aria-hidden="true"></div><div class="contact-list"><div class="contact-row"><button class="contact-row-value" type="button" data-copy="azadielshan@gmail.com" aria-label="Copy email address">Email<span class="contact-row-icon" aria-hidden="true"><svg class="icon-copy" viewBox="0 0 16 16"><rect x="5.5" y="5.5" width="9" height="9"/><path d="M10.5 5.5v-4h-9v9h4"/></svg><svg class="icon-check" viewBox="0 0 16 16"><path d="M2.5 8.5 L6.5 12.5 L13.5 3.5"/></svg></span></button></div><div class="contact-row contact-row--end"><a class="contact-row-value contact-row-value--link" href="https://www.linkedin.com/in/Elshan-Azadi" target="_blank" rel="noopener">LinkedIn<span class="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4.5 11.5 L11.5 4.5"/><path d="M5.5 4.5 H11.5 V10.5"/></svg></span></a></div></div></div></section></section></main>
+<script>(()=>{const intro=document.querySelector('#intro'),projects=document.querySelector('#projects'),contact=document.querySelector('#contact'),lines=[...document.querySelectorAll('.line')],note=document.querySelector('#stage-note'),menuLinks=[...document.querySelectorAll('.menu a[data-scene]')];function update(){const p=Math.min(1,scrollY/Math.max(1,document.body.scrollHeight-innerHeight));lines.forEach((l,i)=>l.classList.toggle('on',i===0||p>.025+i*.05));const inProjects=p>.333&&p<=.666,inContact=p>.666;intro.classList.toggle('is-gone',p>.333);projects.classList.toggle('is-here',inProjects);document.documentElement.classList.toggle('scene-dark',inProjects);contact.classList.toggle('is-here',inContact);note.textContent=inContact?'Contact':inProjects?'Work':'About';const now=inContact?'contact':inProjects?'projects':'intro';menuLinks.forEach(a=>{if(a.dataset.scene===now)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')})}addEventListener('scroll',update,{passive:true});addEventListener('resize',update);update();const MARK={intro:0,projects:.5,contact:.9};menuLinks.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();scrollTo({top:Math.round(MARK[a.dataset.scene]*(document.body.scrollHeight-innerHeight)),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}));document.querySelectorAll('.project').forEach(a=>{const show=()=>{const id=a.dataset.image;document.querySelectorAll('.preview img').forEach(i=>i.classList.toggle('active',i.id===id));document.querySelector('#preview-label').textContent=a.dataset.blurb||a.querySelector('strong').textContent};a.addEventListener('mouseenter',show);a.addEventListener('focus',show)});function legacyCopy(text){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}document.querySelectorAll('.contact-row-value[data-copy]').forEach(btn=>{let timer;btn.addEventListener('click',()=>{const text=btn.dataset.copy,done=()=>{btn.classList.add('is-copied');clearTimeout(timer);timer=setTimeout(()=>btn.classList.remove('is-copied'),1600)};if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(done).catch(()=>{legacyCopy(text);done()})}else{legacyCopy(text);done()}})})})();</script>
+<script>
+/* Bendable border: the frame's outline is sampled into points, each with an outward
+   normal and its own spring. The pointer pulls nearby points along their normal; the
+   springs are underdamped, so letting go overshoots and settles — that is the bounce.
+
+   Tuned to feel heavy: a shallow pull (MAXPULL) spread over a wide stretch of the
+   outline (REACH), on a soft spring (STIFF) that takes about twice as long to reach
+   the pointer. DAMP comes down with it — the same value against a softer spring
+   would ring, and a wobbling edge reads as light, not heavy. */
+(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const host=document.querySelector('.stage'),frame=document.querySelector('.frame'),path=frame&&frame.querySelector('path');if(!host||!path)return;const INSET=3,STEP=14,REACH=105,MAXPULL=15,STIFF=.09,DAMP=.70,R=15,REF=1270;let pts=[],w=0,h=0,r=0,mx=-1e4,my=-1e4,live=false,running=false,pull=MAXPULL,reach=REACH;function build(){const b=frame.getBoundingClientRect();w=b.width-INSET*2;h=b.height-INSET*2;r=Math.max(1,R-INSET);if(w<=0||h<=0){pts=[];return}/* The pull is a share of the panel, not a fixed number of pixels: the 15px that reads as a nudge on a large display is a shove on a laptop, where the panel is not much over half the size. Both terms scale together off the shorter side, so the deformation keeps its shape and only its size changes. Floored, or the bend becomes a pinprick in a small window. */const k=Math.max(.5,Math.min(1,Math.min(w,h)/REF));pull=MAXPULL*k;reach=REACH*k;pts=[];const add=(x,y,nx,ny)=>pts.push({x,y,nx,ny,off:0,v:0});const arc=(cx,cy,a0,a1)=>{const s=STEP/r;for(let a=a0;a<a1;a+=s){const c=Math.cos(a),n=Math.sin(a);add(cx+r*c,cy+r*n,c,n)}};for(let x=r;x<w-r;x+=STEP)add(x,0,0,-1);arc(w-r,r,-Math.PI/2,0);for(let y=r;y<h-r;y+=STEP)add(w,y,1,0);arc(w-r,h-r,0,Math.PI/2);for(let x=w-r;x>r;x-=STEP)add(x,h,0,1);arc(r,h-r,Math.PI/2,Math.PI);for(let y=h-r;y>r;y-=STEP)add(0,y,-1,0);arc(r,r,Math.PI,Math.PI*1.5);frame.classList.add('bendable');draw()}function draw(){if(!pts.length)return;let d='';for(let i=0;i<pts.length;i++){const p=pts[i];d+=(i?'L':'M')+(p.x+p.nx*p.off+INSET).toFixed(1)+' '+(p.y+p.ny*p.off+INSET).toFixed(1)}path.setAttribute('d',d+'Z')}function tick(){let moving=false;for(let i=0;i<pts.length;i++){const p=pts[i];let target=0;if(live){const dx=mx-p.x,dy=my-p.y,dist=Math.hypot(dx,dy);if(dist<reach*2.2){const g=Math.exp(-(dist*dist)/(2*reach*reach));target=Math.max(-pull,Math.min(pull,dx*p.nx+dy*p.ny))*g}}p.v+=(target-p.off)*STIFF;p.v*=DAMP;p.off+=p.v;if(Math.abs(p.v)>.02||Math.abs(p.off)>.02)moving=true}draw();if(moving||live)requestAnimationFrame(tick);else running=false}function wake(){if(!running){running=true;requestAnimationFrame(tick)}}host.addEventListener('pointermove',e=>{const b=frame.getBoundingClientRect();mx=e.clientX-b.left-INSET;my=e.clientY-b.top-INSET;live=true;wake()},{passive:true});host.addEventListener('pointerleave',()=>{live=false;wake()});addEventListener('resize',build);build()})();
+</script>
+<script>
+/* ── Stroke portrait ──────────────────────────────────────────────────────
+   The portrait is not reproduced, it is described. Every cell of a grid over
+   the picture asks one question — how fast is the image changing here, and in
+   which direction — and answers with a single short stroke laid ALONG the edge
+   it found. Flat areas ask the same question and get nothing, so the hair's
+   interior and the whole of the face stay empty and only structure is drawn.
+
+   That is the difference between this and the halftone it replaces. A halftone
+   renders its source faithfully: give it a cartoon and it gives back a cartoon
+   at lower resolution. Reading edges instead throws away everything except
+   where the form turns, which is what a person sketching would keep.
+
+   The orientation is the whole trick. The same strokes at random angles read
+   as noise in the shape of a head; aligned to the contour they read as
+   drawing — the curls run with the hair, the glasses close into rims, the jaw
+   becomes a line. It costs one extra number per cell.
+
+   Nothing settles into place or reveals on load; the picture is the same a
+   minute in as it was on arrival. The only movement is a slow breathing of
+   stroke length and a wobble of a fraction of a degree, each cell on its own
+   phase, so the drawing is never quite still without ever appearing to move. */
+(()=>{
+const cvs=document.querySelector('#pixtype');if(!cvs)return;
+const ctx=cvs.getContext('2d');
+const off=document.createElement('canvas'),octx=off.getContext('2d',{willReadFrequently:true});
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const P=window.PIXTYPE={
+  size:0,        // css px; 0 = leave it to the stylesheet
+  scale:1,       // multiplier on the width the stylesheet asks for
+  ink:'',        // the strokes' colour; set from --pix-ink
+  cols:44,       // grid columns across the box: the stroke count, and their size
+  speed:.8,      // how fast a stroke breathes
+  breathe:.35,   // how much of its length it breathes, as a share
+  wobble:5,      // how far it swings off its angle, in degrees
+  lo:.10,        // edge strength at or under this reads as flat and is dropped
+  hi:.45,        // edge strength at or over this gets a full-length stroke
+  gamma:.7,      // the curve between them
+  cut:.06,       // a cell under this much edge draws nothing at all
+  len:.5,        // shortest stroke, as a share of the cell
+  lw:.07,        // stroke width, as a share of the cell
+  flat:1,        // 1: every stroke the same width. 0: width follows strength
+  zoom:1.88,     // 1 fits the whole picture; above that crops into it
+  fx:.410,       // the point of the source held at the centre of the box, 0-1
+  fy:.323
+};
+
+/* The inlined copy when it is there, the file on disk when it is not. The file
+   works only when the page is served; see portrait-data.js. */
+const SRC=window.PORTRAIT_SRC||'portrait.webp';
+const src=new Image();
+src.decoding='async';
+src.onload=()=>rebuild();
+src.src=SRC;
+
+let ink='#6a6f4b',W=0,H=0,dpr=1,raf=0,last=0,t0=performance.now(),vis=true,rt;
+/* The baked drawing: one entry per cell that earned a stroke. Everything
+   expensive — reading the picture, finding its edges, averaging them into
+   cells — happens once, here, and a frame is then only the drawing of a few
+   hundred short lines. */
+let strokes=[],cell=0;
+const FPS=1000/34;
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+
+function measure(){const b=cvs.getBoundingClientRect();if(!b.width||!b.height)return false;
+  dpr=Math.min(2,devicePixelRatio||1);W=b.width;H=b.height;
+  cvs.width=Math.round(W*dpr);cvs.height=Math.round(H*dpr);return true}
+
+function bake(){
+  strokes=[];
+  const mw=Math.max(1,Math.round(W*2)),mh=Math.max(1,Math.round(H*2));
+  off.width=mw;off.height=mh;octx.clearRect(0,0,mw,mh);
+  if(!src.complete||!src.naturalWidth)return;
+  /* Contain-fit, times the zoom, positioned so the source's focal point lands
+     at the centre of the box. That is the crop: the whole picture at zoom 1,
+     the head alone at about 1.9. */
+  const fit=Math.min(mw/src.naturalWidth,mh/src.naturalHeight)*P.zoom,
+    dw=src.naturalWidth*fit,dh=src.naturalHeight*fit;
+  octx.drawImage(src,mw/2-P.fx*dw,mh/2-P.fy*dh,dw,dh);
+
+  /* Drawing an image into a canvas taints it, and on file:// that makes this
+     read throw instead of returning pixels. The inlined data: URI is what
+     keeps that from happening; this catch is the net for the fallback path,
+     where the picture came off the disk and the page was not served. */
+  let d;
+  try{d=octx.getImageData(0,0,mw,mh).data}
+  catch(e){if(!bake.warned){bake.warned=1;console.warn('[pixtype] cannot read the portrait - serve the page over http rather than opening the file directly.')}return}
+
+  /* Luminance, with the transparent ground counted as paper. That last part
+     matters: it makes the outer silhouette a change from light to dark like
+     any other, so the outline of the hair is found the same way the glasses
+     are rather than having to be special-cased. */
+  const L=new Float32Array(mw*mh);
+  for(let k=0;k<mw*mh;k++){const i=k*4,a=d[i+3]/255;
+    L[k]=1-a*(1-(d[i]*.299+d[i+1]*.587+d[i+2]*.114)/255)}
+
+  cell=W/P.cols;
+  const cols=P.cols,rows=Math.max(1,Math.round(H/cell)),sx=mw/W,sy=mh/H,N=cols*rows,
+    sum=new Float32Array(N),cnt=new Float32Array(N),
+    vx=new Float32Array(N),vy=new Float32Array(N);
+
+  /* One pass, binned straight into cells. Sobel for the gradient, then the
+     direction is accumulated as a DOUBLED angle: an edge running one way and
+     the same edge running back the other are 180 degrees apart and would
+     cancel to nothing if summed directly. Doubling makes them agree, and
+     halving on the way out recovers the line's direction. */
+  for(let y=1;y<mh-1;y++)for(let x=1;x<mw-1;x++){
+    const k=y*mw+x,
+      gx=L[k-mw+1]+2*L[k+1]+L[k+mw+1]-L[k-mw-1]-2*L[k-1]-L[k+mw-1],
+      gy=L[k+mw-1]+2*L[k+mw]+L[k+mw+1]-L[k-mw-1]-2*L[k-mw]-L[k-mw+1],
+      m=Math.min(1,Math.hypot(gx,gy)/4),
+      c=Math.floor(x/sx/cell),r=Math.floor(y/sy/cell);
+    if(c<0||c>=cols||r<0||r>=rows)continue;
+    const j=r*cols+c;sum[j]+=m;cnt[j]++;
+    const th=Math.atan2(gy,gx)*2;vx[j]+=m*Math.cos(th);vy[j]+=m*Math.sin(th)}
+
+  const lo=P.lo,hi=Math.max(P.lo+.001,P.hi),span=1/(hi-lo);
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+    const j=r*cols+c;if(!cnt[j])continue;
+    const a=clamp((sum[j]/cnt[j]-lo)*span,0,1);
+    if(a<P.cut)continue;
+    const ph=Math.abs(Math.sin(c*127.1+r*311.7)*43758.5453)%1;
+    strokes.push({
+      x:c*cell+cell/2, y:r*cell+cell/2,
+      /* A quarter turn on: the gradient points across the edge, the stroke
+         lies along it. */
+      a:Math.atan2(vy[j],vx[j])/2+Math.PI/2,
+      len:cell*(P.len+(1-P.len)*Math.pow(a,P.gamma)),
+      w:Math.max(.55,cell*P.lw*(P.flat?1:.5+.5*a)),
+      ph:ph})}
+}
+
+function draw(t){
+  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle=ink;ctx.lineCap='round';
+  for(let i=0;i<strokes.length;i++){
+    const s=strokes[i],
+      /* Breathing: each stroke lengthens and swings a little off its angle,
+         every one on its own phase and its own slightly different rate, so the
+         field is always mid-shuffle rather than pulsing as one.
+
+         The amounts have to be far larger here than the drift they replace. A
+         mark ramp animated by SWITCHING: nudge a rounded index by one and a
+         dash becomes a ring, which is visible however slowly it arrives. A
+         stroke's length is continuous, so the same tiny numbers only produce a
+         change of well under a percent a second — running, but frozen to the
+         eye. These are set to a cycle of a few seconds instead. */
+      b=Math.sin(t*P.speed*(.55+s.ph*.9)+s.ph*6.2832),
+      len=s.len*(1+b*P.breathe),ang=s.a+b*P.wobble,
+      dx=Math.cos(ang)*len/2,dy=Math.sin(ang)*len/2;
+    ctx.lineWidth=s.w;
+    ctx.beginPath();ctx.moveTo(s.x-dx,s.y-dy);ctx.lineTo(s.x+dx,s.y+dy);ctx.stroke()}
+}
+
+const shown=()=>vis&&(!cvs.checkVisibility||cvs.checkVisibility());
+function tick(now){raf=0;
+  if(!shown()){last=0;return}/* the intro scene scrolls away; scroll wakes it back up */
+  if(now-last<FPS){wake();return}
+  last=now;
+  /* The clock feeds the breathing and nothing else. Reduced motion pins it at
+     0, which leaves every stroke at its own fixed length — a still drawing. */
+  draw(REDUCE?0:(now-t0)/1000);
+  if(!REDUCE)wake()}
+function wake(){if(!raf)raf=requestAnimationFrame(tick)}
+
+/* An explicit P.size wins outright. Otherwise the scale multiplies whatever the
+   stylesheet asks for — which changes with the window — so the inline width is
+   cleared first and the natural width read back. Scaling the width we last
+   wrote would compound on every rebuild. */
+function applySize(){
+  cvs.style.width=P.size?P.size+'px':'';
+  if(P.size||P.scale===1)return;
+  const natural=cvs.getBoundingClientRect().width;
+  if(natural)cvs.style.width=(natural*P.scale)+'px';
+}
+function rebuild(){applySize();if(!measure())return;bake();wake()}
+P.rebuild=rebuild;
+/* Exposed so the drawing can be stepped by hand from the console at a chosen
+   moment, which is the only way to see the breathing without waiting for it. */
+P.draw=draw;
+
+/* ── Settings, from :root ────────────────────────────────────────────────────
+   Every number above is declared as a --pix-* token so the tuner can drive it.
+   Clamped on the way in: these arrive from a text field, and a grid of 0
+   columns would divide by nothing. */
+const raw=name=>getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const tok=(name,fallback)=>{const v=parseFloat(raw(name));return Number.isFinite(v)?v:fallback};
+function readTokens(){
+  /* The strokes' colour. Any CSS colour, transparency included — an rgba() here
+     is the way to fade them, rather than a second token multiplying against
+     this one. Falls back to the olive the rest of the page uses. Canvas is its
+     own colour parser and ignores a string it cannot read instead of throwing,
+     so seeding a known-good value first means a half-typed colour lands on that
+     rather than on whatever was left over. */
+  ctx.fillStyle=raw('--olive')||'#6a6f4b';
+  ctx.fillStyle=raw('--pix-ink')||raw('--olive')||'#6a6f4b';
+  ink=ctx.fillStyle;
+  P.ink   =ink;
+  P.scale =Math.max(.05,tok('--pix-scale',1));
+  P.cols  =Math.max(2,Math.round(tok('--pix-cols',44)));
+  P.speed =Math.max(0,tok('--pix-speed',.8));
+  P.breathe=Math.max(0,tok('--pix-breathe',.35));
+  /* Degrees in the stylesheet, radians in the maths. */
+  P.wobble=tok('--pix-wobble',5)*Math.PI/180;
+  P.lo    =clamp(tok('--pix-lo',.10),0,1);
+  P.hi    =clamp(tok('--pix-hi',.45),0,1);
+  P.gamma =Math.max(.05,tok('--pix-gamma',.7));
+  P.cut   =clamp(tok('--pix-cut',.06),0,1);
+  P.len   =clamp(tok('--pix-len',.5),0,1);
+  P.lw    =Math.max(.005,tok('--pix-lw',.07));
+  P.flat  =tok('--pix-flat',1)?1:0;
+  P.zoom  =Math.max(.1,tok('--pix-zoom',1.88));
+  P.fx    =clamp(tok('--pix-fx',.410),0,1);
+  P.fy    =clamp(tok('--pix-fy',.323),0,1);
+}
+
+/* The tuner writes its edits as inline custom properties on <html>, so one
+   observer on that attribute catches every change — no polling, and nothing
+   read on the frames where nothing moved. Only the tuner touches that
+   attribute, so a rebuild here is never wasted work. */
+if(window.MutationObserver)new MutationObserver(()=>{readTokens();rebuild()})
+  .observe(document.documentElement,{attributes:true,attributeFilter:['style']});
+
+addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{readTokens();rebuild()},140)});
+addEventListener('scroll',wake,{passive:true});
+if('IntersectionObserver'in self)new IntersectionObserver(e=>{vis=e[0].isIntersecting;if(vis)wake()}).observe(cvs);
+
+/* The --pix-* block sits in a <style> further down the document, so at the
+   moment this script runs the parser has not reached it: every token reads back
+   empty and the picture bakes at the fallbacks, then snaps to its real settings
+   on the first resize. Wait for the parser, and the first paint is the right
+   one. */
+function start(){readTokens();rebuild()}
+if(document.readyState==='loading')addEventListener('DOMContentLoaded',start);
+else start();
+})();
+</script>
+<style>
+/* ── The turns between scenes ─────────────────────────────────────────
+   Crossing between scenes scatters pixels across the margin around the
+   panel and then takes them away again — a beat that marks the turn.
+   Both crossings get it, in both directions. On the About/Work turn the
+   palette changes underneath (see below), and the scatter is what
+   carries that change so it does not read as a bare fade. */
+.pixwipe {
+  position: fixed; inset: 0; width: 100%; height: 100%; z-index: 26;
+  pointer-events: none; display: none;
+}
+.pixwipe.on { display: block; }
+
+/* ── The pixel square's numbers ───────────────────────────────────────
+   The block of marks in the corner of the About scene. These live here
+   rather than in the script so the tuner can reach them: open the page
+   with ?tune, filter for "pix", and drag. Edits land immediately — the
+   script watches for them and re-bakes.
+
+   Nothing here animates. The square is the same size and density from
+   the moment it is drawn; the only movement is each cell walking along
+   the ramp of marks, which --pix-speed sets.
+
+   --pix-ink      the marks' colour. Any CSS colour; an rgba() here is
+                  how to fade them. Left out, it falls back to --olive.
+   --pix-scale    overall size of the square, as a multiple of the size
+                  the stylesheet gives it. 1 leaves it alone; the
+                  responsive sizing is kept either way, so this scales
+                  with the window rather than replacing it.
+   --pix-cols     grid columns across the square. Fewer, larger marks or
+                  more, smaller ones — this is the density.
+   --pix-weight   heaviest mark in play, as an index into the ramp: 0
+                  dash, 1 slash, 2 speck, 3 ring, 4 x, 5 plus, 6 square,
+                  7 disc, 8 diamond, 9 block. Cells drift below it, never
+                  above. Sliders stop at 4; type into the box for the
+                  solid end of the ramp.
+   --pix-speed    how fast a cell drifts along the ramp. 0 freezes each
+                  cell on its own mark, leaving the picture completely
+                  still.
+
+   The four below are what make a picture resolve rather than smear. The
+   source is line art: at any sane grid the drawn lines cover only a sliver
+   of each cell, so raw coverage lands in a narrow band near zero and every
+   mark comes out the same weight — a portrait-shaped grey mush. The levels
+   stretch that band back across the whole ramp, and they matter more than
+   any other number here.
+
+   --pix-lo       black point. Source ink at or below this reads as empty.
+                  Raise it to drop a light ground out entirely.
+   --pix-hi       white point. Source ink at or above this reads as solid.
+                  Lower it to make a faint source reach the heavy marks.
+                  With lo/hi at 0/1 the tone curve is off and the picture
+                  is the mush described above.
+   --pix-gamma    the curve between them. Under 1 opens the shadows and
+                  gives more marks to the mid-tones; over 1 holds them back.
+   --pix-cut      a cell holding less than this much ink draws nothing.
+                  This is what keeps the ground clear and the silhouette
+                  crisp rather than fading off into specks.
+
+   --pix-natural and --pix-side are derived, not settings. The canvas is
+   sized by the first (the script reads it back and multiplies by the
+   scale itself), and the identity block above it is sized by the second.
+   Change the breakpoint widths here, in one place.
+
+   One size, every display. The square used to open out to 215px above
+   1700px wide, but the same block of marks that reads as a mark in the
+   corner of a laptop panel reads as a graphic on a large monitor, and
+   the caption dropped out from under it into its own separate line. The
+   laptop's numbers are now the only numbers. */
+:root {
+  /* The page's own ink, not the olive the marks used to borrow. */
+  --pix-ink:    #191712;
+  --pix-scale:  1;
+  --pix-cols:   44;
+
+  /* --pix-speed is a rate, --pix-breathe a share of stroke length and
+     --pix-wobble an angle in degrees. Speed alone does nothing visible if the
+     other two are near zero; that is what happened when the halftone's 0.054
+     was carried over to strokes. */
+  --pix-speed:   0.8;
+  --pix-breathe: 0.35;
+  --pix-wobble:  5;
+
+  --pix-lo:     0.10;
+  --pix-hi:     0.45;
+  --pix-gamma:  0.7;
+  --pix-cut:    0.06;
+  --pix-len:    0.5;
+  --pix-lw:     0.12;
+  --pix-flat:   1;
+
+  --pix-zoom:   1.88;
+  --pix-fx:     0.410;
+  --pix-fy:     0.323;
+
+  --pix-natural: min(330px, 26vw);
+
+  /* The square as it actually renders: the stylesheet width, times the scale
+     the script applies to it. The caption is measured against this. */
+  --pix-box:     calc(var(--pix-natural) * var(--pix-scale));
+  --pix-side:    134px;
+
+  /* The caption does not share the square's right margin. It is pushed
+     right until its first character sits under the middle of the square,
+     so the block starts from the square's bottom-centre and its top line
+     runs across the marks rather than clearing them to the left. That
+     carries it past the padding column on the right, which is the point;
+     the floor in the rule only stops it leaving the panel entirely on a
+     narrow window, where the margin is smaller than the overhang. */
+
+  /* How much of the picture the caption rides over, as a share of its height.
+     .2 tucked the caption up under an 84px square, where there was nothing
+     but empty marks to cross. Against a portrait at this size it lands on
+     the hands, so the vertical overlap goes and the caption sits clear
+     underneath — its left edge still starting at the picture's centre, which
+     is the overlap that was actually wanted. */
+  --pix-over:    0;
+
+  /* Height of the caption below the picture, which is what the picture is
+     lifted by. Three lines of 12px on 1.45 — the role wraps to two lines
+     here and the city takes a third, which the old two-line figure did not
+     account for. Zero where the caption is hidden, so the picture drops
+     back to the bottom on its own. */
+  --pix-cap:     52px;
+}
+/* The caption is 134px wide, so the two words of the role want their own
+   lines. The narrow column below turns this back off.
+
+   The middot goes with them: it separates the two words when they share a
+   line, and is a dot hanging off the end of one when they do not. So it is
+   the exact inverse of the break — one is showing whenever the other is
+   not, and neither is ever read aloud. */
+.lap-only { display: inline; }
+.availability .lap-off { display: none; }
+@media (max-width: 720px)  {
+  :root { --pix-natural: min(180px, 48vw); --pix-side: var(--pix-box); --pix-over: 0; }
+  .lap-only { display: none; }
+  .availability .lap-off { display: inline; }
+}
+@media (max-height: 520px) { :root { --pix-natural: min(120px, 16vw); --pix-cap: 0px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .pixwipe { display: none !important; }
+}
+
+
+/* ── Work scene: the palette turns ────────────────────────────────────
+   The middle scene is the only dark one. Cream inverts to near-black,
+   ink to white, and the olive that marks every rule and pixel becomes
+   terracotta; the cream palette returns for Contact. One class on
+   <html>, flipped on the same threshold the scenes already use.
+
+   Custom properties do not animate, so the fade lives on the concrete
+   properties below — every element that reads a palette token needs a
+   transition or it snaps while its neighbours drift. */
+:root.scene-dark {
+  --cream:   #262626;
+  --blush:   #252323;
+  --ink:     #ffffff;
+  --olive:   #a2625d;
+  --muted:   #6b6b6b;
+  --edge:    #a2625d;
+  --panel-2: #212121;
+  --rule:    #a2625d;
+
+  /* Not in the base :root — it lives as a var() fallback in the rule
+     that uses it, so the dark side has to name it itself. */
+  --ghost:   rgba(255,255,255,.17);   /* unread statement lines */
+}
+
+html, body,
+.stage, .preview-frame, .preview-label {
+  transition: background-color .55s ease, color .55s ease;
+}
+
+/* The logo squares already carry a transform transition — restate it, or
+   adding the colour here would drop the hover animation. The nav underline
+   is not here: it is a gradient now, and a gradient cannot transition its
+   colour, so it changes with the scene in one step like the other dashes. */
+.mark rect {
+  transition: transform .34s cubic-bezier(.22,1,.36,1), fill .55s ease;
+}
+
+.menu a, .availability, .availability span,
+.contact-title, .contact-title span,
+.contact-row-value, .contact-row-icon,
+.project small, .project strong, .projects-title, .stage-note {
+  transition: color .55s ease;
+}
+
+.frame rect, .frame path { transition: stroke .55s ease; }
+
+/* Not listed: the project dashes and the contact rule. Both are painted
+   as repeating gradients so their colour rides in --rule, and a gradient
+   cannot transition — they arrive on the same beat, in one step. The
+   scatter is over the page while it happens. */
+
+@media (prefers-reduced-motion: reduce) {
+  html, body, .stage, .preview-frame, .preview-label,
+  .frame rect, .frame path {
+    transition-duration: .3s;
+  }
+}
+
+
+
+
+</style>
+<script>
+/* ── Pixel dissolve ────────────────────────────────────────────────────
+   Crossing either scene threshold scatters pixels through the margin
+   around the panel: cells light in no order at all, the lit share swelling
+   and then draining over half a second. The panel itself is never covered,
+   so the turn reads as the frame breaking up rather than the page being
+   wiped, and it leaves no trace. */
+(() => {
+  const stage = document.querySelector('.stage');
+  if (!stage) return;
+
+  const root = document.documentElement;
+  const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const cv = document.createElement('canvas');
+  cv.className = 'pixwipe';
+  cv.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(cv);
+  const ctx = cv.getContext('2d');
+
+  const R = 15;   // the panel's corner radius
+
+  /* Settled by tuning and fixed here. */
+  const DUR    = 468;        // ms, the whole turn
+  const BAND   = 0.41;       // how much of the pass is lit at any moment
+  const CELL   = 8;          // px per pixel
+  const SMOOTH = 0.86;       // 0 runs at a constant rate, 1 eases both ends
+  const TINT   = '#ede6ca';  // the cream, borrowed for the length of the turn
+  const ALPHA  = 0.54;       // how far the pixels sit off the page beneath
+
+  let cells = [], raf = 0, t0 = 0;
+  let guardEnd = 0;   // see run(): the canvas must clear even without rAF
+
+  function inPanel(x, y, b) {
+    if (x < b.left || x > b.right || y < b.top || y > b.bottom) return false;
+    const cx = Math.min(Math.max(x, b.left + R), b.right - R);
+    const cy = Math.min(Math.max(y, b.top + R), b.bottom - R);
+    return Math.hypot(x - cx, y - cy) <= R;
+  }
+
+  function build() {
+    /* Measure the canvas itself rather than innerWidth/innerHeight: inset:0
+       already stretches it to the viewport, and the two disagree whenever a
+       scrollbar is counted, which would leave a strip of the old page showing
+       along an edge. */
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    const box = cv.getBoundingClientRect();
+    const W = Math.ceil(box.width), H = Math.ceil(box.height);
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const b = stage.getBoundingClientRect();
+
+    /* Cells fill the margin only — from the panel's border out to the edge of
+       the window. The panel itself is never covered, so the turn reads as the
+       frame dissolving rather than the page being wiped.
+
+       Each cell's turn is pure chance. An earlier version weighted it by
+       distance out from the panel, which gave the mass a direction to travel
+       in and read as a sweep; without that the margin simply goes noisy and
+       clears, which is the beat this wanted all along. */
+    cells = [];
+    for (let y = 0; y < H; y += CELL) {
+      for (let x = 0; x < W; x += CELL) {
+        const mx = x + CELL / 2, my = y + CELL / 2;
+        if (inPanel(mx, my, b)) continue;
+        cells.push({ x, y, w: CELL, t: Math.random() });
+      }
+    }
+  }
+
+  function frame(now) {
+    const p = Math.min(1, (now - t0) / DUR);
+
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    /* One pass, not two. A cell is lit only while the moving window is over
+       its number, so every pixel comes up once and is gone. Filling and then
+       emptying would read as two separate events; BAND is what keeps a broad
+       share of the margin lit at once rather than a thin edge of it.
+
+       SMOOTH blends the rate between constant and a smoothstep — at 0.86 the
+       window still eases off the start and settles at the end, without the
+       full hold a smoothstep would give it. Clamped, since blending past 1
+       overshoots the ends. */
+    const ease = v => {
+      const s = v * v * (3 - 2 * v);
+      return Math.min(1, Math.max(0, v + (s - v) * SMOOTH));
+    };
+    const head = ease(p) * (1 + BAND);
+    ctx.fillStyle = TINT;
+    ctx.globalAlpha = ALPHA;   // one value for the pass, not per cell
+    for (const c of cells) {
+      if (c.t <= head && c.t > head - BAND) ctx.fillRect(c.x, c.y, c.w, c.w);
+    }
+    ctx.globalAlpha = 1;
+
+    if (p < 1) { raf = requestAnimationFrame(frame); }
+    else { raf = 0; cv.classList.remove('on'); ctx.clearRect(0, 0, cv.width, cv.height); }
+  }
+
+  function run() {
+    if (REDUCE) return;       // no decoration for anyone who asked for none
+    if (raf) cancelAnimationFrame(raf);
+    cv.classList.add('on');   // must be laid out before build() can measure it
+    build();
+    t0 = performance.now();
+    raf = requestAnimationFrame(frame);
+
+    /* rAF is throttled to nothing in a background tab, which would leave the
+       canvas covered. The cleanup lands on a timer regardless; when the
+       animation runs it gets there first and this is a no-op. */
+    clearTimeout(guardEnd);
+    guardEnd = setTimeout(() => {
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      cv.classList.remove('on');
+      ctx.clearRect(0, 0, cv.width, cv.height);
+    }, DUR + 140);
+  }
+
+  /* Which of the three scenes is showing, on the same two thresholds the
+     scenes themselves use. Every crossing gets the scatter — About to Work,
+     Work to Contact, and both of them in reverse — so the two turns are
+     marked the same way rather than only the first one. */
+  let scene = -1;
+  function check() {
+    const range = Math.max(1, document.body.scrollHeight - innerHeight);
+    const p = Math.min(1, scrollY / range);
+    const next = p > .666 ? 2 : p > .333 ? 1 : 0;
+    if (next === scene) return;
+    /* -1 is the first reading, not a crossing. A page restored mid-scroll
+       lands in a scene without having travelled to it, and playing the turn
+       there would announce a change that never happened. */
+    const arriving = scene !== -1;
+    scene = next;
+    if (arriving) run();
+  }
+  addEventListener('scroll', check, { passive: true });
+  /* A resize changes the scroll range, so re-read it — but never force a
+     replay: the turn belongs to crossing the threshold, not to the window
+     being dragged. check() only runs when the side actually changes. */
+  addEventListener('resize', check);
+  check();
+})();
+</script>
+
+<script>
+/* ── The word that changes ─────────────────────────────────────────────────
+   Types a word in, holds it, wipes it back out a little faster than it was
+   typed, and moves to the next. It starts already holding the word that is in
+   the markup, so nothing is retyped on load and the sentence is complete from
+   the first frame.
+
+   The word has its line to itself, so its length is free — nothing is to the
+   right of it to be pushed around, and no width has to be held open. */
+(()=>{
+  const el=document.querySelector('#cycle');if(!el)return;
+  const WORDS=['worth maintaining','boring on purpose','that survives real users','nobody has to explain'];
+  const live=document.querySelector('.vh');
+  if(live)live.textContent=WORDS[0];
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=WORDS[0];return}
+
+  /* Deliberately unhurried — the word is the only thing moving in the hero,
+     so it should read as writing rather than as a ticker. The wipe stays
+     quicker than the typing: erasing is a gesture, typing is the content. */
+  const TYPE=118,JITTER=70,WIPE=55,HOLD=2600,GAP=420;
+  let w=0,i=WORDS[0].length,mode='hold';
+
+  /* The intro scene scrolls away rather than unmounting, so this would go on
+     typing behind the work scene. Hold the current frame until it is back —
+     checked here rather than with an observer because the scene is hidden by
+     visibility, which an IntersectionObserver does not report on. */
+  const shown=()=>!el.checkVisibility||el.checkVisibility();
+  const at=ms=>setTimeout(step,ms);
+
+  function step(){
+    if(!shown())return at(400);
+    const word=WORDS[w];
+    if(mode==='hold'){mode='wipe';return at(WIPE)}
+    if(mode==='type'){
+      el.textContent=word.slice(0,++i);
+      if(i<word.length)return at(TYPE+Math.random()*JITTER);
+      mode='hold';return at(HOLD);
+    }
+    el.textContent=word.slice(0,--i);
+    if(i>0)return at(WIPE);
+    mode='type';w=(w+1)%WORDS.length;return at(GAP);
+  }
+  at(HOLD);
+})();
+</script>
+
+<script>
+/* ── The gate ──────────────────────────────────────────────────────────
+   No spinner and no counter: there is nothing here worth counting — one
+   document, and the only two images live in scenes the page has not
+   scrolled to yet. What there is to wait for is the type. Geist, Playfair
+   and DM Mono all arrive over the network, and the statement is set at a
+   hundred-odd pixels, so starting the entrance before they land means
+   animating Arial and then reflowing the sentence underneath it.
+
+   So the wait is exactly as long as the fonts take, and no longer — and
+   capped, because a font that never arrives must not take the page with
+   it. On a warm cache this is a frame or two and reads as instant. */
+(() => {
+  const root = document.documentElement;
+  if (!root.classList.contains('is-arriving')) return;
+
+  const CAP = 900;   // ms; past this the fallback face is what everyone gets
+  let done = false;
+
+  function go() {
+    if (done) return; done = true;
+    /* One operation, so there is no paint between the hidden state going
+       and the animations arriving. */
+    root.classList.replace('is-arriving', 'is-arrived');
+
+    /* The panel is scaled for the length of the entrance, and the bendable
+       border measured it on the way in — so its outline is built to a size
+       the panel no longer has. Re-measure once the transform is off it.
+       This is the event the border already listens on. */
+    setTimeout(() => dispatchEvent(new Event('resize')), 1700);
+  }
+
+  const fonts = document.fonts && document.fonts.ready;
+  if (fonts) fonts.then(() => requestAnimationFrame(go)); else requestAnimationFrame(go);
+  setTimeout(go, CAP);
+})();
+</script>
+
+<script src="../tuner.js" defer></script>
+</body></html>

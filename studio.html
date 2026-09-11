@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <title>Studio Redesign – lilaquadrat</title>
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('fonts/Geist-Variable.woff2') format('woff2');
+      font-weight: 100 900; font-style: normal;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      /* ── Palette · shared with the about page ────────────────────
+         Cream ground, blush surface, olive for every mark and
+         micro-label. --veil is what a covered card washes toward: it
+         sits on the far side of --bg from --card, so "receding" means
+         the same thing here as it did in the dark original. */
+      --bg:      #ede6ca;   /* cream */
+      --card:    #f8d5d1;   /* blush · the deck surface */
+      --card-2:  #f5d0cb;   /* blush, one tier down */
+      --blush:   #fabab6;   /* the border blush · unused since the frame went */
+      --ink:     #191712;
+      --green:   #6a6f4b;   /* dusty earthy olive */
+      --veil:    #ffffff;
+
+      --line:    rgba(25,23,18,0.16);
+      --mute:    rgba(25,23,18,0.48);
+      --dim:     rgba(25,23,18,0.66);
+
+      /* The pixel dash was defined here — a 3px olive square on a 9px
+         pitch, the same mark as the logo, and every divider on the page was
+         made of it. There are no dividers on the page now. It was a good
+         rule and it was used six times, which was five times too many: a
+         page that marks every seam is a page that does not trust its own
+         spacing. The seams are gaps and alignment now, and the mark stays
+         where it earns its place — in the logo, and in the diagrams. */
+
+      --gutter:  clamp(20px, 4vw, 56px);
+      --pad:     clamp(28px, 3.6vw, 64px);
+      --r:       15px;
+      --nav-h:   64px;
+    }
+
+    /* `overflow-x: clip`, never `hidden` — `hidden` makes these scroll
+       containers and silently kills the stage's position: sticky. */
+    html { background: var(--bg); scroll-behavior: smooth; overflow-x: clip; }
+    body {
+      background: var(--bg); min-height: 100vh;
+      font-family: 'Geist', Arial, sans-serif; color: var(--dim);
+      -webkit-font-smoothing: antialiased; overflow-x: clip;
+    }
+    a { color: inherit; }
+
+    #veil {
+      position: fixed; inset: 0; background: var(--bg);
+      z-index: 999; transition: opacity 0.9s ease; pointer-events: none;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────────
+       The about page's bar, unchanged: a 64px transparent band, the
+       pixel mark on the left, a centred menu in the middle. No pill,
+       no blur, no bar background — the stage frame below is the only
+       edge on the page, and the nav sits in the air above it.
+
+       The band's height is also the stage's inset, so the bar's box
+       ends exactly where the frame begins. */
+    #site-nav {
+      position: fixed; z-index: 60; inset: 0 0 auto;
+      height: var(--nav-h); padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      pointer-events: none;
+    }
+    /* The name set in mono, not the pixel square it used to be — the
+       about page carries the wordmark now and the case studies follow
+       it. 9px DM Mono, olive, tracked: the deck's own small-type
+       metrics, so the bar reads as one line of type rather than as a
+       logo at one end and links in the middle.
+
+       It opens under the pointer the way the squares came apart. The
+       extra tracking is spent into empty space — the menu is absolutely
+       positioned and out of flow, so nothing moves to make room. Fine
+       pointers only, or a tap would leave it stuck open on a phone. */
+    .mark {
+      display: block; pointer-events: auto;
+      color: var(--green); text-decoration: none; white-space: nowrap;
+      font: 500 9px/1 'DM Mono', monospace;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: letter-spacing 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .mark span { display: inline; }
+
+    /* ── The identity line ────────────────────────────────────────
+       The landing page's, carried over unchanged so the bar is the same
+       bar on every page: same 9px DM Mono, same tracking, same olive as
+       the mark at the other end of the row. The logo holds the left, the
+       sections the middle, this the right — and since the menu is
+       absolutely positioned and out of flow, dropping this in as the
+       second flex child is all space-between needs to push it out.
+
+       It goes at 900, where the row has width for the mark and the
+       section links and nothing else. */
+    .availability {
+      margin: 0 0 0 auto; pointer-events: none; white-space: nowrap;
+      color: var(--green);
+      font: 500 9px/1 'DM Mono', monospace;
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .availability .role + .role::before { content: ' ·  '; }
+    @media (max-width: 900px) { .availability { display: none; } }
+    @media (hover: hover) { .mark:hover { letter-spacing: 0.2em; } }
+    .mark:focus-visible { letter-spacing: 0.2em; }
+    /* Fourteen mono characters do not fit beside a centred menu on a
+       phone, so the name stacks — which is why the halves are separate
+       spans. The negative margin takes back the tracking applied after
+       each line's last character, keeping both flush to one edge. */
+    @media (max-width: 720px) {
+      .mark { font-size: 8px; line-height: 1.35; letter-spacing: 0.08em; }
+      .mark span { display: block; margin-right: -0.08em; }
+    }
+
+    /* Words, tracked out in mono, underlined from the left on hover.
+       The rule is a 1px olive hairline — the one hairline the page
+       allows, and only because it is a moving thing, not a border. */
+    .menu {
+      position: absolute; left: 50%; top: 23px; transform: translateX(-50%);
+      display: flex; gap: 0; white-space: nowrap; pointer-events: auto;
+    }
+    .menu a {
+      position: relative; padding: 4px 14px; text-decoration: none;
+      color: var(--ink);
+      font: 500 10px/1 'DM Mono', monospace;
+      letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .menu a::after {
+      content: ''; position: absolute; right: 14px; bottom: 0; left: 14px;
+      height: 1px; background: var(--green);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform 0.25s ease;
+    }
+    .menu a:hover::after, .menu a[aria-current]::after {
+      transform: scaleX(1); transform-origin: left;
+    }
+    /* Dashes are the page's own mark, so focus is where they belong. */
+    .menu a:focus-visible { outline: 1px dashed var(--green); outline-offset: 3px; }
+
+    /* Full-bleed: the page fills the viewport, 20px of air each side. */
+    .wrap { max-width: none; margin: 0; padding: 0 20px; }
+
+    /* ════════════════════════════════════════════════════════
+       TYPE — one scale, shared with the about page
+
+       Display is Geist at 480, tracked hard negative, set on a
+       line-height under 1. Emphasis inside display type switches to
+       Playfair italic; emphasis inside body copy just turns olive.
+       Micro-labels are Geist 500 at 9–10px, uppercase, tracked out —
+       mono is reserved for the nav and for literal code.
+    ════════════════════════════════════════════════════════ */
+    .card--hero h1 em,
+    .statement em,
+    .pull em {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400; font-style: italic;
+      letter-spacing: -0.09em;
+    }
+    /* The display tracking is cut for 60–150px. The pull runs at 29,
+       where -0.09em closes the word up into one shape. */
+    .pull em { letter-spacing: -0.03em; }
+
+    /* ── HERO — the first card in the deck ── */
+    .eyebrow {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: clamp(24px,3vw,40px);
+    }
+    .eyebrow-num {
+      font: 500 10px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--green);
+    }
+    .eyebrow-tag {
+      font: 500 10px/1.45 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
+    }
+    .eyebrow-tag span { margin: 0 6px; opacity: 0.4; }
+    .card--hero h1 {
+      font-family: 'Geist', Arial, sans-serif;
+      font-size: clamp(56px,9.6vw,148px); font-weight: 480;
+      letter-spacing: -0.073em; line-height: 0.9;
+      color: var(--ink);
+      margin-bottom: clamp(24px,3vw,44px);
+    }
+    .hero-line {
+      max-width: 660px; font-size: clamp(17px,1.6vw,21px);
+      font-weight: 400; line-height: 1.6;
+      color: rgba(25,23,18,0.78);
+      margin-bottom: clamp(44px,5vw,72px);
+    }
+    .hero-line em { font-style: normal; color: var(--green); }
+    /* Was fenced off from the hero line by a dash across the top. Now it is
+       simply further down: a run of air about two and a half times the old
+       padding, which separates the two harder than the line did and leaves
+       the column unbroken. */
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 24px 56px;
+      padding-top: clamp(40px,5vw,72px);
+    }
+    .meta-k {
+      font: 500 9px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mute); margin-bottom: 9px;
+    }
+    .meta-v { font-size: 14px; font-weight: 480; letter-spacing: -0.01em; color: var(--dim); }
+
+    /* ════════════════════════════════════════════════════════
+       CARD DECK — each section stacks over the last
+    ════════════════════════════════════════════════════════ */
+    /* Fallback (short/narrow viewports): cards are plain stacked blocks,
+       split by the same pixel dash the rest of the page uses.
+       padding-top clears the fixed nav in every non-stage case,
+       including a wide but short window, where the sticky stage and
+       its inset are both switched off. Stage mode zeroes it. */
+    .deck { position: relative; padding-top: 100px; padding-bottom: 8vh; --n: 10; }
+    .card {
+      --enter: 0; --cover: 0;
+      background-color: var(--card);
+      border-radius: var(--r);
+      padding: var(--pad);
+      display: flex; flex-direction: column;
+      /* Stacked, one card used to be told from the next by a dash along its
+         top edge and 2px of margin. The dash is gone and the margin does the
+         whole job instead — the cards already carry their own ground and
+         their own radius, so a real gap between them is enough to read as
+         two things. Stage mode zeroes this and stacks them absolutely. */
+      margin-bottom: clamp(10px,2vw,22px);
+    }
+    .card::after { content: none; }
+
+    /* The bending frame stood here: an SVG dashed stroke around the stage
+       that leaned toward the pointer on a spring. It is gone, with its
+       markup and its hundred lines of script. It was drawing a room around
+       the page, and the page does not need one — the stage already reads as
+       a panel from its radius, its ground and the air the cards are set in.
+       A line around the outside of that is a line saying what the edges
+       already say. */
+
+    /* ── Stage mode: the stage is pinned, the cards move inside it ──
+       One inset, used top and bottom, so the stage sits equidistant from
+       both viewport edges — and it is the nav's own height, so the bar
+       ends exactly where the stage starts. */
+    @media (min-width: 860px) and (min-height: 640px) {
+      :root { --stage-inset: var(--nav-h); }
+      .deck { height: calc(var(--n) * 100vh); padding-top: 0; padding-bottom: 0; }
+      .stage {
+        position: sticky; top: var(--stage-inset);
+        height: calc(100vh - var(--stage-inset) * 2);
+        overflow: hidden;
+        border-radius: var(--r);
+        background: var(--bg);
+      }
+      /* No scale on the covered card: shrinking it lifts its bottom edge off
+         the stage floor and opens a hole the next card rises out of. Depth
+         comes from the dim instead. */
+      /* --enter / --cover are set to 0 or 1 only; the easing does the rest.
+         Expo-out: leaves fast, settles slowly — the curve that reads as
+         "weight" rather than "animation". */
+      .card {
+        position: absolute; inset: 0;
+        margin-bottom: 0;
+        overflow: hidden;
+        transform: translateY(calc(var(--enter) * 100%));
+        will-change: transform;
+        transition: transform 1180ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+      }
+      /* The dim leads the slide slightly, so the card behind darkens a beat
+         before the new one lands on it. */
+      .card::after {
+        transition: opacity 820ms cubic-bezier(0.33, 1, 0.68, 1);
+      }
+      /* Dimming veil — cheaper than filter, and it can't affect layout. */
+      .card::after {
+        content: ''; position: absolute; inset: 0; z-index: 2;
+        background: var(--veil); pointer-events: none;
+        opacity: calc(var(--cover) * 0.55);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .card, .card::after { transition: none; }
+        .card::after { opacity: 0; }
+      }
+    }
+    .card-head {
+      display: flex; align-items: baseline; gap: 16px;
+      margin-bottom: clamp(22px,3vw,40px);
+    }
+    .card-n {
+      font: 500 10px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; color: var(--green);
+    }
+    .card-tag {
+      font: 500 10px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
+    }
+    .statement {
+      font-family: 'Geist', Arial, sans-serif;
+      font-size: clamp(30px,4.6vw,62px); font-weight: 480;
+      letter-spacing: -0.06em; line-height: 0.94;
+      color: var(--ink);
+      max-width: 15ch;
+      margin-bottom: clamp(18px,2vw,26px);
+    }
+    .statement.wide { max-width: 22ch; }
+    .support {
+      font-size: clamp(15px,1.35vw,18px); font-weight: 400; line-height: 1.62;
+      color: rgba(25,23,18,0.68); max-width: 62ch;
+    }
+    .support em { font-style: normal; color: var(--green); }
+    /* min-height:0 lets a dense body shrink instead of overflowing the frame. */
+    .card-body { margin-top: auto; padding-top: clamp(20px,2.6vw,38px); min-height: 0; }
+    .card > div:first-child { flex: 0 0 auto; }
+    .card-foot {
+      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mute); margin-top: 18px;
+    }
+
+    /* ── Hook card (01) ──────────────────────────────────────────
+       The diagram is the argument here, so the head runs short and
+       hands the picture the rest of the stage.
+
+       The card drops to the page cream, so blush stops being the
+       surface and becomes the accent. Both rect families stay filled,
+       one tier apart: sources in a pale blush (#fae4e2), loop steps in
+       the deck's own surface blush. #fae4e2 is used nowhere else. */
+    .card--hook { background-color: var(--bg); }
+    .card--hook .card-head { margin-bottom: clamp(16px,2vw,28px); }
+    /* Wider measure than the deck's 15ch: the statement stands alone here,
+       so two lines rather than three, and the diagram keeps the height. */
+    .card--hook .statement {
+      font-size: clamp(28px,3.7vw,52px); max-width: 24ch; margin-bottom: 0;
+    }
+    .card--hook .card-body { padding-top: clamp(16px,2vw,28px); }
+    /* On the pinned stage the card height is fixed, so the diagram takes
+       whatever the head leaves rather than a guessed vh cap — it scales
+       itself to fit (preserveAspectRatio) instead of being clipped. */
+    @media (min-width: 860px) and (min-height: 640px) {
+      .card--hook .card-body {
+        margin-top: 0; flex: 1 1 auto; min-height: 0;
+        display: flex; flex-direction: column;
+      }
+      .card--hook .loop { flex: 1 1 auto; min-height: 0; }
+      .card--hook .loop svg { height: 100%; max-height: none; }
+    }
+
+    /* ── Pull line (02) ──
+       It had the pixel dash stood on end at its left, the way a blockquote
+       takes a rule. The indent is what actually said "this is held apart
+       from the column" — the line only decorated a thing the offset had
+       already done — so the indent stays, roughly doubled to carry the job
+       alone, and the line goes. */
+    .pull {
+      padding-left: clamp(30px,4vw,64px);
+      font-size: clamp(19px,2.1vw,29px); line-height: 1.36;
+      letter-spacing: -0.02em; color: var(--ink);
+      max-width: 28ch;
+    }
+    .pull em { color: var(--green); }
+
+    /* ── Loop diagram ── */
+    .loop svg { width: 100%; height: auto; max-height: 30vh; display: block; }
+    /* The hook diagram carries the whole system, so it gets the room. */
+    .loop--wide svg { max-height: 46vh; }
+    /* Two layouts of one diagram; the mobile one switches in below 860. */
+    .loop--wide .loop-mobile { display: none; }
+
+    /* ── Hook diagram · staged entrance ──────────────────────────
+       Plays whenever card 01 lands on the stage, in the order the
+       argument is made: the two sources, what they feed, then the
+       loop itself, node by node.
+
+       The hidden state is gated behind .js-anim, which the deck
+       script sets at startup. No script, no hiding — the diagram
+       can't be stranded invisible by a JS failure. */
+    @media (min-width: 860px) and (min-height: 640px) {
+      .js-anim .card--hook .dg,
+      .js-anim .card--hook .dg-conn,
+      .js-anim .card--hook .dg-arrow,
+      .js-anim .card--hook .dg-band { opacity: 0; }
+
+      .js-anim .card--hook.is-live .dg {
+        animation: dgIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .js-anim .card--hook.is-live .dg-conn { animation: dgConn 460ms ease both; }
+      .js-anim .card--hook.is-live .dg-arrow,
+      .js-anim .card--hook.is-live .dg-band { animation: dgFade 340ms ease both; }
+
+      @keyframes dgIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: none; }
+      }
+      /* Lands at 0.62, not 1 — these stay quieter than the ladder. */
+      @keyframes dgConn { from { opacity: 0; } to { opacity: 0.62; } }
+      @keyframes dgFade { from { opacity: 0; } to { opacity: 1; } }
+
+      @media (prefers-reduced-motion: reduce) {
+        .js-anim .card--hook .dg,
+        .js-anim .card--hook .dg-arrow,
+        .js-anim .card--hook .dg-band { opacity: 1; animation: none; }
+        .js-anim .card--hook .dg-conn { opacity: 0.62; animation: none; }
+      }
+    }
+
+    /* ── Shot rows and thumbnail grids ───────────────────────────
+       Two or three recordings/stills abreast inside one card body.
+       Each cell is the same .shot the single-media cards use, so a
+       crop here is mounted exactly as it is mounted there.
+
+       flex: 1 1 0 with min-width/min-height: 0 is what lets the row
+       divide the stage's fixed height instead of overflowing it —
+       a flex item defaults to min-*: auto and will refuse to shrink
+       below its content. */
+    .shot-row {
+      display: flex; gap: clamp(10px, 1.3vw, 20px);
+      flex: 1 1 auto; min-height: 0;
+      /* A wide crop in a narrow cell is width-limited, so stretching the
+         cells only grows empty frame around it. Centre instead: each
+         frame hugs its crop and the row sits in the middle of the body. */
+      align-items: center;
+    }
+    .shot-row .shot { flex: 1 1 0; min-width: 0; min-height: 0; }
+
+    /* Four crops at one scale. The grid proves range; nothing here is
+       meant to be read, so the captions carry the naming. */
+    .thumbs {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: clamp(10px, 1.3vw, 20px);
+      flex: 1 1 auto; min-height: 0;
+      /* Cells take their content height rather than stretching, so a
+         frame never grows taller than the crop it holds. */
+      align-items: center;
+    }
+    .thumbs .shot { min-width: 0; min-height: 0; }
+
+    /* The diagnosis card carries three shots and a foot, so its head
+       gives up a step to keep the media legible. It carried a breadcrumb
+       crop above the three as well — that, and the .strip rule that
+       sized it, are gone. */
+    .card--diag .statement { font-size: clamp(26px, 3.3vw, 46px); }
+    .card--diag .support { font-size: clamp(13.5px, 1.05vw, 15.5px); }
+
+    /* ── Closing notes ───────────────────────────────────────────
+       The same micro-label as the hero's meta row, but with room for a
+       sentence rather than a value — and set off the same way that row is
+       now, by the air above it rather than by a rule. */
+    .notes {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: clamp(24px, 3vw, 56px);
+      padding-top: clamp(38px, 4.6vw, 64px);
+    }
+    .note-v {
+      font-size: clamp(14px, 1.15vw, 16px); line-height: 1.6;
+      color: rgba(25,23,18,0.68); max-width: 46ch;
+    }
+    .next-link {
+      display: inline-block; margin-top: clamp(26px, 3vw, 40px);
+      text-decoration: none; color: var(--ink);
+      font-size: clamp(16px, 1.5vw, 20px); font-weight: 480;
+      letter-spacing: -0.02em;
+      /* The one dash that stays a line, because here it is not a divider:
+         it is the underline on a link, and taking it off would leave the
+         only outbound link on the page looking like a heading. Solid and
+         hairline rather than the pixel rule, so it reads as underlining
+         rather than as one more fence. */
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(106,111,75,0.42);
+    }
+    .next-link span {
+      display: inline-block; color: var(--green);
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .next-link:hover span { transform: translateX(5px); }
+    .next-link:focus-visible { outline: 1px dashed var(--green); outline-offset: 4px; }
+
+    /* The row above owns the leftover height; the foot takes only its own. */
+    .card-body > .card-foot { flex: none; }
+
+    /* ── Screens and clips ───────────────────────────────────────
+       The same frame the other two case studies use, so a recording
+       here is mounted the way a screenshot is mounted there. The clip
+       is the argument on these cards, so it takes whatever the head
+       leaves and scales itself down rather than being cropped. */
+    .shot { display: flex; flex-direction: column; gap: clamp(14px,1.6vw,20px); min-height: 0; }
+    /* The picture used to be mounted: a tinted panel, fenced on all four
+       sides by the dash, with the image floated in the middle of it. Three
+       things were then competing at the edge of one screenshot — the card's
+       ground, the mount's ground, and a line between them — and a screenshot
+       is already a rectangle with its own edges. So the mount is gone and
+       the image is set straight onto the card.
+
+       Left, not centred, and this is the composition doing the work the
+       border used to: the caption under it is left-aligned, the statement
+       above it is left-aligned, and an image centred between them was the
+       one element on the card hung off a different axis. */
+    .shot-frame {
+      flex: 1 1 auto; min-height: 0;
+      display: flex; align-items: center; justify-content: flex-start;
+    }
+    .shot-frame img, .shot-frame video {
+      display: block; width: auto; height: auto;
+      max-width: 100%; max-height: 100%; object-fit: contain;
+    }
+    .shot-cap {
+      flex: none;
+      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
+    }
+    /* A clip card gives its head less room than a text card: the statement
+       drops a step and the support runs wide and short, so the recording
+       keeps the height. */
+    .card--shot .card-head { margin-bottom: clamp(13px,1.6vw,22px); }
+    .card--shot .statement {
+      font-size: clamp(28px,3.7vw,52px); max-width: 24ch;
+      margin-bottom: clamp(10px,1.2vw,16px);
+    }
+    .card--shot .support { max-width: 82ch; font-size: clamp(14px,1.15vw,16px); }
+    .card--shot .card-body { padding-top: clamp(13px,1.6vw,22px); }
+    @media (min-width: 860px) and (min-height: 640px) {
+      .card--shot .card-body {
+        margin-top: 0; flex: 1 1 auto; min-height: 0;
+        display: flex; flex-direction: column;
+      }
+      .card--shot .shot { flex: 1 1 auto; min-height: 0; }
+    }
+
+    /* ── Split: words left, the picture right ────────────────────
+       These cards ran down the page: a block of type, then the picture under
+       it, both the full width of the card. The picture needed that width,
+       but the type did not — a support line stopping well short of the card
+       edge leaves a third of the row empty beside it, and the eye reads that
+       gap as the card being unfinished rather than as air.
+
+       So the type takes a column of its own, narrow enough that it wraps the
+       way a column of prose should, and the picture takes everything left
+       over. The text column is a width, not a fraction: prose needs about
+       forty characters and no more, and every pixel past that is better
+       spent on the picture. A 1fr/1fr split would hand the type width it
+       cannot use and take it off the one thing that wants it. */
+    @media (min-width: 980px) {
+      .card--shot {
+        display: grid;
+        grid-template-columns: clamp(250px,26vw,400px) minmax(0,1fr);
+        /* One row, told to be the card's height rather than its contents'.
+           On the pinned stage the card has a definite height and the picture
+           should grow into all of it; stacked, the card is auto and this
+           resolves to the content height, which is the old behaviour. */
+        grid-template-rows: minmax(0,1fr);
+        column-gap: clamp(34px,4.4vw,84px);
+      }
+      /* Centred against the full-height picture beside it. Top-aligning is
+         the other reading, but it leaves the whole lower half of the text
+         column empty — the problem this layout was opened to fix, moved. */
+      .card--shot > div:first-child { align-self: center; }
+      .card--shot .card-body {
+        margin-top: 0; padding-top: 0; min-height: 0;
+        display: flex; flex-direction: column;
+      }
+      .card--shot .shot { flex: 1 1 auto; min-height: 0; }
+      /* The column does the constraining now, so the ch limits come off and
+         the display size comes down a step to wrap sensibly inside it. */
+      .card--shot .statement {
+        font-size: clamp(26px,2.45vw,38px); max-width: none;
+        margin-bottom: clamp(12px,1.4vw,18px);
+      }
+      .card--shot .support {
+        font-size: clamp(13.5px,1.02vw,15px); max-width: none;
+      }
+      .card--shot .card-foot { margin-top: 14px; }
+    }
+    /* Stacked, the frame has no height to fill, so it needs a floor. */
+    @media (max-width: 859px) { .shot-frame { min-height: 180px; } }
+
+    /* ── Hero, split ─────────────────────────────────────
+       The headline and the line under it hold the left column; a still
+       of the rebuilt product sits in the right, centred against them,
+       in the same dashed frame every other still uses. The right half
+       of this card was empty, and the first thing on the page may as
+       well be the thing itself.
+
+       minmax(0, ...) on both tracks: a grid column's default min-width
+       is auto, and the 148px headline would push the track wider than
+       its share and shove the still off the card. */
+    .card--hero .hero-top { display: block; }
+    @media (min-width: 1000px) {
+      .card--hero .hero-top {
+        display: grid;
+        /* Narrower than 1400 the headline needs more of the row, or
+           "One Level" breaks after "One". The still gives the width
+           back rather than the headline losing its two-line shape. */
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
+        gap: clamp(30px, 3.6vw, 68px);
+        align-items: center;
+      }
+      /* The flex column's auto margin opens the gap to the meta row, so
+         the line below the headline doesn't need one of its own. */
+      .card--hero .hero-line { margin-bottom: 0; }
+    }
+    @media (min-width: 1400px) {
+      .card--hero .hero-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr); }
+    }
+    /* No frame on this one. Every other still is mounted in the dashed
+       frame, but this is the page's opening image and it carries its own
+       white ground — a border around it only competes with the headline
+       beside it and with the card's own dashed edge. */
+    .hero-shot {
+      display: block; min-width: 0;
+      width: 100%; height: auto;
+    }
+    @media (max-width: 999px) {
+      .hero-shot { margin-bottom: clamp(30px, 4vw, 48px); }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════════════════════ */
+    @media (max-width: 1099px) {
+      .thumbs { grid-template-columns: repeat(2, 1fr); }
+      .thumbs .shot:last-child { grid-column: 1 / -1; }
+    }
+    @media (max-width: 859px) {
+      /* No pinned frame down here: the cards stack and scroll, so the bar
+         needs a ground of its own or the deck runs under the type. This
+         is the one place the nav isn't the about page's — there the stage
+         is inset on phones too, and never passes beneath it. */
+      #site-nav {
+        height: 60px; padding: 14px 21px; pointer-events: auto;
+        background: rgba(237,230,202,0.9);
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      }
+      .menu { top: 21px; }
+      .menu a { padding: 4px 9px; font-size: 9px; }
+      .menu a::after { right: 9px; left: 9px; }
+
+      /* The stage's inset does this on desktop, but the fallback stacks
+         from y=0 and the nav is fixed, so card 00 landed underneath it. */
+      .deck { padding-top: 84px; }
+      .card { padding: clamp(26px,5vw,40px); margin-bottom: 12px; }
+      .statement { max-width: 20ch; }
+      .card--hook .statement { margin-bottom: 0; max-width: 20ch; }
+      .card-body { padding-top: 36px; }
+
+      /* A 2.5:1 diagram can't shrink to a phone: at ~283px of card width
+         its 11px labels land near 3px. Below 860 the portrait layout
+         takes over instead, same topology re-routed for a tall frame. */
+      .loop--wide .loop-desktop { display: none; }
+      .loop--wide .loop-mobile { display: block; }
+      .loop--wide svg { max-height: none; }
+
+
+      /* No stage height to divide down here, so the rows stack and each
+         shot keeps its own ratio. */
+      /* Turned on its side, `flex: 1 1 0` would give every shot a basis of
+         zero height and collapse the row out of the card. Stacked, each
+         one just takes the height its crop asks for. */
+      .shot-row { flex-direction: column; gap: 16px; align-items: stretch; }
+      .shot-row .shot { flex: none; }
+      .notes    { grid-template-columns: 1fr; gap: 26px; }
+      .thumbs   { grid-template-columns: 1fr; }
+      .thumbs .shot:last-child { grid-column: auto; }
+      .card--diag .statement { max-width: 20ch; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .mark, .menu a::after { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="veil"></div>
+
+  <nav id="site-nav">
+    <a class="mark" href="index.html"><span>pixeland</span><span>prompt</span></a>
+    <div class="menu">
+      <a href="index.html#intro">About</a>
+      <a href="index.html#projects" aria-current="page">Work</a>
+      <a href="index.html#contact">Say hi</a>
+    </div>
+    <div class="availability"><span class="role">Designer &#183; Builder</span><span class="role">in Berlin</span></div>
+  </nav>
+
+  <!-- ══════════ DECK ══════════
+       Reading order: the claim and a glimpse of the thing, together →
+       the whole change (three levels → one) → the task as it was → why
+       it was unreadable → the constraints → the task rebuilt → the
+       switcher up close → the sweep → how it shipped.
+  ─────────────────────────────────────────────────────────────── -->
+  <div class="wrap deck">
+   <div class="stage">
+    <!-- 00 · HERO ──────────────────────────────────────── -->
+    <section class="card card--hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">
+            <span class="eyebrow-num">05</span>
+            <span class="eyebrow-tag">Product Design<span>·</span>2026<span>·</span>lilaquadrat</span>
+          </div>
+          <h1>One Level<br><em>Less</em></h1>
+          <p class="hero-line">Studio had two levels that rendered the same page, and one tile shape standing in for everything on it. Nobody could hold a picture of the product in their head without a person there to explain it. The fix wasn't a feature. <em>I took a level out.</em></p>
+        </div>
+        <!-- The glimpse. No caption — projects at the top level with the
+             company set as a line on the card is the whole claim, and it
+             reads here without a word of help. -->
+        <img class="hero-shot" src="projects/Studio%20V2/new-glimpse.webp"
+             alt="The rebuilt Studio dashboard: a Favorites row above a row of project cards, each naming the project in large type with its company set quietly beneath it, and a Companies filter beside a New button in the header."
+             width="1900" height="1008">
+      </div>
+      <div class="card-body">
+        <div class="meta-row">
+          <div><div class="meta-k">Role</div><div class="meta-v">Product Designer · sole design owner</div></div>
+          <div><div class="meta-k">Product</div><div class="meta-v">Studio · B2B content platform</div></div>
+          <div><div class="meta-k">Owned</div><div class="meta-v">IA · interaction · visual system · front-end</div></div>
+          <div><div class="meta-k">Context</div><div class="meta-v">Live customers throughout · no downtime</div></div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- 01 · THE HOOK ───────────────────────────────────
+         Two structures side by side, and the count underneath. The
+         argument is the picture: the left column is a ladder you climb,
+         the right one has nothing to climb.
+    ─────────────────────────────────────────────────────── -->
+    <section class="card card--hook" style="--i:0">
+      <div>
+        <div class="card-head"><span class="card-n">01</span><span class="card-tag">The whole change</span></div>
+        <h2 class="statement">Three levels became <em>one</em>.</h2>
+      </div>
+      <div class="card-body">
+        <div class="loop loop--wide">
+          <svg class="loop-desktop" viewBox="0 0 1360 490" role="img" aria-label="Before: three levels — all companies, then a company page holding both Apps and Projects, then a project page holding Apps — and only then the app itself. Crossing from one project's app to another's means climbing all three levels and coming back down. After: one level — a dashboard of projects, then the app — with a switcher that changes project from inside the app without a page change. Clicks fall from seven to three, levels climbed from three to zero, and the app is re-selected once before and never after.">
+            <defs>
+              <marker id="sah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
+              </marker>
+              <marker id="sah-q" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
+              </marker>
+            </defs>
+
+            <!-- ── BEFORE · the ladder ──
+                 Each level is indented under the last, so the shape of
+                 the column is the shape of the problem. -->
+            <g class="dg" style="animation-delay:0ms">
+              <text x="34" y="22" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">BEFORE</text>
+              <text x="625" y="22" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">THREE LEVELS</text>
+              <rect x="0.5" y="34.5" width="659" height="310" rx="5" fill="#fae4e2"/>
+
+              <rect x="34" y="60" width="330" height="54" rx="4" fill="#ede6ca"/>
+              <text x="54" y="83" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 1</text>
+              <text x="54" y="104" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">All companies</text>
+
+              <rect x="64" y="130" width="330" height="54" rx="4" fill="#ede6ca"/>
+              <text x="84" y="153" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 2</text>
+              <text x="84" y="174" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Company · Apps + Projects</text>
+
+              <rect x="94" y="200" width="330" height="54" rx="4" fill="#ede6ca"/>
+              <text x="114" y="223" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 3</text>
+              <text x="114" y="244" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Project · Apps</text>
+
+              <rect x="124" y="270" width="330" height="54" rx="4" fill="#ede6ca"/>
+              <text x="144" y="293" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE APP</text>
+              <text x="144" y="314" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Customers</text>
+            </g>
+
+            <g class="dg-arrow" style="animation-delay:340ms">
+              <line x1="84"  y1="114" x2="84"  y2="126" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
+              <line x1="114" y1="184" x2="114" y2="196" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
+              <line x1="144" y1="254" x2="144" y2="266" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
+            </g>
+
+            <!-- The one thing the left panel has that the right one doesn't:
+                 a distance to travel. Double-headed, so it reads as a span
+                 rather than a direction. -->
+            <g class="dg-conn" opacity="0.62" style="animation-delay:460ms">
+              <line x1="530" y1="74" x2="530" y2="314" stroke="#6a6f4b" stroke-width="1"
+                    stroke-dasharray="3 4" marker-start="url(#sah-q)" marker-end="url(#sah-q)"/>
+              <text x="548" y="190" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">3 levels</text>
+              <text x="548" y="208" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">to cross</text>
+            </g>
+
+            <!-- ── AFTER · nothing to climb ── -->
+            <g class="dg" style="animation-delay:620ms">
+              <text x="734" y="22" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AFTER</text>
+              <text x="1325" y="22" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">ONE LEVEL</text>
+              <rect x="700.5" y="34.5" width="659" height="310" rx="5" fill="#f8d5d1"/>
+
+              <rect x="734" y="90" width="330" height="54" rx="4" fill="#ede6ca"/>
+              <text x="754" y="113" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 1</text>
+              <text x="754" y="134" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Dashboard · Projects</text>
+
+              <rect x="764" y="244" width="330" height="54" rx="4" fill="#ede6ca"/>
+              <text x="784" y="267" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE APP</text>
+              <text x="784" y="288" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Customers</text>
+            </g>
+
+            <g class="dg-conn" opacity="0.62" style="animation-delay:900ms">
+              <line x1="784" y1="144" x2="784" y2="240" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
+              <text x="804" y="184" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">company is a label on the card,</text>
+              <text x="804" y="202" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">and a filter in the header</text>
+            </g>
+
+            <!-- The switcher: a loop that leaves the app and comes back to
+                 it. That it returns to the same box is the whole claim. -->
+            <g class="dg-arrow" style="animation-delay:1040ms">
+              <path d="M 1094 256 C 1215 244, 1215 294, 1098 284" fill="none" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
+              <text x="1160" y="318" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">switch project here</text>
+              <text x="1160" y="336" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">no page change</text>
+            </g>
+
+            <!-- ── THE COUNT ──
+                 Same task, both builds. The before figure is dimmed so the
+                 pair reads left to right as a fall, not as two numbers. -->
+            <g class="dg-band" style="animation-delay:1240ms">
+              <line x1="0" y1="376" x2="1360" y2="376" stroke="#6a6f4b" stroke-width="3" stroke-dasharray="3 6" opacity="0.58"/>
+
+              <text x="227" y="412" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">CLICKS</text>
+              <text x="227" y="460" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="34" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">7</tspan><tspan font-size="21" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">3</tspan></text>
+
+              <text x="680" y="412" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">LEVELS CLIMBED</text>
+              <text x="680" y="460" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="34" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">3</tspan><tspan font-size="21" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">0</tspan></text>
+
+              <text x="1133" y="412" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">THE APP RE-SELECTED</text>
+              <text x="1133" y="460" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="34" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">1</tspan><tspan font-size="21" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">0</tspan></text>
+            </g>
+          </svg>
+
+          <!-- ══ PORTRAIT LAYOUT · under 860px ══════════════════
+               Same two structures, stacked, and the count as three rows
+               instead of three columns.
+          ─────────────────────────────────────────────────────── -->
+          <svg class="loop-mobile" viewBox="0 0 520 950" role="img" aria-label="Before: three levels — all companies, then a company page holding both Apps and Projects, then a project page holding Apps — and only then the app itself. After: one level — a dashboard of projects, then the app — with a switcher that changes project from inside the app without a page change. Clicks fall from seven to three, levels climbed from three to zero, and the app is re-selected once before and never after.">
+            <defs>
+              <marker id="msah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
+              </marker>
+            </defs>
+
+            <text x="20" y="18" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">BEFORE</text>
+            <text x="500" y="18" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">THREE LEVELS</text>
+            <rect x="0.5" y="30.5" width="519" height="316" rx="5" fill="#fae4e2"/>
+
+            <rect x="22" y="54" width="330" height="56" rx="4" fill="#ede6ca"/>
+            <text x="40" y="78" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 1</text>
+            <text x="40" y="99" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">All companies</text>
+
+            <rect x="42" y="126" width="330" height="56" rx="4" fill="#ede6ca"/>
+            <text x="60" y="150" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 2</text>
+            <text x="60" y="171" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Company · Apps + Projects</text>
+
+            <rect x="62" y="198" width="330" height="56" rx="4" fill="#ede6ca"/>
+            <text x="80" y="222" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 3</text>
+            <text x="80" y="243" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Project · Apps</text>
+
+            <rect x="82" y="270" width="330" height="56" rx="4" fill="#ede6ca"/>
+            <text x="100" y="294" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE APP</text>
+            <text x="100" y="315" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Customers</text>
+
+            <line x1="60"  y1="110" x2="60"  y2="122" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
+            <line x1="80"  y1="182" x2="80"  y2="194" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
+            <line x1="100" y1="254" x2="100" y2="266" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
+
+            <text x="20" y="386" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AFTER</text>
+            <text x="500" y="386" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">ONE LEVEL</text>
+            <rect x="0.5" y="398.5" width="519" height="316" rx="5" fill="#f8d5d1"/>
+
+            <rect x="22" y="422" width="330" height="56" rx="4" fill="#ede6ca"/>
+            <text x="40" y="446" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 1</text>
+            <text x="40" y="467" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Dashboard · Projects</text>
+
+            <rect x="42" y="590" width="330" height="56" rx="4" fill="#ede6ca"/>
+            <text x="60" y="614" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE APP</text>
+            <text x="60" y="635" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Customers</text>
+
+            <g opacity="0.62">
+              <line x1="60" y1="478" x2="60" y2="586" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
+              <text x="80" y="512" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">company is a label</text>
+              <text x="80" y="530" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">on the card, and a filter</text>
+            </g>
+
+            <path d="M 372 604 C 452 594, 452 638, 378 630" fill="none" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
+            <text x="428" y="668" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">switch here</text>
+            <text x="428" y="686" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">no page change</text>
+
+            <line x1="0" y1="758" x2="520" y2="758" stroke="#6a6f4b" stroke-width="3" stroke-dasharray="3 6" opacity="0.58"/>
+
+            <text x="20" y="806" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">CLICKS</text>
+            <text x="500" y="812" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">7</tspan><tspan font-size="18" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">3</tspan></text>
+
+            <text x="20" y="864" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">LEVELS CLIMBED</text>
+            <text x="500" y="870" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">3</tspan><tspan font-size="18" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">0</tspan></text>
+
+            <text x="20" y="922" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">THE APP RE-SELECTED</text>
+            <text x="500" y="928" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">1</tspan><tspan font-size="18" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">0</tspan></text>
+          </svg>
+        </div>
+        <div class="card-foot">Hand-counted from matched recordings of the same task · no timings, because the legacy build animates page changes the new one doesn't</div>
+      </div>
+    </section>
+
+    <!-- 02 · THE REVEAL ────────────────────────────────── -->
+    <section class="card card--shot" style="--i:1">
+      <div>
+        <div class="card-head"><span class="card-n">02</span><span class="card-tag">The same task, before</span></div>
+        <h2 class="statement">The last click <em>re-opens</em> the app you never left.</h2>
+        <p class="support">You are in one company's Customers. You need the same app in another company's project. There is no way across, only up and back down. <em>Customers → project → company → root → the other company → its project → Customers again.</em></p>
+      </div>
+      <div class="card-body">
+        <figure class="shot">
+          <div class="shot-frame">
+            <video muted loop playsinline preload="metadata"
+                   poster="projects/Studio%20V2/studio-before-poster.jpg"
+                   aria-label="The legacy shell: from Nordwind Kaffee's Onlineshop Customers list, back up through the project, the company and the root list of every company, down into Bergmann Immobilien, into its Objektportal project, and finally back into Customers.">
+              <source src="projects/Studio%20V2/studio-before.mp4" type="video/mp4">
+            </video>
+          </div>
+          <figcaption class="shot-cap">The legacy shell · the crossing, start to finish</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 03 · THE DIAGNOSIS ─────────────────────────────
+         The credibility card. Three crops at one scale, so the reader
+         can see for themselves that two of these pages are the same
+         page with different tiles missing.
+    ─────────────────────────────────────────────────────── -->
+    <section class="card card--shot card--diag" style="--i:2">
+      <div>
+        <div class="card-head"><span class="card-n">03</span><span class="card-tag">The diagnosis</span></div>
+        <h2 class="statement">One shape stood in for <em>three</em> different things.</h2>
+        <p class="support">A tile was a company. A tile was a project. A tile was an app. Same size, same colour, uppercase label, no icon, no metadata. And two of the levels answered with a grid headed the same word. The breadcrumb was the only thing on screen that knew where you were, and <em>it was the only thing.</em></p>
+      </div>
+      <div class="card-body">
+        <div class="shot-row">
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/legacy-root.webp" alt="The legacy root: each company as a heading with plain uppercase tiles beneath it." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">Root · tiles are projects</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/legacy-company-apps.webp" alt="A legacy company page: a grid headed Apps with five tiles, and below it a grid headed Projects." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">Company · &ldquo;Apps&rdquo;, five tiles</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/legacy-project-apps.webp" alt="A legacy project page inside that same company: a grid headed Apps with six tiles and nothing else." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">Project · &ldquo;Apps&rdquo;, six tiles</figcaption>
+          </figure>
+        </div>
+        <div class="card-foot">Four of those tiles are the same four · users worked out their level from which ones were missing</div>
+      </div>
+    </section>
+
+    <!-- 04 · CONSTRAINTS · text only ───────────────────── -->
+    <section class="card" style="--i:3">
+      <div>
+        <div class="card-head"><span class="card-n">04</span><span class="card-tag">Constraints, and the bet</span></div>
+        <h2 class="statement wide">No research budget, no feature authority, live customers.</h2>
+        <p class="support">Sole designer. Live throughout, with no migration window to hide behind. The feature set wasn't mine to change. So I didn't touch what Studio could do. <em>I changed where its things live.</em></p>
+      </div>
+      <div class="card-body">
+        <p class="pull">The problem was never what Studio could do. It was that its <em>structure was invisible</em>.</p>
+        <div class="card-foot">The diagnosis came from the product itself · two levels rendering the same page is a structural fact, not an opinion</div>
+      </div>
+    </section>
+
+    <!-- 05 · WHAT CHANGED ──────────────────────────────
+         The core claim, and the one worth watching to the end: the
+         header does not change while the data underneath it does.
+    ─────────────────────────────────────────────────────── -->
+    <section class="card card--shot" style="--i:4">
+      <div>
+        <div class="card-head"><span class="card-n">05</span><span class="card-tag">What changed</span></div>
+        <h2 class="statement">Context <em>survives</em> the switch.</h2>
+        <p class="support">Projects came to the front, because a project is what people actually work in; company became a label on the card and a filter in the header. Apps stopped being a destination: one overlay holds this project's apps and every project, switchable in place. <em>Change project from inside Customers and you land in the other project's Customers.</em> Same screen, different data.</p>
+      </div>
+      <div class="card-body">
+        <figure class="shot">
+          <div class="shot-frame">
+            <video muted loop playsinline preload="metadata"
+                   poster="projects/Studio%20V2/studio-after-poster.jpg"
+                   aria-label="The rebuilt shell: from the dashboard into a project's Customers list, then the switcher overlay opens, All Projects is chosen, another project is picked, and the page lands on that project's Customers with the header unchanged and the rows replaced.">
+              <source src="projects/Studio%20V2/studio-after.mp4" type="video/mp4">
+            </video>
+          </div>
+          <figcaption class="shot-cap">The same crossing, rebuilt · the header still reads Customers when the rows change</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 06 · THE SWITCHER ──────────────────────────────── -->
+    <section class="card card--shot" style="--i:5">
+      <div>
+        <div class="card-head"><span class="card-n">06</span><span class="card-tag">The switcher, up close</span></div>
+        <h2 class="statement">A panel that also says what a project <em>has</em>.</h2>
+        <p class="support">Inactive apps stay in the grid, dimmed, so the panel answers &ldquo;is this switched on here?&rdquo; without a trip to settings. And a tile carries live state, so <em>a timer running in one project stays legible from inside another.</em></p>
+      </div>
+      <div class="card-body">
+        <div class="shot-row">
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/switcher-apps.webp" alt="The switcher overlay open over the editor, headed with the project name Objektportal, an All Projects button, a hide-inactive toggle, and ten app tiles with icons — two of them dimmed." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">This project's apps · inactive dimmed, not hidden</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/switcher-tracker.webp" alt="The same overlay with the Tracker tile showing a running timer at 00:00:14 inside it." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">Live state on the tile · Tracker still running</figcaption>
+          </figure>
+        </div>
+        <div class="card-foot">All Projects turns the same panel to the other axis · projects instead of apps, and no page change either way</div>
+      </div>
+    </section>
+
+    <!-- 07 · SURFACE AREA ──────────────────────────────── -->
+    <section class="card card--shot" style="--i:6">
+      <div>
+        <div class="card-head"><span class="card-n">07</span><span class="card-tag">Surface area</span></div>
+        <h2 class="statement wide">The same model, applied across the product.</h2>
+        <p class="support">Detail views became structured records instead of rows. Team gained a real permission model where a tile used to sit with nothing behind it. And where a level genuinely matters, it is now <em>named in words</em> rather than inferred from which tiles are missing.</p>
+      </div>
+      <div class="card-body">
+        <div class="thumbs">
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/customers-record.webp" alt="A customer record opening in a side panel over the Customers list, with person or company, personal data, a duplicate warning and address fields." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">Customers · a record, not a row</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/team-permissions.webp" alt="A team member's panel listing per-app permissions as checkboxes grouped under Media and Publishing." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">Team · real permissions</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/appstore-levels.webp" alt="The App Store, split into Company Level Apps available across all projects, and Project Apps which override company defaults." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">App Store · the level, in words</figcaption>
+          </figure>
+        </div>
+        <div class="card-foot">Dashboard · Projects · Customers · Team · Media · Publish · Lists · Hosting · Settings · App Store</div>
+      </div>
+    </section>
+
+    <!-- 08 · HOW IT SHIPPED ────────────────────────────── -->
+    <section class="card" style="--i:7">
+      <div>
+        <div class="card-head"><span class="card-n">08</span><span class="card-tag">How it shipped</span></div>
+        <h2 class="statement wide">Designed in code, structure first.</h2>
+        <p class="support">Designed and built in Claude Code against a living design system, so it went to production instead of into a backlog waiting for dev capacity. Everything else inherits from the structure, which is why <em>the structure shipped first.</em></p>
+      </div>
+      <div class="card-body">
+        <div class="notes">
+          <div>
+            <div class="meta-k">Known gap</div>
+            <p class="note-v">Page transitions aren't implemented yet. The legacy build handled motion better than this one does, and that is still owed.</p>
+          </div>
+          <div>
+            <div class="meta-k">What I'd measure next</div>
+            <p class="note-v">Time to a first published item. How often support is asked where to find something. And whether the switcher gets used at all, or people still route through the dashboard.</p>
+          </div>
+        </div>
+        <a class="next-link" href="designsystem.html">The design system and the workflow behind it <span aria-hidden="true">&#8594;</span></a>
+      </div>
+    </section>
+
+   </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      const veil = document.getElementById('veil');
+      requestAnimationFrame(() => {
+        veil.style.opacity = '0';
+        setTimeout(() => veil.remove(), 950);
+      });
+    });
+
+    /* ── Deck motion ──────────────────────────────────────────────
+       The stage is pinned and never moves. Scrolling the deck moves
+       a playhead `t` across the cards: card i sits fully off-stage
+       below at t = i-1, and fully landed at t = i. Once landed it
+       stays put and recedes as the next one covers it.
+
+       Scroll is driven, never hijacked — the page still scrolls at
+       whatever speed the reader's input says.
+    ─────────────────────────────────────────────────────────────── */
+    (() => {
+      const deck  = document.querySelector('.deck');
+      const stage = document.querySelector('.stage');
+      if (!deck || !stage) return;
+
+      const cards = [...stage.querySelectorAll('.card')];
+      if (!cards.length) return;
+
+      deck.style.setProperty('--n', cards.length);
+      cards.forEach((c, i) => { c.style.zIndex = i + 1; });
+
+      // Opts the diagram into its hidden-then-played state. Set from JS
+      // so a script failure leaves the diagram plainly visible instead.
+      deck.classList.add('js-anim');
+
+      const clamp = v => v < 0 ? 0 : v > 1 ? 1 : v;
+
+      let queued = false;
+      let shown  = -1;   // index currently on top; -1 = nothing placed yet
+
+      function place(active) {
+        if (active === shown) return;   // nothing to do — don't touch the DOM
+        shown = active;
+        for (let i = 0; i < cards.length; i++) {
+          // Binary targets only. Scroll decides WHICH card is on top;
+          // the CSS transition decides how it gets there, at its own
+          // velocity, independent of how fast the reader scrolled.
+          cards[i].style.setProperty('--enter', i <= active ? '0' : '1');
+          cards[i].style.setProperty('--cover', i <  active ? '1' : '0');
+          // Drives the hook diagram's entrance. Add-only, never removed:
+          // taking it off would blank the diagram the moment the next
+          // card starts sliding over this one, which is 1180ms of very
+          // visible nothing. So it plays once and holds.
+          if (i === active) cards[i].classList.add('is-live');
+
+          // A clip runs only while its card is the one on the stage, and
+          // restarts when it lands — every card in the deck is in the DOM
+          // at once, so left alone they would all decode in parallel and
+          // the reader would arrive halfway through a run.
+          const clip = cards[i].querySelector('video');
+          if (clip) {
+            if (i === active) { clip.currentTime = 0; clip.play().catch(() => {}); }
+            else clip.pause();
+          }
+        }
+      }
+
+      /* Fallback mode has no card on top, so the clips follow the viewport
+         instead. Wired the first time we land there, dropped on the way out. */
+      let roving = null;
+      function rovingClips(on) {
+        if (on && !roving) {
+          roving = new IntersectionObserver(entries => entries.forEach(e => {
+            if (e.isIntersecting) e.target.play().catch(() => {});
+            else e.target.pause();
+          }), { threshold: 0.4 });
+          stage.querySelectorAll('video').forEach(v => roving.observe(v));
+        } else if (!on && roving) {
+          roving.disconnect();
+          roving = null;
+        }
+      }
+
+      function paint() {
+        queued = false;
+
+        // Fallback mode: the stage isn't pinned, so leave the cards alone.
+        if (getComputedStyle(stage).position !== 'sticky') {
+          cards.forEach(c => {
+            c.style.removeProperty('--enter');
+            c.style.removeProperty('--cover');
+          });
+          shown = -1;
+          rovingClips(true);
+          return;
+        }
+        rovingClips(false);
+
+        const range = deck.offsetHeight - stage.offsetHeight;
+        if (range <= 0) return;
+
+        const progress = clamp(-deck.getBoundingClientRect().top / range);
+        const t = progress * (cards.length - 1);
+
+        // Round: the card flips at the midpoint of its slot, so the
+        // transition fires while the reader is still moving.
+        place(Math.max(0, Math.min(cards.length - 1, Math.round(t))));
+      }
+
+      function request() {
+        if (!queued) { queued = true; requestAnimationFrame(paint); }
+      }
+
+      addEventListener('scroll', request, { passive: true });
+      addEventListener('resize', request);
+      paint();
+    })();
+
+  </script>
+
+<script src="tuner.js" defer></script>
+</body>
+</html>
