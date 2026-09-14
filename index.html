@@ -2061,8 +2061,8 @@ html, body,
   --work-size:clamp(16px,1.5vw,25px);
   --c1:clamp(190px,20vw,330px);   /* the name          */
   --c2:clamp(140px,15vw,240px);   /* the tags          */
-  /* The shot had a track of its own here. It does not any more — it floats
-     over the list now — so this is a size rather than a column, and it can
+  /* The shot sits in the third track now but is not sized by it: it is out
+     of flow, so this is a width of its own rather than a column, and it can
      be bigger than a fourth of the row was ever going to allow. */
   --shot-w:clamp(210px,24vw,380px);
   --col-gap:clamp(18px,2.4vw,46px);
@@ -2167,29 +2167,52 @@ html, body,
 .work-row:hover .work-line,
 .work-row:focus-visible .work-line{opacity:1}
 
-/* One frame for all four, floating over the list rather than standing in a
-   column beside it. In a track of its own it was a fourth thing competing
-   for the row's width, and it held that width whether or not there was
-   anything in it — a permanent empty quarter of the slide waiting to be
-   pointed at. Lifted out, the names get the width back and the shot can be
-   half again the size it was.
+/* One frame for all four, in one place. It used to go to the hand — the
+   shot was aimed at the cursor and eased after it a sixth of the distance a
+   frame. Pointing at a name is already the gesture; having the picture chase
+   the pointer made the picture the thing being moved rather than the thing
+   being shown, and it is the same picture wherever on the row you happen to
+   be standing. So it is pinned, and only the shot inside it changes.
+
+   Where it is pinned is read off the grid rather than measured: it is
+   absolutely positioned AND given a grid position, and for an abspos child
+   of a grid container the named area is the containing block. Row 2 is the
+   row the list occupies and column 3 is the track past the tags, so left:0
+   is that column's own left edge and top:50% is the middle of the list.
+   Nothing here restates the panel's padding or the width of the two columns
+   before it, so none of it can fall out of step with the rows.
+
+   Out of flow on purpose, and not only to allow the overlap: the box stands
+   as tall as the tallest of the four shots, and a row that sized itself to
+   that would push the list around to fit a picture that is not always there.
 
    Still stacked in one grid cell rather than four absolute layers: they
    overlap, but the box is sized BY them instead of being told a shape to
    hold, which is what lets each shot keep its own proportions. A fixed frame
    can only cover or letterbox, and both were the problem this slide started
-   with. The box therefore stands as tall as the tallest of the four, which
-   is what the edge-clamping below measures against — conservative by a few
-   pixels for the shorter ones, and never wrong. */
+   with. */
 .work-figure{
-  position:absolute; left:0; top:0; z-index:5;
+  position:absolute;
+  /* Both ends of both spans named, not just the starts. An `auto` line on an
+     absolutely positioned grid child does not mean "one track": it resolves
+     to the container's PADDING EDGE, so grid-row:2 gave this the whole depth
+     of the panel below the head and top:50% centred it on that — a third of
+     the way down the empty half, nowhere near the list. 2/3 is the row. */
+  /* Across the names and the tags, not beside them: columns 1 through 3 is
+     the two tracks and the gap between them, and the box is centred in that
+     span — so it sits over the space between the two columns and spills onto
+     both. It is not given a column of its own at any point, which is the
+     whole idea. Pointer-events are off below, so the row underneath is still
+     the thing being pointed at even while the picture covers it.
+
+     It also puts the third track back: the row's sentence lives there and is
+     revealed by the same hover, and with the shot off to that side it was
+     running behind the picture. All four now read in the clear. */
+  grid-row:2 / 3; grid-column:1 / 3;
+  left:50%; top:50%; transform:translate(-50%,-50%);
+  z-index:5;
   margin:0; width:var(--shot-w); pointer-events:none;
   display:grid;
-  /* Moved by transform only, never by left/top: the follow runs every frame
-     the pointer is over the list, and that is the difference between
-     compositing the box and laying the slide out again sixty times a
-     second. */
-  will-change:transform;
 }
 .work-figure img{
   grid-area:1/1; align-self:start;
@@ -2952,115 +2975,42 @@ html, body,
 </script>
 
 <script>
-/* ── The shot, following the hand ─────────────────────────────────
+/* ── The shot ──────────────────────────────────────────────────────
    One frame, four pictures, and only the class moves — swapping a src would
    show a blank frame the first time each one was reached, which on a hover
    that lasts half a second is the whole of the hover. Focus counts as
    reaching a row, so the keyboard sees the same thing the pointer does, and
    leaving the list clears it.
 
-   What is new is where the frame is. It used to stand in a column and the
-   pictures appeared inside it; now it has no column and goes to the hand.
-   Two things follow from that and both are in the offset below: it must not
-   sit UNDER the cursor, or it eats the row it is describing, and it must not
-   sit ON the row's own line of text, which is revealed by the same hover
-   that summons the picture. Down and to the right by a little over twenty
-   pixels clears both — the line is level with the cursor, the frame starts
-   below it.
+   That is now the whole of this. The frame used to be aimed at the cursor
+   and eased after it every frame, which needed the panel's box, the frame's
+   box, a target, a position, a rAF loop and a re-measure on resize, on
+   scroll settle, on late images and on fonts — all of it to answer a
+   question the row had already answered by being pointed at. The frame is
+   placed in CSS now (see .work-figure), so none of it is left: no geometry
+   is read here, and a hover costs one class toggle.
 
-   The follow is a lag, not a lock. Tracking the pointer exactly reads as a
-   thing stuck to the cursor; a sixth of the distance a frame reads as a
-   thing coming after it, which is the one that feels like weight. */
+   Which also makes the keyboard and the pointer the same event rather than
+   two spellings of it — there is no longer a pointer position for focus to
+   have to invent. */
 (() => {
-  const scene = document.querySelector('#projects'),
-        list  = document.querySelector('#projects .work-index'),
-        fig   = document.querySelector('#work-figure');
-  if (!scene || !list || !fig) return;
+  const list = document.querySelector('#projects .work-index'),
+        fig  = document.querySelector('#work-figure');
+  if (!list || !fig) return;
 
   const shots = [...fig.querySelectorAll('img')];
-  const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  const OFF_X = 28, OFF_Y = 22,   // how far clear of the cursor it sits
-        EDGE  = 16,               // how close to the panel's edge it may get
-        EASE  = .17;              // share of the remaining distance per frame
-
-  let fw = 0, fh = 0,             // the frame's box, read on a change not a frame
-      box = null,                 // the panel's box, likewise
-      tx = 0, ty = 0,             // where it is going
-      x  = 0, y  = 0,             // where it is
-      raf = 0, placed = false;
-
-  /* pointermove fires faster than frames do, and getBoundingClientRect
-     forces the layout the browser was about to skip — the same trap the
-     scroll reader was built to get this page out of. The panel is sticky and
-     pinned by the time this list can be pointed at, so its box is a constant
-     for the length of a hover: read once, thrown away when the window
-     changes size or the page finishes moving. */
-  const panel = () => box || (box = scene.getBoundingClientRect());
-
   const show = i => shots.forEach(im => im.classList.toggle('is-on', im.dataset.shot === i));
 
-  /* The box is as tall as the tallest of the four and never changes with
-     which one is showing, so this is a resize-time question, not a
-     per-frame one. Images arriving late change it, hence the load hooks. */
-  function measure() {
-    fw = fig.offsetWidth;
-    fh = fig.offsetHeight;
-  }
-
-  /* Clamped into the panel on both axes, and flipped above the cursor rather
-     than allowed to run off the bottom — which is what the last row would do
-     every time otherwise. */
-  function aim(clientX, clientY) {
-    const b = panel();
-    if (!fw || !fh) measure();
-    let nx = clientX - b.left + OFF_X,
-        ny = clientY - b.top  + OFF_Y;
-    if (ny + fh > b.height - EDGE) ny = clientY - b.top - fh - OFF_Y;
-    tx = Math.max(EDGE, Math.min(nx, b.width  - fw - EDGE));
-    ty = Math.max(EDGE, Math.min(ny, b.height - fh - EDGE));
-    /* First sighting: no glide in from the corner. */
-    if (!placed) { x = tx; y = ty; placed = true; }
-    wake();
-  }
-
-  function put() { fig.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0)'; }
-
-  function tick() {
-    raf = 0;
-    const dx = tx - x, dy = ty - y;
-    if (REDUCE || (Math.abs(dx) < .3 && Math.abs(dy) < .3)) { x = tx; y = ty; put(); return; }
-    x += dx * EASE; y += dy * EASE;
-    put();
-    wake();
-  }
-  function wake() { if (!raf) raf = requestAnimationFrame(tick); }
-
-  list.addEventListener('pointermove', e => aim(e.clientX, e.clientY), { passive: true });
-
   list.querySelectorAll('.work-row').forEach(a => {
-    a.addEventListener('mouseenter', () => show(a.dataset.shot));
-    /* A keyboard has no pointer to follow, so the frame is aimed at the row
-       itself — at its right-hand end, level with it, which is where the
-       pointer would have been to reach it. */
-    a.addEventListener('focus', () => {
-      show(a.dataset.shot);
-      const r = a.getBoundingClientRect();
-      placed = false;
-      aim(r.right - r.width * .35, r.top + r.height / 2);
-    });
+    const on = () => show(a.dataset.shot);
+    a.addEventListener('mouseenter', on);
+    a.addEventListener('focus', on);
   });
 
-  list.addEventListener('mouseleave', () => { show(null); placed = false; });
+  list.addEventListener('mouseleave', () => show(null));
   list.addEventListener('focusout', e => {
-    if (!list.contains(e.relatedTarget)) { show(null); placed = false; }
+    if (!list.contains(e.relatedTarget)) show(null);
   });
-
-  addEventListener('resize', () => { box = null; measure(); });
-  if (window.SCROLLBUS) SCROLLBUS.subscribe((p, moving) => { if (!moving) box = null; });
-  shots.forEach(im => { if (!im.complete) im.addEventListener('load', measure, { once: true }); });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-  measure();
 })();
 </script>
 <script src="tuner.js" defer></script>
