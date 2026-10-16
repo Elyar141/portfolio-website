@@ -137,21 +137,26 @@ body.is-lens{cursor:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/s
 .works-at{position:absolute;left:0;width:1px;height:1px}
 #contact.works-at{top:200vh}
 .works-pin{position:sticky;top:0;height:100vh;padding-top:calc(var(--nav-h) + var(--drop-work));
-  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);column-gap:clamp(40px,6vw,120px);align-items:start}
+  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);column-gap:clamp(40px,6vw,120px);align-items:start;
+  /* Rows packed to the top: the pin is a full window tall, and left to
+     stretch, the leftover height would push Other work down onto the name. */
+  align-content:start}
 .list{max-width:var(--col)}
-/* Other work starts lower than Selected work: its heading sits level with
-   Selected work's second row (the heading's line, its margin, the row's top
-   padding, and one 34px row). The two columns then read as staggered on one
-   baseline grid rather than as a table. The pin is let up by the same
-   amount so the stagger costs nothing off the gap above the contact line. */
-.other{margin-top:calc(15px * 1.45 + 14px + 7px + 34px)}
+/* Other work is a paragraph, not a second list: it sits under Selected work
+   in the same column, a gap below it, and names each experiment inline with
+   a line on what it is. Read as a sentence it is plainly the lesser tier,
+   and the right-hand column is left to the contact line alone. */
+.other{grid-column:1;grid-row:2;margin-top:clamp(36px,6vh,64px)}
+.other .para{max-width:62ch;font-size:15px;line-height:1.6;color:var(--muted)}
+.other .para a{color:var(--ink);font-weight:500;transition:color .2s ease}
+.other .para a:hover,.other .para a:focus-visible{color:#6a6f4b}
 /* Other work is hidden until its turn, and taken out of the tab order with
    it; visibility waits for the fade-out before it switches off. */
 .js .other,.js .contact{visibility:hidden;transition:visibility 0s linear .9s}
 .js .other.is-in,.js .contact.is-in{visibility:visible;transition-delay:0s}
 @media(max-width:900px){
   .works{height:auto}
-  .other{margin-top:0}
+  .other{grid-row:auto;margin-top:0}
   .works-pin{position:static;height:auto;grid-template-columns:minmax(0,1fr);row-gap:56px;padding-bottom:96px}}
 
 /* Contact: the third window, after the work has scrolled away. The landing's
@@ -254,7 +259,7 @@ a.contact-row-value:hover .contact-row-icon{transform:translate(2px,-2px)}
    by the script), so each picture rises out of its own line and covers the
    rows above it, not the one you are on. It glides between rows on the
    landing's travel curve rather than jumping. */
-.shot{position:absolute;left:0;top:var(--shot-at,0);transform:translateY(calc(-100% - 6px));z-index:5;
+.shot{position:absolute;left:var(--shot-x,0);top:var(--shot-at,0);transform:translateY(calc(-100% - 6px));z-index:5;
   margin:0;pointer-events:none;display:grid;transition:top .5s cubic-bezier(.22,1,.36,1)}
 /* Each keeps its own proportions and stands on the same line, flush with
    the list's left edge. */
@@ -310,12 +315,7 @@ a.contact-row-value:hover .contact-row-icon{transform:translate(2px,-2px)}
       <img src="projects/Voja/web/hero.webp" alt="" data-shot="3">
     </figure>
     <h2>Other work &amp; experiments</h2>
-    <ol>
-      <li><a href="buttons.html" data-shot="0"><span><b>But.tons</b>A creative button generator.</span><span>Tool</span></a></li>
-      <li><a href="betterwords.html" data-shot="1"><span><b>Better Words</b>An AI speech coach.</span><span>Web app</span></a></li>
-      <li><a href="puschkin.html" data-shot="2"><span><b>Café Puschkin</b>Brand identity and web design.</span><span>Web design</span></a></li>
-      <li><a href="voya.html" data-shot="3"><span><b>Voya</b>A travel UX redesign.</span><span>UX</span></a></li>
-    </ol>
+    <p class="para"><a href="buttons.html" data-shot="0">But.tons</a>, a playground for generating buttons with personality. <a href="betterwords.html" data-shot="1">Better Words</a>, a speech coach that plays your talk back, better, in your own voice. <a href="puschkin.html" data-shot="2">Café Puschkin</a>, identity and website for a Leipzig café. And <a href="voya.html" data-shot="3">Voya</a>, a mobile booking flow that takes a complicated trip one step at a time.</p>
   </div>
 
     <section class="contact" aria-label="Contact">
@@ -366,7 +366,7 @@ document.querySelectorAll('.nav a[href^="#"]').forEach(a=>a.addEventListener('cl
 })();
 
 /* Reveal each section once a little of it is on screen. */
-(()=>{document.querySelectorAll('.list').forEach(l=>l.querySelectorAll('h2,li').forEach(el=>el.classList.add('rv')));
+(()=>{document.querySelectorAll('.list').forEach(l=>l.querySelectorAll('h2,li,.para').forEach(el=>el.classList.add('rv')));
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target)}}),
   {rootMargin:'0px 0px -20% 0px'});
 document.querySelectorAll('.list,.contact').forEach(sec=>{
@@ -393,6 +393,11 @@ function check(){raf=0;
 addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(check)},{passive:true});
 addEventListener('resize',check);check()})();
 
+/* The left edge of the pin's second column, in window pixels. Nothing
+   sits in that column any more, so it is read off the grid itself. */
+window.colTwoX=pin=>{const cs=getComputedStyle(pin),t=cs.gridTemplateColumns.split(' ').map(parseFloat);
+  return pin.getBoundingClientRect().left+parseFloat(cs.paddingLeft)+t[0]+(parseFloat(cs.columnGap)||0)};
+
 /* The phrases the contact line types through, shared by the placement
    (to hold the block at its widest) and the typing. */
 window.CONTACT_WORDS=['worth maintaining','boring on purpose','that survives real users','nobody has to explain'];
@@ -405,27 +410,22 @@ function place(){
     right=parseFloat(cs.getPropertyValue('--logo-right')),
     mid=parseFloat(cs.getPropertyValue('--logo-mid'));
   if(!right||!mid)return;
-  /* The column is Other work's: its left edge within the pin (offsetLeft
-     ignores the rows' rise-in transforms) to the pin's right edge. */
-  const other=document.querySelector('.other'),
-    x=other.offsetLeft,avail=sec.clientWidth-x,
+  /* The right-hand column: from its left edge to the pin's right edge. */
+  const pin=sec.parentElement,
+    x=colTwoX(pin)-pin.getBoundingClientRect().left,avail=sec.clientWidth-x,
     /* The longest lines — "Let's make something" and "that survives real
        users" — both run about ten and a half ems at these settings. */
     size=Math.min(36,avail/10.5);
   /* Stacked when the column is too narrow for the type, or when the two
      work lists have stacked themselves and there is no column to take. */
-  const stacked=size<22||getComputedStyle(other.parentElement).position!=='sticky';
+  const stacked=size<22||getComputedStyle(pin).position!=='sticky';
   sec.classList.toggle('is-stacked',stacked);
   if(stacked){sec.style.removeProperty('--contact-size');return}
   sec.style.setProperty('--contact-size',size.toFixed(1)+'px');
   sec.style.setProperty('--corner-x',x+'px');
   /* Centred on the middle of the name. offsetHeight ignores the reveal's
      transforms, so this is the resting position even mid-rise. */
-  /* …but never closer than 32px under Other work's last row. On a short
-     window the centred position would run into the list; there the line
-     gives up a little of its centring rather than overlap. */
-  const clear=other.offsetTop+other.offsetHeight+32;
-  sec.style.setProperty('--corner-y',Math.max(mid-inner.offsetHeight/2,clear).toFixed(1)+'px');
+  sec.style.setProperty('--corner-y',(mid-inner.offsetHeight/2).toFixed(1)+'px');
 }
 addEventListener('logo:layout',place);addEventListener('resize',place);
 document.fonts.ready.then(place);place();
@@ -514,10 +514,10 @@ function bake(){
   octx.font=`${f.style} ${f.weight} 1000px ${f.family}`;octx.letterSpacing=(P.track*1000)+'px';
   const m=octx.measureText(WORD),
     inkW=m.actualBoundingBoxLeft+m.actualBoundingBoxRight,inkH=m.actualBoundingBoxAscent+m.actualBoundingBoxDescent,
-    pinEl=document.querySelector('.works-pin'),otherEl=document.querySelector('.other'),
-    fit=P.fit&&pinEl&&otherEl&&getComputedStyle(pinEl).position==='sticky',
+    pinEl=document.querySelector('.works-pin'),
+    fit=P.fit&&pinEl&&window.colTwoX&&getComputedStyle(pinEl).position==='sticky',
     inkTarget=fit
-      ?otherEl.getBoundingClientRect().left-(parseFloat(getComputedStyle(pinEl).columnGap)||0)-markEl.getBoundingClientRect().left-pad
+      ?colTwoX(pinEl)-(parseFloat(getComputedStyle(pinEl).columnGap)||0)-markEl.getBoundingClientRect().left-pad
       :colW-pad*2,
     size=1000*inkTarget/inkW,
     /* The pitch follows the type down. Inter 400's stems are about a
@@ -638,15 +638,18 @@ Promise.all(['400 100px Inter']
 /* The shot: hovering or focusing a row shows its picture; leaving the list
    clears it. Focus counts, so the keyboard sees what the pointer does. */
 document.querySelectorAll('.list').forEach(box=>{
-const list=box.querySelector('ol'),fig=box.querySelector('.shot');
+const list=box.querySelector('ol,.para'),fig=box.querySelector('.shot');
 if(!list||!fig)return;
 const shots=[...fig.querySelectorAll('img')];
 const show=i=>shots.forEach(im=>im.classList.toggle('is-on',im.dataset.shot===i));
 /* offsetTop ignores the rows' rise-in transforms, so this is where the row
    rests. The first reach puts the frame there without gliding in. */
 let shown=false;
-const at=a=>{const y=a.closest('li').offsetTop+'px';
+/* In the paragraph the picture stands over the name itself, so it takes
+   the link's own left edge as well as its line. */
+const at=a=>{const li=a.closest('li'),y=(li?li.offsetTop:a.offsetTop)+'px';
   if(!shown)fig.style.transition='none';fig.style.setProperty('--shot-at',y);
+  fig.style.setProperty('--shot-x',(li?0:a.offsetLeft)+'px');
   if(!shown){fig.offsetWidth;fig.style.transition='';shown=true}};
 list.addEventListener('mouseleave',()=>{shown=false});
 list.querySelectorAll('a[data-shot]').forEach(a=>{const on=()=>{at(a);show(a.dataset.shot)};
