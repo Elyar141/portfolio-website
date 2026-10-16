@@ -64,91 +64,32 @@
     }
 
     /* ── Nav ──────────────────────────────────────────────────────
-       The about page's bar, unchanged: a 64px transparent band, the
-       pixel mark on the left, a centred menu in the middle. No pill,
-       no blur, no bar background — the stage frame below is the only
-       edge on the page, and the nav sits in the air above it.
+       The editorial landing's bar: three words, one at each edge and one
+       dead centre, in uppercase Geist. On the page's own cream, so on
+       phones, where the deck stacks and scrolls, it passes under a ground
+       rather than under the type. Pointing at one word fades the other
+       two, as on the landing.
+
+       The links still go to the landing's sections (#intro, #projects,
+       #contact), which both landings answer to.
 
        The band's height is also the stage's inset, so the bar's box
        ends exactly where the frame begins. */
     #site-nav {
       position: fixed; z-index: 60; inset: 0 0 auto;
-      height: var(--nav-h); padding: 16px 40px;
-      display: flex; align-items: center; justify-content: space-between;
-      pointer-events: none;
+      height: var(--nav-h); padding: 0 32px;
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+      background: var(--bg);
+      font: 540 14px/1 'Geist', Arial, sans-serif;
+      letter-spacing: 0.01em; text-transform: uppercase;
     }
-    /* The name set in mono, not the pixel square it used to be — the
-       about page carries the wordmark now and the case studies follow
-       it. 9px DM Mono, olive, tracked: the deck's own small-type
-       metrics, so the bar reads as one line of type rather than as a
-       logo at one end and links in the middle.
-
-       It opens under the pointer the way the squares came apart. The
-       extra tracking is spent into empty space — the menu is absolutely
-       positioned and out of flow, so nothing moves to make room. Fine
-       pointers only, or a tap would leave it stuck open on a phone. */
-    .mark {
-      display: block; pointer-events: auto;
-      color: var(--green); text-decoration: none; white-space: nowrap;
-      font: 500 9px/1 'DM Mono', monospace;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      transition: letter-spacing 0.34s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .mark span { display: inline; }
-
-    /* ── The identity line ────────────────────────────────────────
-       The landing page's, carried over unchanged so the bar is the same
-       bar on every page: same 9px DM Mono, same tracking, same olive as
-       the mark at the other end of the row. The logo holds the left, the
-       sections the middle, this the right — and since the menu is
-       absolutely positioned and out of flow, dropping this in as the
-       second flex child is all space-between needs to push it out.
-
-       It goes at 900, where the row has width for the mark and the
-       section links and nothing else. */
-    .availability {
-      margin: 0 0 0 auto; pointer-events: none; white-space: nowrap;
-      color: var(--green);
-      font: 500 9px/1 'DM Mono', monospace;
-      letter-spacing: 0.12em; text-transform: uppercase;
-    }
-    .availability .role + .role::before { content: ' ·  '; }
-    @media (max-width: 900px) { .availability { display: none; } }
-    @media (hover: hover) { .mark:hover { letter-spacing: 0.2em; } }
-    .mark:focus-visible { letter-spacing: 0.2em; }
-    /* Fourteen mono characters do not fit beside a centred menu on a
-       phone, so the name stacks — which is why the halves are separate
-       spans. The negative margin takes back the tracking applied after
-       each line's last character, keeping both flush to one edge. */
-    @media (max-width: 720px) {
-      .mark { font-size: 8px; line-height: 1.35; letter-spacing: 0.08em; }
-      .mark span { display: block; margin-right: -0.08em; }
-    }
-
-    /* Words, tracked out in mono, underlined from the left on hover.
-       The rule is a 1px olive hairline — the one hairline the page
-       allows, and only because it is a moving thing, not a border. */
-    .menu {
-      position: absolute; left: 50%; top: 23px; transform: translateX(-50%);
-      display: flex; gap: 0; white-space: nowrap; pointer-events: auto;
-    }
-    .menu a {
-      position: relative; padding: 4px 14px; text-decoration: none;
-      color: var(--ink);
-      font: 500 10px/1 'DM Mono', monospace;
-      letter-spacing: 0.15em; text-transform: uppercase;
-    }
-    .menu a::after {
-      content: ''; position: absolute; right: 14px; bottom: 0; left: 14px;
-      height: 1px; background: var(--green);
-      transform: scaleX(0); transform-origin: right;
-      transition: transform 0.25s ease;
-    }
-    .menu a:hover::after, .menu a[aria-current]::after {
-      transform: scaleX(1); transform-origin: left;
-    }
+    #site-nav > :nth-child(2) { justify-self: center; }
+    #site-nav > :last-child { justify-self: end; }
+    #site-nav a { color: var(--ink); text-decoration: none; transition: opacity 0.2s ease; }
+    #site-nav:hover > a { opacity: 0.4; }
+    #site-nav > a:hover { opacity: 1; }
     /* Dashes are the page's own mark, so focus is where they belong. */
-    .menu a:focus-visible { outline: 1px dashed var(--green); outline-offset: 3px; }
+    #site-nav a:focus-visible { outline: 1px dashed var(--green); outline-offset: 3px; }
 
     /* Full-bleed: the page fills the viewport, 20px of air each side. */
     .wrap { max-width: none; margin: 0; padding: 0 20px; }
@@ -586,14 +527,7 @@
          needs a ground of its own or the deck runs under the type. This
          is the one place the nav isn't the about page's — there the stage
          is inset on phones too, and never passes beneath it. */
-      #site-nav {
-        height: 60px; padding: 14px 21px; pointer-events: auto;
-        background: rgba(237,230,202,0.9);
-        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      }
-      .menu { top: 21px; }
-      .menu a { padding: 4px 9px; font-size: 9px; }
-      .menu a::after { right: 9px; left: 9px; }
+      #site-nav { height: 60px; padding: 0 16px; font-size: 13px; }
 
       /* The stage's inset does this on desktop, but the fallback stacks
          from y=0 and the nav is fixed, so card 00 landed underneath it. */
@@ -615,7 +549,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .mark, .menu a::after { transition: none; }
+      #site-nav a { transition: none; }
     }
   </style>
 </head>
@@ -623,14 +557,10 @@
 
   <div id="veil"></div>
 
-  <nav id="site-nav">
-    <a class="mark" href="./"><span>pixeland</span><span>prompt</span></a>
-    <div class="menu">
-      <a href="./#intro">About</a>
-      <a href="./#projects" aria-current="page">Work</a>
-      <a href="./#contact">Say hi</a>
-    </div>
-    <div class="availability"><span class="role">Designer &#183; Builder</span><span class="role">in Berlin</span></div>
+  <nav id="site-nav" aria-label="Main">
+    <a href="./#intro">About</a>
+    <a href="./#projects" aria-current="page">Work</a>
+    <a href="./#contact">Contact</a>
   </nav>
 
   <!-- ══════════ DECK ══════════
