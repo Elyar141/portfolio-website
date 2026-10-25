@@ -136,11 +136,12 @@ body.is-lens{cursor:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/s
 .intro p{text-wrap:pretty}
 /* The greeting is set like the paragraphs under it, so the intro reads as
    one plain voice. */
-/* The name is set like the titles in Selected work, ink at 500, the one
-   word in the intro that stands out. Pointing at it shows a
+/* The name steps back rather than forward: regular weight in the body
+   text's grey (--muted), so it stands out by being quieter than the ink
+   around it. Pointing at it shows a
    small portrait, about the size of the word itself, standing just above
    it: a face put to the name, not a photo section. */
-.me{position:relative;color:var(--ink);font-weight:500;cursor:default;outline:none}
+.me{position:relative;color:var(--muted);font-weight:400;cursor:default;outline:none}
 .me-pic{position:absolute;left:0;bottom:calc(100% + 8px);width:2.6em;height:2.6em;
   border-radius:.5em;object-fit:cover;pointer-events:none;
   opacity:0;transform:translateY(6px) scale(.94);transform-origin:left bottom;
@@ -180,17 +181,27 @@ body.is-lens{cursor:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/s
    a line on what it is. Read as a sentence it is plainly the lesser tier,
    and the right-hand column is left to the contact line alone. */
 .other{grid-column:1;grid-row:2;margin-top:clamp(36px,6vh,64px)}
-.other .para{max-width:62ch;font-size:15px;line-height:1.6;color:var(--muted)}
+/* At the intro's 16px, in the lighter grey, with the names in bold ink. */
+.other .para{max-width:62ch;font-size:16px;line-height:1.6;color:var(--muted)}
 .other .para a{color:var(--ink);font-weight:500;transition:color .2s ease}
 .other .para a:hover,.other .para a:focus-visible{color:#6a6f4b}
 /* Other work is hidden until its turn, and taken out of the tab order with
    it; visibility waits for the fade-out before it switches off. */
 .js .other,.js .contact{visibility:hidden;transition:visibility 0s linear .9s}
 .js .other.is-in,.js .contact.is-in{visibility:visible;transition-delay:0s}
+/* Phones and tablets: a docked diagram would sit on top of the intro, so
+   it joins the flow instead. The script moves the dock into the intro, where
+   it is pushed to the foot of the first screen, under the text and never
+   over it, and the intro hangs higher to leave it the room. */
+@media(max-width:900px){
+  .intro{display:flex;flex-direction:column;padding-top:clamp(32px,6vh,72px)}
+  .intro>.dock{position:static;margin-top:auto;padding:16px 0 0}
+  .intro .mark{margin:0}}
 @media(max-width:900px){
   .works{height:auto}
   .other{grid-row:auto;margin-top:0}
-  .works-pin{position:static;height:auto;grid-template-columns:minmax(0,1fr);row-gap:56px;padding-bottom:96px}}
+  .works-pin{position:static;height:auto;grid-template-columns:minmax(0,1fr);row-gap:56px;padding-bottom:96px;
+    padding-top:calc(var(--nav-h) + 32px)}}
 
 /* Contact: the third window, after the work has scrolled away. The landing's
    closing line — three uneven lines, the last one typing itself — at a
@@ -227,7 +238,7 @@ body.is-lens{cursor:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/s
    rules above so it wins over them at equal specificity. */
 @media(max-width:900px){
   .contact,.contact.is-stacked{position:static;inset:auto;display:block;
-    padding:48px 0 calc(var(--dock-h,0px) + 28px)}
+    padding:48px 0 64px}
   .contact .contact-inner{position:static;width:auto}
   /* Nothing is pinned, so the Contact link lands at the end of the list
      rather than two screens down a section that is no longer that long. */
@@ -269,11 +280,13 @@ a.contact-row-value:hover .contact-row-icon{transform:translate(2px,-2px)}
 .list h2{font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:15px;margin-bottom:14px}
 .list ol{list-style:none}
 .list li a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:baseline;
-           padding:7px 0;color:var(--muted);transition:color .2s ease}
-.list li a span:first-child b{color:var(--ink);font-weight:500;margin-right:.5em}
+           padding:7px 0;font-size:16px;color:var(--muted);transition:color .2s ease}
+/* The line is the lighter grey and the title bold ink. Hovering a row dims
+   the others and brings the whole row to ink. */
+.list li a span:first-child b{color:var(--ink);font-weight:500;margin-right:.5em;transition:color .2s ease}
 .list li a span:last-child{font:400 11px/1 'DM Mono',monospace;letter-spacing:.04em;text-transform:uppercase;opacity:.8}
-.list ol:hover a{color:rgba(25,23,18,.32)}
-.list ol:hover a:hover{color:var(--ink)}
+.list ol:hover a,.list ol:hover li a span b{color:rgba(25,23,18,.32)}
+.list ol:hover a:hover,.list ol:hover li a:hover span b{color:var(--ink)}
 
 
 @media(max-width:600px){:root{--gutter:16px}.list li a{grid-template-columns:1fr}.list li a span:last-child{display:none}}
@@ -483,30 +496,42 @@ document.fonts.ready.then(place);place();
 })();
 
 /* The word that changes, as on the landing: types in, holds, wipes back out
-   a little faster than it was typed, moves to the next. Starts already
-   holding the word in the markup, so nothing is retyped on load, and only
-   runs while the contact section is on screen. */
+   a little faster than it was typed, pauses, moves to the next. The line
+   arrives empty, with only the caret, and the first word is typed once the
+   lines have finished rising, so the quote settles before it starts
+   writing. The markup keeps the first word for no-JS and reduced motion.
+   Only runs while the contact section is on screen. */
 (()=>{
 const el=document.getElementById('cycle');if(!el)return;
 const WORDS=window.CONTACT_WORDS;
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-const TYPE=118,JITTER=70,WIPE=55,HOLD=2600,GAP=420;
-let w=0,i=WORDS[0].length,mode='hold',on=false,timer=0;
-const at=ms=>{timer=setTimeout(step,ms)};
+/* An even beat with only a little jitter, and a breath at each space, so it
+   reads as steady typing rather than stutter. ARRIVE covers the lines'
+   rise (.9s) plus a beat; GAP is the pause on the empty line between words. */
+const TYPE=92,JITTER=24,SPACE=150,WIPE=38,HOLD=3200,GAP=750,ARRIVE=1300,FADE=900;
+let w=0,i=0,mode='wait',on=false,shown=false,timer=0;
+el.textContent='';
+const at=ms=>{clearTimeout(timer);timer=setTimeout(step,ms)};
 const sec=el.closest('.contact');
 function step(){
   if(!on)return;
-  /* Laid out all along but hidden until its beat; wait for it. */
-  if(!sec.classList.contains('is-in')){mode='hold';return at(400)}
+  /* Laid out all along but hidden until its beat. When it goes, the word is
+     cleared only after the fade-out, so it can arrive empty again. */
+  if(!sec.classList.contains('is-in')){
+    if(shown){shown=false;mode='rest';return at(FADE)}
+    if(mode==='rest'){el.textContent='';i=0;w=0;mode='wait'}
+    return at(200)}
+  if(!shown){shown=true;el.textContent='';i=0;mode='type';return at(ARRIVE)}
   const word=WORDS[w];
   if(mode==='hold'){mode='wipe';return at(WIPE)}
   if(mode==='type'){el.textContent=word.slice(0,++i);
-    if(i<word.length)return at(TYPE+Math.random()*JITTER);mode='hold';return at(HOLD)}
+    if(i<word.length)return at(TYPE+Math.random()*JITTER+(word[i]===' '?SPACE:0));
+    mode='hold';return at(HOLD)}
   el.textContent=word.slice(0,--i);
   if(i>0)return at(WIPE);
   mode='type';w=(w+1)%WORDS.length;return at(GAP)}
 new IntersectionObserver(([e])=>{const was=on;on=e.isIntersecting;
-  if(on&&!was){clearTimeout(timer);at(HOLD)}}).observe(el);
+  if(on&&!was)at(0)}).observe(el);
 })();
 
 /* The dock's height, for the room the page keeps under its content. */
@@ -594,7 +619,16 @@ function penPath(g){const [x1,y1,x2,y2]=EASE,S=1000;g.beginPath();g.moveTo(0,S);
 /* Air kept above the box, and room below it for the doing word. */
 const TOP=30,BOT=32;
 let U=1,PAD=0,K=2,mw=0,mh=0,SIDE=0;
+/* Up to 900px the dock lives at the foot of the intro rather than fixed to
+   the window (see the .intro>.dock rule), so the diagram scrolls with the
+   page: placed in page pixels instead of window pixels. */
+const FLOW=matchMedia('(max-width:900px)'),dockEl=document.getElementById('dock'),introEl=document.querySelector('.intro');
 function bake(){
+  const flow=FLOW.matches;
+  if(flow&&dockEl.parentElement!==introEl)introEl.append(dockEl);
+  else if(!flow&&dockEl.parentElement===introEl)document.body.insertBefore(dockEl,cvs);
+  /* Scrolling, it passes under the nav like the text does, not over it. */
+  for(const e of [cvs,pen,result]){e.style.position=flow?'absolute':'';e.style.zIndex=flow?'4':''}
   const markEl=document.querySelector('.mark'),colW=markEl.clientWidth,pad=P.cell*2;
   /* A square a little over a quarter of the left column's width, never
      smaller than a phone can drag in or larger than reads as a detail. */
@@ -603,7 +637,9 @@ function bake(){
     colTarget=fit
       ?colTwoX(pinEl)-(parseFloat(getComputedStyle(pinEl).columnGap)||0)-markEl.getBoundingClientRect().left
       :colW,
-    side=Math.round(clamp(colTarget*.28,140,234)),
+    /* In the flow it has a line to itself, so it can be big enough to
+       drag with a thumb. */
+    side=Math.round(flow?clamp(colW*.62,190,280):clamp(colTarget*.28,140,234)),
     u=side/1000;
   U=u;PAD=pad;SIDE=side;
   W=H=side+pad*2;
@@ -612,7 +648,8 @@ function bake(){
      bottom-right corner, pushed right by its padding so the box's edge sits
      on the right gutter, flush with Contact in the nav. */
   markEl.style.height=(side+TOP+BOT)+'px';
-  const mr=markEl.getBoundingClientRect(),L=mr.right-side-pad,T=mr.top+TOP-pad;
+  const mr=markEl.getBoundingClientRect(),
+    L=mr.right-side-pad+(flow?scrollX:0),T=mr.top+TOP-pad+(flow?scrollY:0);
   cvs.style.left=pen.style.left=L+'px';cvs.style.top=pen.style.top=T+'px';
   pen.setAttribute('width',W);pen.setAttribute('height',H);
   Object.assign(result.style,{left:L+pad+'px',top:T+pad+'px',width:side+'px',height:side+'px'});
@@ -659,10 +696,12 @@ function raster(){
 const pen=document.getElementById('pen'),live=document.getElementById('pen-live'),
   result=document.getElementById('pen-result');
 const KNOB_LABEL=n=>`Curve handle ${n}. Arrow keys move it, Shift for bigger steps; the other handle mirrors it.`;
+/* A fingertip needs a wider catch than a cursor does. */
+const HIT=matchMedia('(pointer:coarse)').matches?28:18;
 pen.innerHTML=`<path class="pen-box"/><path class="pen-curve"/>
 <line class="pen-arm"/><line class="pen-arm"/><line class="pen-guide"/><line class="pen-guide"/>
-<g class="pen-knob" data-k="0" tabindex="0" role="button" aria-label="${KNOB_LABEL(1)}"><circle class="pen-hit" r="18"/><rect class="pen-handle"/></g>
-<g class="pen-knob" data-k="1" tabindex="0" role="button" aria-label="${KNOB_LABEL(2)}"><circle class="pen-hit" r="18"/><rect class="pen-handle"/></g>
+<g class="pen-knob" data-k="0" tabindex="0" role="button" aria-label="${KNOB_LABEL(1)}"><circle class="pen-hit" r="${HIT}"/><rect class="pen-handle"/></g>
+<g class="pen-knob" data-k="1" tabindex="0" role="button" aria-label="${KNOB_LABEL(2)}"><circle class="pen-hit" r="${HIT}"/><rect class="pen-handle"/></g>
 <g class="pen-slot pen-x" aria-hidden="true"></g><g class="pen-slot pen-y" aria-hidden="true"></g>`;
 const $p=s=>pen.querySelector(s);
 const at=(x,y)=>[PAD+x*SIDE,PAD+(1-y)*SIDE];
