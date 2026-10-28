@@ -453,6 +453,11 @@
       display: block; width: auto; height: auto;
       max-width: 100%; max-height: 100%; object-fit: contain;
     }
+    /* A close-up of one control, not a whole screen: at full size it reads
+       as a page and the bar it is about gets lost in the white below it.
+       Held smaller, it reads as the detail it is. */
+    .shot--detail .shot-frame video { max-width: 68%; }
+    @media (max-width: 859px) { .shot--detail .shot-frame video { max-width: 100%; } }
     .shot-cap {
       flex: none;
       font: 500 9px/1.5 'Geist', Arial, sans-serif;
@@ -938,25 +943,21 @@
     <!-- 06 · THE SWITCHER ──────────────────────────────── -->
     <section class="card card--shot" style="--i:5">
       <div>
-        <div class="card-head"><span class="card-n">06</span><span class="card-tag">The switcher, up close</span></div>
-        <h2 class="statement">A panel that also says what a project <em>has</em>.</h2>
-        <p class="support">Inactive apps stay in the grid, dimmed, so the panel answers &ldquo;is this switched on here?&rdquo; without a trip to settings. And a tile carries live state, so <em>a timer running in one project stays legible from inside another.</em></p>
+        <div class="card-head"><span class="card-n">06</span><span class="card-tag">The panel, up close</span></div>
+        <h2 class="statement">Two kinds of navigation, <em>one</em> panel.</h2>
+        <p class="support">An app like Editor has its own navigation, the pages you're working on, and still needs the project's. So the switcher went, and the panel carries both: the app's pages up front, the project's apps folded behind one bar that names where you are. Open it and the pages slide aside to show everything this project has; close it and you're back on the same list. <em>No second menu, no page change, nothing to lose your place in.</em></p>
       </div>
       <div class="card-body">
-        <div class="shot-row">
-          <figure class="shot">
-            <div class="shot-frame">
-              <img src="projects/Studio%20V2/switcher-apps.webp" alt="The switcher overlay open over the editor, headed with the project name Objektportal, an All Projects button, a hide-inactive toggle, and ten app tiles with icons — two of them dimmed." loading="lazy">
-            </div>
-            <figcaption class="shot-cap">This project's apps · inactive dimmed, not hidden</figcaption>
-          </figure>
-          <figure class="shot">
-            <div class="shot-frame">
-              <img src="projects/Studio%20V2/switcher-tracker.webp" alt="The same overlay with the Tracker tile showing a running timer at 00:00:14 inside it." loading="lazy">
-            </div>
-            <figcaption class="shot-cap">Live state on the tile · Tracker still running</figcaption>
-          </figure>
-        </div>
+        <figure class="shot shot--detail">
+          <div class="shot-frame">
+            <video muted loop playsinline preload="metadata"
+                   poster="projects/Studio%20V2/studio-panel-poster.jpg"
+                   aria-label="Inside Editor for the Event project: a list of pages under a purple bar reading Apps · Event. The bar is clicked, the page list slides away and the project's apps appear as tiles, Appstore, Settings, Team, Tracker, Media, Editor and Customers, with an All Projects button. Clicked again, the tiles slide away and the same page list is back.">
+              <source src="projects/Studio%20V2/studio-panel.mp4" type="video/mp4">
+            </video>
+          </div>
+          <figcaption class="shot-cap">Editor's pages up front · the project's apps one click behind the bar</figcaption>
+        </figure>
         <div class="card-foot">All Projects turns the same panel to the other axis · projects instead of apps, and no page change either way</div>
       </div>
     </section>
@@ -996,19 +997,15 @@
     <!-- 08 · HOW IT SHIPPED ────────────────────────────── -->
     <section class="card" style="--i:7">
       <div>
-        <div class="card-head"><span class="card-n">08</span><span class="card-tag">How it shipped</span></div>
-        <h2 class="statement wide">Designed in code, structure first.</h2>
-        <p class="support">Designed and built in Claude Code against a living design system, so it went to production instead of into a backlog waiting for dev capacity. Everything else inherits from the structure, which is why <em>the structure shipped first.</em></p>
+        <div class="card-head"><span class="card-n">08</span><span class="card-tag">The idea underneath</span></div>
+        <h2 class="statement wide">Fix the map, and every screen <em>follows</em>.</h2>
+        <p class="support">The old Studio was organised the way it was built: companies, then apps, then whatever project you happened to be in. The new one is organised the way people work. A project holds the work, its apps live inside it, and you can always see which one you're in and jump to the next without going back up. Once that order was right, each screen was a matter of applying it, which is why <em>the structure came before the polish.</em></p>
       </div>
       <div class="card-body">
         <div class="notes">
           <div>
-            <div class="meta-k">Known gap</div>
-            <p class="note-v">Page transitions aren't implemented yet. The legacy build handled motion better than this one does, and that is still owed.</p>
-          </div>
-          <div>
             <div class="meta-k">What I'd measure next</div>
-            <p class="note-v">Time to a first published item. How often support is asked where to find something. And whether the switcher gets used at all, or people still route through the dashboard.</p>
+            <p class="note-v">Time to a first published item. How often support is asked where to find something. And whether people move between apps from the panel, or still route through the dashboard.</p>
           </div>
         </div>
         <a class="next-link" href="designsystem.html">The design system and the workflow behind it <span aria-hidden="true">&#8594;</span></a>
