@@ -126,7 +126,9 @@ html.arriving #word,html.arriving #pen,html.arriving #pen-result{transition:opac
 #pen{position:fixed;z-index:7;overflow:visible;pointer-events:none;--pen-ink:var(--ink)}
 .pen-box{fill:none;stroke:#ffffe5;stroke-width:.5px;stroke-linecap:square}
 .pen-curve{fill:none;stroke:#ededed;stroke-width:.5px;stroke-linecap:round}
-.pen-arm{stroke:#ffe5e5;stroke-width:1px}
+/* The arms from the corners to the handles are hidden: only the handle
+   heads show, as dots, and they still drag the curve. */
+.pen-arm{display:none}
 .pen-guide{stroke:#949494;stroke-width:1.25px;stroke-dasharray:1.5px 4px;stroke-linecap:round}
 .pen-handle{fill:#ffffe5;stroke:none}
 .pen-hit{fill:transparent}
