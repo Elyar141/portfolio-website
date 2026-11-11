@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <title>Design System – lilaquadrat</title>
   <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
   <style>
@@ -53,7 +53,7 @@
     html { background: var(--bg); scroll-behavior: smooth; overflow-x: clip; }
     body {
       background: var(--bg); min-height: 100vh;
-      font-family: 'Geist', Arial, sans-serif; color: var(--dim);
+      font-family: 'Space Grotesk', Arial, sans-serif; color: var(--dim);
       -webkit-font-smoothing: antialiased; overflow-x: clip;
     }
     a { color: inherit; }
@@ -80,7 +80,7 @@
       height: var(--nav-h); padding: 0 32px;
       display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
       background: var(--bg);
-      font: 540 14px/1 'Geist', Arial, sans-serif;
+      font: 540 14px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.01em; text-transform: uppercase;
     }
     #site-nav > :nth-child(2) { justify-self: center; }
@@ -103,12 +103,15 @@
        Micro-labels are Geist 500 at 9–10px, uppercase, tracked out —
        mono is reserved for the nav and for literal code.
     ════════════════════════════════════════════════════════ */
+    /* Emphasis in display type was Playfair italic. With Space Grotesk as
+       the one face (as on the landing and Scherben: no serif, no italic),
+       emphasis is the bold instead. */
     .card--hero h1 em,
     .statement em,
     .pull em {
-      font-family: 'Playfair Display', serif;
-      font-weight: 400; font-style: italic;
-      letter-spacing: -0.09em;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 600; font-style: normal;
+      letter-spacing: -0.045em;
     }
     /* The display tracking is cut for 60–150px. The pull runs at 29,
        where -0.09em closes the word up into one shape. */
@@ -120,16 +123,16 @@
       margin-bottom: clamp(24px,3vw,40px);
     }
     .eyebrow-num {
-      font: 500 10px/1 'Geist', Arial, sans-serif;
+      font: 500 10px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--green);
     }
     .eyebrow-tag {
-      font: 500 10px/1.45 'Geist', Arial, sans-serif;
+      font: 500 10px/1.45 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
     .eyebrow-tag span { margin: 0 6px; opacity: 0.4; }
     .card--hero h1 {
-      font-family: 'Geist', Arial, sans-serif;
+      font-family: 'Space Grotesk', Arial, sans-serif;
       font-size: clamp(56px,9.6vw,148px); font-weight: 480;
       letter-spacing: -0.073em; line-height: 0.9;
       color: var(--ink);
@@ -151,7 +154,7 @@
       padding-top: clamp(40px,5vw,72px);
     }
     .meta-k {
-      font: 500 9px/1 'Geist', Arial, sans-serif;
+      font: 500 9px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--mute); margin-bottom: 9px;
     }
@@ -241,15 +244,15 @@
       margin-bottom: clamp(22px,3vw,40px);
     }
     .card-n {
-      font: 500 10px/1 'Geist', Arial, sans-serif;
+      font: 500 10px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; color: var(--green);
     }
     .card-tag {
-      font: 500 10px/1 'Geist', Arial, sans-serif;
+      font: 500 10px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
     .statement {
-      font-family: 'Geist', Arial, sans-serif;
+      font-family: 'Space Grotesk', Arial, sans-serif;
       font-size: clamp(30px,4.6vw,62px); font-weight: 480;
       letter-spacing: -0.06em; line-height: 0.94;
       color: var(--ink);
@@ -266,7 +269,7 @@
     .card-body { margin-top: auto; padding-top: clamp(20px,2.6vw,38px); min-height: 0; }
     .card > div:first-child { flex: 0 0 auto; }
     .card-foot {
-      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      font: 500 9px/1.5 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--mute); margin-top: 18px;
     }
@@ -339,13 +342,13 @@
       padding-top: clamp(40px,5vw,68px);
     }
     .num-v {
-      font-family: 'Geist', Arial, sans-serif;
+      font-family: 'Space Grotesk', Arial, sans-serif;
       font-size: clamp(30px,3.6vw,50px); font-weight: 480;
       letter-spacing: -0.06em; line-height: 0.9;
       color: var(--ink);
     }
     .num-k {
-      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      font: 500 9px/1.5 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--mute); margin-top: 13px;
     }
@@ -420,7 +423,7 @@
       min-height: 240px; height: 100%;
     }
     .slot-tag {
-      font: 500 9px/1 'Geist', Arial, sans-serif;
+      font: 500 9px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.18em; text-transform: uppercase; color: var(--green);
     }
     .slot-desc {
@@ -460,7 +463,7 @@
     }
     .shot-cap {
       flex: none;
-      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      font: 500 9px/1.5 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
     /* A clip card gives its head less room than a text card: the statement
@@ -589,16 +592,117 @@
       html { scroll-behavior: auto; }
       #site-nav a { transition: none; }
     }
+    /* ── The loop diagram: two sources, one loop ─────────────────
+       Plain rules instead of the hand-drawn SVG, as in Studio. */
+    .lv { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px,1.8vw,24px); }
+    .lv-col { background: #fae4e2; border-radius: 6px; padding: clamp(18px,2vw,28px); }
+    .lv-head {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+      padding-bottom: 10px; border-bottom: 1.5px solid var(--ink);
+      font: 600 clamp(16px,1.4vw,20px)/1.2 'Space Grotesk', Arial, sans-serif; color: var(--ink);
+    }
+    .lv-head span { font-size: 13px; font-weight: 400; }
+    .lv-main { margin-top: 14px; font: 500 clamp(15px,1.3vw,18px)/1.3 'Space Grotesk', Arial, sans-serif; color: var(--ink); }
+    .lv-sub { margin-top: 3px; font: 400 13px/1.4 'Space Grotesk', Arial, sans-serif; color: var(--ink); opacity: 0.7; }
+    .lv-feeds {
+      margin-top: 14px; padding-top: 10px; border-top: 1px solid rgba(25,23,18,0.18);
+      font: 600 14px/1.3 'Space Grotesk', Arial, sans-serif; color: var(--ink);
+    }
+    .lv-feeds small { font-weight: 400; font-size: 12px; opacity: 0.7; margin-right: 10px; }
+    .lp { margin-top: clamp(18px,2vw,28px); }
+    .lp-steps {
+      list-style: none; margin: 0; padding: 0;
+      display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); column-gap: clamp(28px,3vw,48px);
+    }
+    .lp-steps li { position: relative; padding: 14px 0; border-bottom: 1px solid rgba(25,23,18,0.18); }
+    .lp-steps li:not(:last-child)::after {
+      content: '\2192'; position: absolute; right: calc(clamp(28px,3vw,48px) / -2); top: 50%;
+      transform: translate(50%, -50%); font: 400 16px/1 'Space Grotesk', Arial, sans-serif; color: var(--ink); opacity: 0.55;
+    }
+    .lp-steps small { display: block; font: 400 12px/1.3 'Space Grotesk', Arial, sans-serif; color: var(--ink); opacity: 0.7; margin-bottom: 4px; }
+    .lp-steps span { font: 600 clamp(15px,1.3vw,18px)/1.25 'Space Grotesk', Arial, sans-serif; color: var(--ink); }
+    .lp-back { margin-top: 12px; font: 400 13px/1.4 'Space Grotesk', Arial, sans-serif; color: var(--ink); opacity: 0.75; }
+    .lp-back span { margin-right: 6px; }
+    @media (max-width: 700px) {
+      .lv { grid-template-columns: 1fr; }
+      .lp-steps { grid-template-columns: 1fr 1fr; row-gap: 4px; }
+      .lp-steps li::after { display: none; }
+    }
   </style>
+<script>
+/* Inside the landing page's case-study panel (an iframe): no site nav, a
+   thin frame around the stage instead of the nav-height band, no
+   scrollbar, and links that leave the page open in the main window rather
+   than inside the panel. Opened on its own, the page is unchanged. */
+if(window.self!==window.top){document.documentElement.classList.add('in-panel');
+  /* Normal scroll at every size: the pinned stage deck is switched off by
+     disabling its media rules, so the stacked layout applies throughout
+     (the deck script follows the stage's computed position on its own). */
+  for(const s of document.styleSheets){let r;try{r=s.cssRules}catch(e){continue}
+    for(const x of r)if(x.media&&/min-height:\s*640px/.test(x.media.mediaText))x.media.mediaText='not all'}
+  /* Tell the panel whether the reader has moved into the study, so its
+     header can fold the facts row away and give the slides the room. */
+  let sc=null;const tell=()=>{const v=scrollY>24;if(v!==sc){sc=v;parent.postMessage({caseScrolled:v},'*')}};
+  addEventListener('scroll',tell,{passive:true});addEventListener('load',tell);
+  /* The landing's green swatches send their colour here. */
+  addEventListener('message',e=>{if(e.data&&e.data.panelGreen)document.documentElement.style.setProperty('--panel-green',e.data.panelGreen)});
+  addEventListener('DOMContentLoaded',()=>document.querySelectorAll('a[href]:not([href^="#"])').forEach(a=>a.target='_top'));
+  /* The facts row moves up into the panel's green header: send it there. */
+  addEventListener('DOMContentLoaded',()=>parent.postMessage({caseMeta:[...document.querySelectorAll('.meta-row>div')]
+    .map(d=>[d.querySelector('.meta-k')?.textContent.trim(),d.querySelector('.meta-v')?.textContent.trim()]).filter(r=>r[0]&&r[1])},'*'))}
+</script>
+<style>
+html.in-panel{--nav-h:20px;scrollbar-width:none}
+html.in-panel::-webkit-scrollbar{display:none}
+html.in-panel #site-nav{display:none}
+/* In the panel the facts row lives in the green header instead, and the
+   position numbers (the hero's 04, each card's 01, 02…) are dropped. */
+html.in-panel .meta-row,html.in-panel .eyebrow-num,html.in-panel .card-n{display:none}
+/* Every slide at least one frame tall, whatever it holds, so each fills
+   the panel's view the way the pinned stage did. */
+html.in-panel .card{min-height:calc(100vh - var(--nav-h) * 2)}
+html.in-panel .deck{padding-top:var(--nav-h);padding-bottom:var(--nav-h)}
+/* Equal-height slides would stretch each picture's frame to the slide,
+   leaving the caption at the bottom; the frame hugs its picture instead,
+   the caption sits just under it, and the pair is centred as one block. */
+html.in-panel .card--shot .card-body{justify-content:center}
+html.in-panel .card--shot .card-body>.shot,html.in-panel .shot-frame{flex:none}
+html.in-panel .shot{gap:10px;align-items:flex-start}
+html.in-panel .shot-cap{text-align:left}
+/* The close-up clip was held at 68% of a frame sized before that 68%
+   applied, so it floated in empty space; in the panel it runs the full
+   width like the other clips. */
+html.in-panel .shot--detail,html.in-panel .shot--detail .shot-frame{width:100%}
+html.in-panel .shot--detail .shot-frame video{width:100%;max-width:100%}
+/* The panel's green behind the slides, so the study sits straight on the
+   panel as Scherben's image does. Cards keep their own colours. */
+html.in-panel,html.in-panel body,html.in-panel #veil,html.in-panel .stage{background:var(--panel-green,#CFE6A0)}
+</style>
+<style>
+/* ── Standalone nav, matched to the landing (index.html) ──────
+   Space Grotesk, size l, the bold, sentence case, on the landing's
+   columns. Inside the panel the nav is hidden anyway. */
+#site-nav{padding:0 32px;
+  font:600 25.4px/1.2 'Space Grotesk','Helvetica Neue',Helvetica,sans-serif;letter-spacing:-.011em;text-transform:none;
+  grid-template-columns:minmax(0,275px) minmax(0,1fr) minmax(0,305px);column-gap:clamp(28px,3.5vw,64px)}
+#site-nav>:nth-child(2),#site-nav>:last-child{justify-self:start}
+@media(min-width:901px){#site-nav{padding-right:calc(32px + 116px)}}
+@media(max-width:1180px){
+  #site-nav{grid-template-columns:minmax(0,275px) minmax(0,1fr) auto}
+  #site-nav>:last-child{justify-self:end}}
+@media(max-width:900px){
+  #site-nav{grid-template-columns:1fr auto auto;column-gap:20px;font-size:21.75px;padding:0 16px}
+  #site-nav>:nth-child(2),#site-nav>:last-child{justify-self:end}}
+</style>
 </head>
 <body>
 
   <div id="veil"></div>
 
   <nav id="site-nav" aria-label="Main">
-    <a href="./#intro">About</a>
-    <a href="./#projects" aria-current="page">Work</a>
-    <a href="./#contact">Contact</a>
+    <a href="index.html">Elshan Azadi</a>
+    <a href="index.html#work">Work</a>
+    <a href="index.html#contact">Contact</a>
   </nav>
 
   <!-- ══════════ DECK ══════════
@@ -616,7 +720,7 @@
           <span class="eyebrow-tag">Design Systems<span>·</span>2026<span>·</span>lilaquadrat</span>
         </div>
         <h1>No<br><em>Handoff</em></h1>
-        <p class="hero-line">Figma describes a product. Code <em>is</em> the product. A description drifts from the thing it describes unless something forces them back together, and on a team of one nothing does. So the design system, the rulebook and the shipped product are <em>one artifact</em>. Nothing to translate, nothing to drift.</p>
+        <p class="hero-line">Figma describes a product. Code <em>is</em> the product. A description drifts from the thing it describes unless something forces them back together, and with one designer working next to a team of developers, nothing did. So the design system, the rulebook and the shipped product are <em>one artifact</em>. Nothing to translate, nothing to drift.</p>
       </div>
       <div class="card-body">
         <div class="meta-row">
@@ -640,170 +744,32 @@
         <h2 class="statement">What the <em>loop</em> runs on.</h2>
       </div>
       <div class="card-body">
-        <div class="loop loop--wide">
-          <svg class="loop-desktop" viewBox="0 0 1180 472" role="img" aria-label="Two sources of truth feed one loop. The reference renders the real shipped partials and feeds the Design in the product step; the rulebook holds 21 patterns and 25 machine-checkable rules and feeds the design-check audit. The loop runs from Design in the product to design-check to design-push to the developers' design-review, then returns to the start so nothing drifts between one pass and the next.">
-            <defs>
-              <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
-              </marker>
-              <marker id="ah-q" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
-              </marker>
-            </defs>
-
-            <!-- ── TOP BAND · the two sources of truth ──
-                 Type runs one step up from the page's own scale: the SVG
-                 gets scaled DOWN to fit the card, so 9px here landed
-                 nearer 7px on screen. Sized in viewBox units to survive
-                 that. -->
-            <g class="dg" style="animation-delay:0ms">
-              <rect x="0.5" y="26.5" width="569" height="128" rx="5" fill="#fae4e2"/>
-              <text x="30" y="60" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE REFERENCE</text>
-              <text x="539" y="60" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">VISIBLE</text>
-              <text x="30" y="98" font-family="Geist, Arial, sans-serif" font-size="22" font-weight="500" fill="rgba(25,23,18,0.82)">Renders the real shipped partials</text>
-              <text x="30" y="126" font-family="Geist, Arial, sans-serif" font-size="15" fill="rgba(25,23,18,0.52)">what you see is what ships</text>
-            </g>
-
-            <g class="dg" style="animation-delay:80ms">
-              <rect x="610.5" y="26.5" width="569" height="128" rx="5" fill="#fae4e2"/>
-              <text x="640" y="60" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE RULEBOOK</text>
-              <text x="1149" y="60" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">ENFORCEABLE</text>
-              <text x="640" y="98" font-family="Geist, Arial, sans-serif" font-size="22" font-weight="500" fill="rgba(25,23,18,0.82)">21 patterns · 25 machine-checkable rules</text>
-              <text x="640" y="126" font-family="Geist, Arial, sans-serif" font-size="15" fill="rgba(25,23,18,0.52)">every rule restated so a machine can read it</text>
-            </g>
-
-            <!-- ── CONNECTORS · the sources feeding the loop ──
-                 Dashed and dimmed so the loop below still reads as
-                 the primary motion. A dashed stroke can't be drawn on
-                 with dashoffset — that just marches the dashes — so
-                 these fade instead. -->
-            <g class="dg-conn" opacity="0.62" style="animation-delay:300ms">
-              <path d="M 285 155 L 285 200 L 132 200 L 132 233.5" fill="none" stroke="#6a6f4b" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#ah-q)"/>
-              <text x="208" y="192" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">design against what ships</text>
-            </g>
-            <g class="dg-conn" opacity="0.62" style="animation-delay:380ms">
-              <path d="M 895 155 L 895 200 L 437 200 L 437 233.5" fill="none" stroke="#6a6f4b" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#ah-q)"/>
-              <text x="666" y="192" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">the audit reads the rules</text>
-            </g>
-
-            <!-- ── BOTTOM BAND · the loop ──
-                 Node, arrow, node, arrow — so the eye is handed along
-                 the loop in the order the work actually happens. -->
-            <g class="dg" style="animation-delay:490ms">
-              <rect x="0.5" y="240.5" width="264" height="100" rx="5" fill="#f8d5d1"/>
-              <text x="26" y="274" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">DESIGNER</text>
-              <text x="26" y="312" font-family="Geist, Arial, sans-serif" font-size="20" font-weight="500" fill="rgba(25,23,18,0.82)">Design in the product</text>
-            </g>
-            <line class="dg-arrow" style="animation-delay:620ms" x1="272" y1="290.5" x2="298" y2="290.5" stroke="#6a6f4b" stroke-width="1" marker-end="url(#ah)"/>
-
-            <g class="dg" style="animation-delay:680ms">
-              <rect x="305.5" y="240.5" width="264" height="100" rx="5" fill="#f8d5d1"/>
-              <text x="331" y="274" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AGENT</text>
-              <text x="331" y="312" font-family="DM Mono, monospace" font-size="19" font-weight="700" fill="#6a6f4b">/design-check</text>
-            </g>
-            <line class="dg-arrow" style="animation-delay:810ms" x1="577" y1="290.5" x2="603" y2="290.5" stroke="#6a6f4b" stroke-width="1" marker-end="url(#ah)"/>
-
-            <g class="dg" style="animation-delay:870ms">
-              <rect x="610.5" y="240.5" width="264" height="100" rx="5" fill="#f8d5d1"/>
-              <text x="636" y="274" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AGENT</text>
-              <text x="636" y="312" font-family="DM Mono, monospace" font-size="19" font-weight="700" fill="#6a6f4b">/design-push</text>
-            </g>
-            <line class="dg-arrow" style="animation-delay:1000ms" x1="882" y1="290.5" x2="908" y2="290.5" stroke="#6a6f4b" stroke-width="1" marker-end="url(#ah)"/>
-
-            <g class="dg" style="animation-delay:1060ms">
-              <rect x="915.5" y="240.5" width="264" height="100" rx="5" fill="#f8d5d1"/>
-              <text x="941" y="274" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">DEVELOPERS</text>
-              <text x="941" y="312" font-family="DM Mono, monospace" font-size="19" font-weight="700" fill="#6a6f4b">/design-review</text>
-            </g>
-
-            <!-- The return is the one line long enough to be worth drawing.
-                 Its arrowhead is a real element, not a marker: a marker
-                 renders at the path's end vertex from frame one, so it
-                 would sit there waiting while the line crawled toward it. -->
-            <path class="dg-return" style="animation-delay:1220ms" d="M 1047 340.5 L 1047 409 L 132 409 L 132 347.5" fill="none" stroke="#6a6f4b" stroke-width="1"/>
-            <path class="dg-tip" style="animation-delay:2060ms" d="M 132 347.5 L 128.5 354.5 L 135.5 354.5 Z" fill="#6a6f4b"/>
-
-            <g class="dg-band" style="animation-delay:2120ms">
-              <rect x="380" y="395" width="420" height="28" fill="#ede6ca"/>
-              <text x="590" y="414" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" font-weight="500" letter-spacing="1.5" fill="rgba(25,23,18,0.62)">WHERE THE GAP CLOSES</text>
-              <text x="590" y="455" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="15" fill="rgba(25,23,18,0.55)">Every lap ends where it started, so nothing drifts between one pass and the next</text>
-            </g>
-          </svg>
-
-          <!-- ══ PORTRAIT LAYOUT · under 860px ══════════════════
-               Same argument, re-routed for a tall frame: the two
-               sources sit side by side at the top, the loop runs
-               down the page, and the return climbs the left gutter
-               back to the first step. The connectors' labels sit in
-               the vertical gaps between boxes, which is the only
-               place a 150-unit string fits at this width.
-          ─────────────────────────────────────────────────────── -->
-          <svg class="loop-mobile" viewBox="0 0 520 940" role="img" aria-label="Two sources of truth feed one loop. The reference renders the real shipped partials and feeds the Design in the product step; the rulebook holds 21 patterns and 25 machine-checkable rules and feeds the design-check audit. The loop runs from Design in the product to design-check to design-push to the developers' design-review, then returns to the start so nothing drifts between one pass and the next.">
-            <defs>
-              <marker id="mah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
-              </marker>
-              <marker id="mah-q" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
-              </marker>
-            </defs>
-
-            <!-- ── The two sources ── -->
-            <rect x="0.5" y="0.5" width="252" height="160" rx="5" fill="#fae4e2"/>
-            <text x="20" y="32" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE REFERENCE</text>
-            <text x="232" y="32" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">VISIBLE</text>
-            <text x="20" y="72" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Renders the real</text>
-            <text x="20" y="92" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">shipped partials</text>
-            <text x="20" y="120" font-family="Geist, Arial, sans-serif" font-size="12.5" fill="rgba(25,23,18,0.52)">what you see is what ships</text>
-
-            <rect x="267.5" y="0.5" width="252" height="160" rx="5" fill="#fae4e2"/>
-            <text x="287" y="32" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE RULEBOOK</text>
-            <text x="499.5" y="32" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">ENFORCEABLE</text>
-            <text x="287" y="72" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">21 patterns · 25</text>
-            <text x="287" y="92" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">machine-checkable rules</text>
-            <text x="287" y="120" font-family="Geist, Arial, sans-serif" font-size="12.5" fill="rgba(25,23,18,0.52)">every rule restated so a</text>
-            <text x="287" y="137" font-family="Geist, Arial, sans-serif" font-size="12.5" fill="rgba(25,23,18,0.52)">machine can read it</text>
-
-            <!-- ── Connectors ──
-                 The reference drops straight into step one. The rulebook
-                 runs down the right gutter, clearing the first node, and
-                 enters the audit from the side. -->
-            <g opacity="0.62">
-              <path d="M 180 160.5 L 180 243" fill="none" stroke="#6a6f4b" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#mah-q)"/>
-              <text x="192" y="210" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">design against what ships</text>
-
-              <path d="M 500 160.5 L 500 444 L 488 444" fill="none" stroke="#6a6f4b" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#mah-q)"/>
-              <text x="488" y="375" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">the audit reads the rules</text>
-            </g>
-
-            <!-- ── The loop, running down the page ── -->
-            <rect x="100.5" y="250" width="380" height="96" rx="5" fill="#f8d5d1"/>
-            <text x="124" y="282" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">DESIGNER</text>
-            <text x="124" y="316" font-family="Geist, Arial, sans-serif" font-size="19" font-weight="500" fill="rgba(25,23,18,0.82)">Design in the product</text>
-
-            <rect x="100.5" y="396" width="380" height="96" rx="5" fill="#f8d5d1"/>
-            <text x="124" y="428" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AGENT</text>
-            <text x="124" y="462" font-family="DM Mono, monospace" font-size="18" font-weight="700" fill="#6a6f4b">/design-check</text>
-
-            <rect x="100.5" y="542" width="380" height="96" rx="5" fill="#f8d5d1"/>
-            <text x="124" y="574" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AGENT</text>
-            <text x="124" y="608" font-family="DM Mono, monospace" font-size="18" font-weight="700" fill="#6a6f4b">/design-push</text>
-
-            <rect x="100.5" y="688" width="380" height="96" rx="5" fill="#f8d5d1"/>
-            <text x="124" y="720" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">DEVELOPERS</text>
-            <text x="124" y="754" font-family="DM Mono, monospace" font-size="18" font-weight="700" fill="#6a6f4b">/design-review</text>
-
-            <line x1="290" y1="352" x2="290" y2="390" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mah)"/>
-            <line x1="290" y1="498" x2="290" y2="536" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mah)"/>
-            <line x1="290" y1="644" x2="290" y2="682" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mah)"/>
-
-            <!-- ── The return, up the left gutter ── -->
-            <path d="M 290 784 L 290 828 L 50 828 L 50 298 L 92 298" fill="none" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mah)"/>
-
-            <text x="290" y="872" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" font-weight="500" letter-spacing="1.5" fill="rgba(25,23,18,0.62)">WHERE THE GAP CLOSES</text>
-            <text x="290" y="901" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="14" fill="rgba(25,23,18,0.55)">Every lap ends where it started, so nothing</text>
-            <text x="290" y="921" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="14" fill="rgba(25,23,18,0.55)">drifts between one pass and the next</text>
-          </svg>
+        <!-- Two sources feeding one loop, ruled like the landing's work
+             list and Studio's levels: a solid rule under each header, thin
+             rules inside, both sources on the same pale panel. -->
+        <div class="lv">
+          <div class="lv-col">
+            <div class="lv-head"><b>The reference</b><span>Visible</span></div>
+            <p class="lv-main">Renders the real shipped partials</p>
+            <p class="lv-sub">What you see is what ships</p>
+            <p class="lv-feeds"><small>Feeds</small>Design in the product</p>
+          </div>
+          <div class="lv-col">
+            <div class="lv-head"><b>The rulebook</b><span>Enforceable</span></div>
+            <p class="lv-main">21 patterns · 25 machine-checkable rules</p>
+            <p class="lv-sub">Every rule restated so a machine can read it</p>
+            <p class="lv-feeds"><small>Feeds</small>/design-check</p>
+          </div>
+        </div>
+        <div class="lp">
+          <div class="lv-head"><b>The loop</b><span>Where the gap closes</span></div>
+          <ol class="lp-steps">
+            <li><small>Designer</small><span>Design in the product</span></li>
+            <li><small>Agent</small><span>/design-check</span></li>
+            <li><small>Agent</small><span>/design-push</span></li>
+            <li><small>Developers</small><span>/design-review</span></li>
+          </ol>
+          <p class="lp-back"><span aria-hidden="true">&#8634;</span> Every lap ends where it started, so nothing drifts between one pass and the next.</p>
         </div>
       </div>
     </section>
@@ -914,7 +880,7 @@
     <section class="card" style="--i:6">
       <div>
         <div class="card-head"><span class="card-n">07</span><span class="card-tag">By the numbers</span></div>
-        <h2 class="statement wide">One designer, no team, and it <em>can't drift</em>.</h2>
+        <h2 class="statement wide">One designer, a team of developers, and it <em>can't drift</em>.</h2>
         <p class="support">Three months inside the product the system describes. Every number below is something the loop keeps true <em>without anyone remembering to check.</em></p>
       </div>
       <div class="card-body">

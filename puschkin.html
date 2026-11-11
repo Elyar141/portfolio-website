@@ -6,6 +6,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
   <title>Café Puschkin – Brand Identity & Web Design</title>
   <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
   <style>
@@ -660,15 +661,45 @@
     }
     @media (max-width: 1099px) { .num-grid { grid-template-columns: repeat(2, 1fr); } }
   </style>
+<style>
+/* ── Matched to the new landing (index.html) ──────────────────
+   The landing's nav: Space Grotesk, size l (25.4px), the bold, sentence
+   case, on the landing's three columns. The ground is the panel's
+   pistachio instead of cream; the pink slides keep their own colours.
+   No scrollbar, as on the landing. */
+html,body,#veil,.stage{background:#CFE6A0}
+html{scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+#site-nav{background:#CFE6A0;padding:0 32px;
+  font:600 25.4px/1.2 'Space Grotesk','Helvetica Neue',Helvetica,sans-serif;letter-spacing:-.011em;text-transform:none;
+  grid-template-columns:minmax(0,275px) minmax(0,1fr) minmax(0,305px);column-gap:clamp(28px,3.5vw,64px)}
+#site-nav>:nth-child(2),#site-nav>:last-child{justify-self:start}
+/* The landing keeps room on the right for its panel strip; the same
+   padding here puts About, Work and Contact on the landing's columns. */
+@media(min-width:901px){#site-nav{padding-right:calc(32px + 116px)}}
+/* As in the case studies: no position numbers. */
+.eyebrow-num,.card-n{display:none}
+@media(max-width:1180px){
+  #site-nav{grid-template-columns:minmax(0,275px) minmax(0,1fr) auto}
+  #site-nav>:last-child{justify-self:end}}
+@media(max-width:900px){
+  #site-nav{grid-template-columns:1fr auto auto;column-gap:20px;font-size:21.75px;padding:0 16px}
+  #site-nav>:nth-child(2),#site-nav>:last-child{justify-self:end}}
+</style>
+<script>
+/* As in the case studies: the facts row drops what the work was built with. */
+addEventListener('DOMContentLoaded',()=>document.querySelectorAll('.meta-row>div').forEach(d=>{
+  if(/^(built with|tools)$/i.test(d.querySelector('.meta-k')?.textContent.trim()||''))d.remove()}));
+</script>
 </head>
 <body>
 
   <div id="veil"></div>
 
   <nav id="site-nav" aria-label="Main">
-    <a href="./#intro">About</a>
-    <a href="./#projects" aria-current="page">Work</a>
-    <a href="./#contact">Contact</a>
+    <a href="index.html">Elshan Azadi</a>
+    <a href="index.html#work">Work</a>
+    <a href="index.html#contact">Contact</a>
   </nav>
 
   <!-- ══════════ DECK ══════════

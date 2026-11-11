@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <title>Verity: AI Trust UX</title>
   <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
   <style>
@@ -53,7 +53,7 @@
     html { background: var(--bg); scroll-behavior: smooth; overflow-x: clip; }
     body {
       background: var(--bg); min-height: 100vh;
-      font-family: 'Geist', Arial, sans-serif; color: var(--dim);
+      font-family: 'Space Grotesk', Arial, sans-serif; color: var(--dim);
       -webkit-font-smoothing: antialiased; overflow-x: clip;
     }
     a { color: inherit; }
@@ -80,7 +80,7 @@
       height: var(--nav-h); padding: 0 32px;
       display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
       background: var(--bg);
-      font: 540 14px/1 'Geist', Arial, sans-serif;
+      font: 540 14px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.01em; text-transform: uppercase;
     }
     #site-nav > :nth-child(2) { justify-self: center; }
@@ -103,12 +103,15 @@
        Micro-labels are Geist 500 at 9–10px, uppercase, tracked out —
        mono is reserved for the nav and for literal code.
     ════════════════════════════════════════════════════════ */
+    /* Emphasis in display type was Playfair italic. With Space Grotesk as
+       the one face (as on the landing and Scherben: no serif, no italic),
+       emphasis is the bold instead. */
     .card--hero h1 em,
     .statement em,
     .pull em {
-      font-family: 'Playfair Display', serif;
-      font-weight: 400; font-style: italic;
-      letter-spacing: -0.09em;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 600; font-style: normal;
+      letter-spacing: -0.045em;
     }
     /* The display tracking is cut for 60–150px. The pull runs at 29,
        where -0.09em closes the word up into one shape. */
@@ -120,16 +123,16 @@
       margin-bottom: clamp(24px,3vw,40px);
     }
     .eyebrow-num {
-      font: 500 10px/1 'Geist', Arial, sans-serif;
+      font: 500 10px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--green);
     }
     .eyebrow-tag {
-      font: 500 10px/1.45 'Geist', Arial, sans-serif;
+      font: 500 10px/1.45 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
     .eyebrow-tag span { margin: 0 6px; opacity: 0.4; }
     .card--hero h1 {
-      font-family: 'Geist', Arial, sans-serif;
+      font-family: 'Space Grotesk', Arial, sans-serif;
       font-size: clamp(56px,9.6vw,148px); font-weight: 480;
       letter-spacing: -0.073em; line-height: 0.9;
       color: var(--ink);
@@ -151,7 +154,7 @@
       padding-top: clamp(40px,5vw,72px);
     }
     .meta-k {
-      font: 500 9px/1 'Geist', Arial, sans-serif;
+      font: 500 9px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--mute); margin-bottom: 9px;
     }
@@ -238,15 +241,15 @@
       margin-bottom: clamp(22px,3vw,40px);
     }
     .card-n {
-      font: 500 10px/1 'Geist', Arial, sans-serif;
+      font: 500 10px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; color: var(--green);
     }
     .card-tag {
-      font: 500 10px/1 'Geist', Arial, sans-serif;
+      font: 500 10px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
     .statement {
-      font-family: 'Geist', Arial, sans-serif;
+      font-family: 'Space Grotesk', Arial, sans-serif;
       font-size: clamp(30px,4.6vw,62px); font-weight: 480;
       letter-spacing: -0.06em; line-height: 0.94;
       color: var(--ink);
@@ -263,7 +266,7 @@
     .card-body { margin-top: auto; padding-top: clamp(20px,2.6vw,38px); min-height: 0; }
     .card > div:first-child { flex: 0 0 auto; }
     .card-foot {
-      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      font: 500 9px/1.5 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--mute); margin-top: 18px;
     }
@@ -321,13 +324,13 @@
       padding-top: clamp(40px,5vw,68px);
     }
     .num-v {
-      font-family: 'Geist', Arial, sans-serif;
+      font-family: 'Space Grotesk', Arial, sans-serif;
       font-size: clamp(30px,3.6vw,50px); font-weight: 480;
       letter-spacing: -0.06em; line-height: 0.9;
       color: var(--ink);
     }
     .num-k {
-      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      font: 500 9px/1.5 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--mute); margin-top: 13px;
     }
@@ -416,7 +419,7 @@
     }
     .shot-cap {
       flex: none;
-      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      font: 500 9px/1.5 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
     /* A screen card gives its head less room than a text card: the statement
@@ -502,7 +505,7 @@
       padding: clamp(17px,2.1vw,26px) 0;
     }
     .pattern-n {
-      font: 500 9px/1 'Geist', Arial, sans-serif;
+      font: 500 9px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; color: var(--green);
     }
     .pattern-name {
@@ -551,16 +554,109 @@
       html { scroll-behavior: auto; }
       #site-nav a { transition: none; }
     }
+    /* ── The verdict diagram: machine, what it shows, human ───────
+       Plain rules instead of the hand-drawn SVG, as in Studio. */
+    .vf {
+      display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.7fr) minmax(0,1fr);
+      column-gap: clamp(30px,3.2vw,52px); align-items: center;
+    }
+    .lv-col { position: relative; background: #fae4e2; border-radius: 6px; padding: clamp(18px,2vw,28px); }
+    .vf-mid { padding-block: clamp(22px,2.4vw,34px); }
+    /* A plain arrow in the gap after each of the first two panels. */
+    .vf > .lv-col:not(:last-child)::after {
+      content: '\2192'; position: absolute; top: 50%; right: calc(clamp(30px,3.2vw,52px) / -2);
+      transform: translate(50%, -50%); font: 400 18px/1 'Space Grotesk', Arial, sans-serif; color: var(--ink); opacity: 0.55;
+    }
+    .lv-head {
+      padding-bottom: 10px; border-bottom: 1.5px solid var(--ink);
+      font: 600 clamp(15px,1.3vw,19px)/1.2 'Space Grotesk', Arial, sans-serif; color: var(--ink);
+    }
+    .lv-main { margin-top: 14px; font: 600 clamp(18px,1.7vw,24px)/1.2 'Space Grotesk', Arial, sans-serif; color: var(--ink); }
+    .lv-sub { margin-top: 4px; font: 400 13px/1.4 'Space Grotesk', Arial, sans-serif; color: var(--ink); opacity: 0.7; }
+    .lv-list { list-style: none; margin: 0; padding: 0; }
+    .lv-list li { padding: 12px 0; border-bottom: 1px solid rgba(25,23,18,0.18); }
+    .lv-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+    .lv-list span { font: 500 clamp(15px,1.3vw,18px)/1.3 'Space Grotesk', Arial, sans-serif; color: var(--ink); }
+    .lv-note { margin-top: clamp(16px,1.8vw,24px); font: 400 13px/1.45 'Space Grotesk', Arial, sans-serif; color: var(--ink); opacity: 0.75; }
+    @media (max-width: 760px) {
+      .vf { grid-template-columns: 1fr; row-gap: 34px; }
+      .vf > .lv-col:not(:last-child)::after { content: '\2193'; top: auto; right: 50%; bottom: -17px; transform: translate(50%, 50%); }
+    }
   </style>
+<script>
+/* Inside the landing page's case-study panel (an iframe): no site nav, a
+   thin frame around the stage instead of the nav-height band, no
+   scrollbar, and links that leave the page open in the main window rather
+   than inside the panel. Opened on its own, the page is unchanged. */
+if(window.self!==window.top){document.documentElement.classList.add('in-panel');
+  /* Normal scroll at every size: the pinned stage deck is switched off by
+     disabling its media rules, so the stacked layout applies throughout
+     (the deck script follows the stage's computed position on its own). */
+  for(const s of document.styleSheets){let r;try{r=s.cssRules}catch(e){continue}
+    for(const x of r)if(x.media&&/min-height:\s*640px/.test(x.media.mediaText))x.media.mediaText='not all'}
+  /* Tell the panel whether the reader has moved into the study, so its
+     header can fold the facts row away and give the slides the room. */
+  let sc=null;const tell=()=>{const v=scrollY>24;if(v!==sc){sc=v;parent.postMessage({caseScrolled:v},'*')}};
+  addEventListener('scroll',tell,{passive:true});addEventListener('load',tell);
+  /* The landing's green swatches send their colour here. */
+  addEventListener('message',e=>{if(e.data&&e.data.panelGreen)document.documentElement.style.setProperty('--panel-green',e.data.panelGreen)});
+  addEventListener('DOMContentLoaded',()=>document.querySelectorAll('a[href]:not([href^="#"])').forEach(a=>a.target='_top'));
+  /* The facts row moves up into the panel's green header: send it there. */
+  addEventListener('DOMContentLoaded',()=>parent.postMessage({caseMeta:[...document.querySelectorAll('.meta-row>div')]
+    .map(d=>[d.querySelector('.meta-k')?.textContent.trim(),d.querySelector('.meta-v')?.textContent.trim()]).filter(r=>r[0]&&r[1])},'*'))}
+</script>
+<style>
+html.in-panel{--nav-h:20px;scrollbar-width:none}
+html.in-panel::-webkit-scrollbar{display:none}
+html.in-panel #site-nav{display:none}
+/* In the panel the facts row lives in the green header instead, and the
+   position numbers (the hero's 04, each card's 01, 02…) are dropped. */
+html.in-panel .meta-row,html.in-panel .eyebrow-num,html.in-panel .card-n{display:none}
+/* Every slide at least one frame tall, whatever it holds, so each fills
+   the panel's view the way the pinned stage did. */
+html.in-panel .card{min-height:calc(100vh - var(--nav-h) * 2)}
+html.in-panel .deck{padding-top:var(--nav-h);padding-bottom:var(--nav-h)}
+/* Equal-height slides would stretch each picture's frame to the slide,
+   leaving the caption at the bottom; the frame hugs its picture instead,
+   the caption sits just under it, and the pair is centred as one block. */
+html.in-panel .card--shot .card-body{justify-content:center}
+html.in-panel .card--shot .card-body>.shot,html.in-panel .shot-frame{flex:none}
+html.in-panel .shot{gap:10px;align-items:flex-start}
+html.in-panel .shot-cap{text-align:left}
+/* The close-up clip was held at 68% of a frame sized before that 68%
+   applied, so it floated in empty space; in the panel it runs the full
+   width like the other clips. */
+html.in-panel .shot--detail,html.in-panel .shot--detail .shot-frame{width:100%}
+html.in-panel .shot--detail .shot-frame video{width:100%;max-width:100%}
+/* The panel's green behind the slides, so the study sits straight on the
+   panel as Scherben's image does. Cards keep their own colours. */
+html.in-panel,html.in-panel body,html.in-panel #veil,html.in-panel .stage{background:var(--panel-green,#CFE6A0)}
+</style>
+<style>
+/* ── Standalone nav, matched to the landing (index.html) ──────
+   Space Grotesk, size l, the bold, sentence case, on the landing's
+   columns. Inside the panel the nav is hidden anyway. */
+#site-nav{padding:0 32px;
+  font:600 25.4px/1.2 'Space Grotesk','Helvetica Neue',Helvetica,sans-serif;letter-spacing:-.011em;text-transform:none;
+  grid-template-columns:minmax(0,275px) minmax(0,1fr) minmax(0,305px);column-gap:clamp(28px,3.5vw,64px)}
+#site-nav>:nth-child(2),#site-nav>:last-child{justify-self:start}
+@media(min-width:901px){#site-nav{padding-right:calc(32px + 116px)}}
+@media(max-width:1180px){
+  #site-nav{grid-template-columns:minmax(0,275px) minmax(0,1fr) auto}
+  #site-nav>:last-child{justify-self:end}}
+@media(max-width:900px){
+  #site-nav{grid-template-columns:1fr auto auto;column-gap:20px;font-size:21.75px;padding:0 16px}
+  #site-nav>:nth-child(2),#site-nav>:last-child{justify-self:end}}
+</style>
 </head>
 <body>
 
   <div id="veil"></div>
 
   <nav id="site-nav" aria-label="Main">
-    <a href="./#intro">About</a>
-    <a href="./#projects" aria-current="page">Work</a>
-    <a href="./#contact">Contact</a>
+    <a href="index.html">Elshan Azadi</a>
+    <a href="index.html#work">Work</a>
+    <a href="index.html#contact">Contact</a>
   </nav>
 
   <!-- ══════════ DECK ══════════
@@ -607,104 +703,30 @@
         <h2 class="statement">Between the verdict and the <em>decision</em>.</h2>
       </div>
       <div class="card-body">
-        <div class="loop loop--wide">
-          <svg class="loop-desktop" viewBox="0 0 1180 480" role="img" aria-label="A machine verdict on the left, which is sometimes wrong, and a human decision on the right, to accept or override. Between them sits the larger part: what has to be on screen first: the exact text the AI read, the page it came from, and what it could not confirm. Take the middle away and the decision is a click, not a judgment.">
-            <defs>
-              <marker id="vh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
-              </marker>
-            </defs>
-
-            <!-- ── LEFT · what the machine hands over ──
-                 Type runs one step up from the page's own scale: the SVG
-                 gets scaled DOWN to fit the card, so 9px here would land
-                 nearer 7px on screen. Sized in viewBox units to survive
-                 that. -->
-            <g class="dg" style="animation-delay:0ms">
-              <rect x="0.5" y="80.5" width="232" height="216" rx="5" fill="#f8d5d1"/>
-              <text x="26" y="122" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE MACHINE</text>
-              <text x="26" y="186" font-family="Geist, Arial, sans-serif" font-size="26" font-weight="500" fill="rgba(25,23,18,0.82)">A verdict</text>
-              <text x="26" y="220" font-family="Geist, Arial, sans-serif" font-size="14" fill="rgba(25,23,18,0.52)">sometimes wrong</text>
-            </g>
-            <line class="dg-arrow" style="animation-delay:200ms" x1="240" y1="188.5" x2="286" y2="188.5" stroke="#6a6f4b" stroke-width="1" marker-end="url(#vh)"/>
-
-            <!-- ── MIDDLE · the load-bearing part ──
-                 Taller than either end and in the pale tier, so it reads
-                 as the thing the two boxes hang from rather than a third
-                 step in a row. -->
-            <g class="dg" style="animation-delay:300ms">
-              <rect x="294.5" y="18.5" width="590" height="340" rx="5" fill="#fae4e2"/>
-              <text x="326" y="64" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">WHAT HAS TO BE ON SCREEN FIRST</text>
-            </g>
-
-            <!-- Each line is marked by one 5px square: the site's own pixel,
-                 doing the job a bullet would. -->
-            <g class="dg" style="animation-delay:520ms">
-              <rect x="326" y="126" width="5" height="5" fill="#6a6f4b"/>
-              <text x="352" y="133" font-family="Geist, Arial, sans-serif" font-size="22" font-weight="500" fill="rgba(25,23,18,0.82)">The exact text it read</text>
-            </g>
-            <g class="dg" style="animation-delay:620ms">
-              <rect x="326" y="208" width="5" height="5" fill="#6a6f4b"/>
-              <text x="352" y="215" font-family="Geist, Arial, sans-serif" font-size="22" font-weight="500" fill="rgba(25,23,18,0.82)">The page it came from</text>
-            </g>
-            <g class="dg" style="animation-delay:720ms">
-              <rect x="326" y="290" width="5" height="5" fill="#6a6f4b"/>
-              <text x="352" y="297" font-family="Geist, Arial, sans-serif" font-size="22" font-weight="500" fill="rgba(25,23,18,0.82)">What it could not confirm</text>
-            </g>
-
-            <line class="dg-arrow" style="animation-delay:860ms" x1="892" y1="188.5" x2="938" y2="188.5" stroke="#6a6f4b" stroke-width="1" marker-end="url(#vh)"/>
-
-            <!-- ── RIGHT · what the human owes back ── -->
-            <g class="dg" style="animation-delay:940ms">
-              <rect x="946.5" y="80.5" width="232" height="216" rx="5" fill="#f8d5d1"/>
-              <text x="972" y="122" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE HUMAN</text>
-              <text x="972" y="186" font-family="Geist, Arial, sans-serif" font-size="26" font-weight="500" fill="rgba(25,23,18,0.82)">A decision</text>
-              <text x="972" y="220" font-family="Geist, Arial, sans-serif" font-size="14" fill="rgba(25,23,18,0.52)">accept, or override</text>
-            </g>
-
-            <g class="dg-band" style="animation-delay:1100ms">
-              <text x="590" y="430" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="15" fill="rgba(25,23,18,0.55)">Take the middle away and the decision on the right is a click, not a judgment</text>
-            </g>
-          </svg>
-
-          <!-- ══ PORTRAIT LAYOUT · under 860px ══════════════════
-               Same three zones, stacked: verdict, the middle, decision.
-          ─────────────────────────────────────────────────────── -->
-          <svg class="loop-mobile" viewBox="0 0 520 700" role="img" aria-label="A machine verdict at the top, which is sometimes wrong, and a human decision at the bottom, to accept or override. Between them sits the larger part: what has to be on screen first: the exact text the AI read, the page it came from, and what it could not confirm. Take the middle away and the decision is a click, not a judgment.">
-            <defs>
-              <marker id="mvh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
-              </marker>
-            </defs>
-
-            <rect x="134.5" y="0.5" width="252" height="120" rx="5" fill="#f8d5d1"/>
-            <text x="158" y="36" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE MACHINE</text>
-            <text x="158" y="76" font-family="Geist, Arial, sans-serif" font-size="21" font-weight="500" fill="rgba(25,23,18,0.82)">A verdict</text>
-            <text x="158" y="101" font-family="Geist, Arial, sans-serif" font-size="13" fill="rgba(25,23,18,0.52)">sometimes wrong</text>
-
-            <line x1="260" y1="128" x2="260" y2="158" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mvh)"/>
-
-            <rect x="10.5" y="166.5" width="499" height="250" rx="5" fill="#fae4e2"/>
-            <text x="40" y="206" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">WHAT HAS TO BE ON SCREEN FIRST</text>
-
-            <rect x="40" y="245" width="5" height="5" fill="#6a6f4b"/>
-            <text x="62" y="252" font-family="Geist, Arial, sans-serif" font-size="19" font-weight="500" fill="rgba(25,23,18,0.82)">The exact text it read</text>
-            <rect x="40" y="305" width="5" height="5" fill="#6a6f4b"/>
-            <text x="62" y="312" font-family="Geist, Arial, sans-serif" font-size="19" font-weight="500" fill="rgba(25,23,18,0.82)">The page it came from</text>
-            <rect x="40" y="365" width="5" height="5" fill="#6a6f4b"/>
-            <text x="62" y="372" font-family="Geist, Arial, sans-serif" font-size="19" font-weight="500" fill="rgba(25,23,18,0.82)">What it could not confirm</text>
-
-            <line x1="260" y1="424" x2="260" y2="454" stroke="#6a6f4b" stroke-width="1" marker-end="url(#mvh)"/>
-
-            <rect x="134.5" y="462.5" width="252" height="120" rx="5" fill="#f8d5d1"/>
-            <text x="158" y="498" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE HUMAN</text>
-            <text x="158" y="538" font-family="Geist, Arial, sans-serif" font-size="21" font-weight="500" fill="rgba(25,23,18,0.82)">A decision</text>
-            <text x="158" y="563" font-family="Geist, Arial, sans-serif" font-size="13" fill="rgba(25,23,18,0.52)">accept, or override</text>
-
-            <text x="260" y="632" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="14" fill="rgba(25,23,18,0.55)">Take the middle away and the decision</text>
-            <text x="260" y="654" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="14" fill="rgba(25,23,18,0.55)">is a click, not a judgment</text>
-          </svg>
+        <!-- Verdict, what has to be on screen, decision: three pale panels
+             ruled like the other case studies' diagrams, the middle one
+             widest because it is the point of the slide. -->
+        <div class="vf">
+          <div class="lv-col vf-end">
+            <div class="lv-head"><b>The machine</b></div>
+            <p class="lv-main">A verdict</p>
+            <p class="lv-sub">Sometimes wrong</p>
+          </div>
+          <div class="lv-col vf-mid">
+            <div class="lv-head"><b>What has to be on screen first</b></div>
+            <ol class="lv-list">
+              <li><span>The exact text it read</span></li>
+              <li><span>The page it came from</span></li>
+              <li><span>What it could not confirm</span></li>
+            </ol>
+          </div>
+          <div class="lv-col vf-end">
+            <div class="lv-head"><b>The human</b></div>
+            <p class="lv-main">A decision</p>
+            <p class="lv-sub">Accept, or override</p>
+          </div>
         </div>
+        <p class="lv-note">Take the middle away and the decision is a click, not a judgment.</p>
       </div>
     </section>
 

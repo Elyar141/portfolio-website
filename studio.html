@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <title>Studio Redesign – lilaquadrat</title>
   <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
   <style>
@@ -53,7 +53,7 @@
     html { background: var(--bg); scroll-behavior: smooth; overflow-x: clip; }
     body {
       background: var(--bg); min-height: 100vh;
-      font-family: 'Geist', Arial, sans-serif; color: var(--dim);
+      font-family: 'Space Grotesk', Arial, sans-serif; color: var(--dim);
       -webkit-font-smoothing: antialiased; overflow-x: clip;
     }
     a { color: inherit; }
@@ -80,7 +80,7 @@
       height: var(--nav-h); padding: 0 32px;
       display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
       background: var(--bg);
-      font: 540 14px/1 'Geist', Arial, sans-serif;
+      font: 540 14px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.01em; text-transform: uppercase;
     }
     #site-nav > :nth-child(2) { justify-self: center; }
@@ -103,12 +103,15 @@
        Micro-labels are Geist 500 at 9–10px, uppercase, tracked out —
        mono is reserved for the nav and for literal code.
     ════════════════════════════════════════════════════════ */
+    /* Emphasis in display type was Playfair italic. With Space Grotesk as
+       the one face (as on the landing and Scherben: no serif, no italic),
+       emphasis is the bold instead. */
     .card--hero h1 em,
     .statement em,
     .pull em {
-      font-family: 'Playfair Display', serif;
-      font-weight: 400; font-style: italic;
-      letter-spacing: -0.09em;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 600; font-style: normal;
+      letter-spacing: -0.045em;
     }
     /* The display tracking is cut for 60–150px. The pull runs at 29,
        where -0.09em closes the word up into one shape. */
@@ -120,16 +123,16 @@
       margin-bottom: clamp(24px,3vw,40px);
     }
     .eyebrow-num {
-      font: 500 10px/1 'Geist', Arial, sans-serif;
+      font: 500 10px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--green);
     }
     .eyebrow-tag {
-      font: 500 10px/1.45 'Geist', Arial, sans-serif;
+      font: 500 10px/1.45 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
     .eyebrow-tag span { margin: 0 6px; opacity: 0.4; }
     .card--hero h1 {
-      font-family: 'Geist', Arial, sans-serif;
+      font-family: 'Space Grotesk', Arial, sans-serif;
       font-size: clamp(56px,9.6vw,148px); font-weight: 480;
       letter-spacing: -0.073em; line-height: 0.9;
       color: var(--ink);
@@ -151,7 +154,7 @@
       padding-top: clamp(40px,5vw,72px);
     }
     .meta-k {
-      font: 500 9px/1 'Geist', Arial, sans-serif;
+      font: 500 9px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--mute); margin-bottom: 9px;
     }
@@ -238,15 +241,15 @@
       margin-bottom: clamp(22px,3vw,40px);
     }
     .card-n {
-      font: 500 10px/1 'Geist', Arial, sans-serif;
+      font: 500 10px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; color: var(--green);
     }
     .card-tag {
-      font: 500 10px/1 'Geist', Arial, sans-serif;
+      font: 500 10px/1 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
     .statement {
-      font-family: 'Geist', Arial, sans-serif;
+      font-family: 'Space Grotesk', Arial, sans-serif;
       font-size: clamp(30px,4.6vw,62px); font-weight: 480;
       letter-spacing: -0.06em; line-height: 0.94;
       color: var(--ink);
@@ -263,7 +266,7 @@
     .card-body { margin-top: auto; padding-top: clamp(20px,2.6vw,38px); min-height: 0; }
     .card > div:first-child { flex: 0 0 auto; }
     .card-foot {
-      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      font: 500 9px/1.5 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--mute); margin-top: 18px;
     }
@@ -460,7 +463,7 @@
     @media (max-width: 859px) { .shot--detail .shot-frame video { max-width: 100%; } }
     .shot-cap {
       flex: none;
-      font: 500 9px/1.5 'Geist', Arial, sans-serif;
+      font: 500 9px/1.5 'Space Grotesk', Arial, sans-serif;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
     }
     /* A clip card gives its head less room than a text card: the statement
@@ -614,16 +617,142 @@
       html { scroll-behavior: auto; }
       #site-nav a { transition: none; }
     }
+    /* ── The rewritten story ─────────────────────────────────────
+       Each slide opens with a bold label saying what it is. The problem
+       is the one green slide; every answer to it is pink. */
+    .phase {
+      font: 600 clamp(18px,1.7vw,26px)/1.15 'Space Grotesk', Arial, sans-serif;
+      letter-spacing: -0.01em; color: var(--ink);
+      margin-bottom: clamp(12px,1.4vw,20px);
+    }
+    /* The problem sits on the cream-green the diagram slide used to have;
+       every answer to it is pink. */
+    .card--problem { background-color: var(--bg); }
+    .card--hook { background-color: var(--card); }
+    .card--hook .support { margin-top: clamp(12px,1.4vw,18px); }
+    /* The hero is text only now, with a smaller title: the clip has its
+       own slide right after it. */
+    .card--hero .hero-top { display: block; }
+    .card--hero h1 { font-size: clamp(44px,6.4vw,100px); }
+    .card--hero .hero-line { max-width: 46ch; }
+    /* Overview: the clip as large as the slide allows, centred in it. */
+    .card--overview { justify-content: center; }
+    .card--overview .phase { margin-bottom: clamp(14px,1.6vw,22px); }
+    .overview-shot { margin: 0; }
+    .overview-shot video {
+      display: block; width: 100%; height: auto;
+      max-height: calc(100vh - 220px); object-fit: contain;
+    }
+    /* ── Decision 1's diagram: levels before and after ─────────── */
+    .lv { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px,1.8vw,24px); }
+    .lv-col { background: #fae4e2; border-radius: 6px; padding: clamp(18px,2vw,28px); }
+    .lv-head {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+      padding-bottom: 10px; border-bottom: 1.5px solid var(--ink);
+      font: 600 clamp(16px,1.4vw,20px)/1.2 'Space Grotesk', Arial, sans-serif; color: var(--ink);
+    }
+    .lv-head span { font-size: 13px; font-weight: 400; }
+    .lv-list { list-style: none; margin: 0; padding: 0; }
+    .lv-list li {
+      display: grid; grid-template-columns: 5.5rem minmax(0,1fr); gap: 12px; align-items: baseline;
+      padding: 12px 0; border-bottom: 1px solid rgba(25,23,18,0.18);
+    }
+    .lv-list li:last-child { border-bottom: 0; }
+    .lv-list small { font: 400 12px/1.3 'Space Grotesk', Arial, sans-serif; color: var(--ink); opacity: 0.7; }
+    .lv-list span { font: 500 clamp(15px,1.3vw,18px)/1.3 'Space Grotesk', Arial, sans-serif; color: var(--ink); }
+    .lv-list em { display: block; margin-top: 3px; font-style: normal; font-weight: 400; font-size: 13px; opacity: 0.7; }
+    .lv-list .lv-app span { font-weight: 600; }
+    /* The ladder: each level before steps in under the one above it. */
+    .lv-before li:nth-child(2) span { padding-left: 1.1em; }
+    .lv-before li:nth-child(3) span { padding-left: 2.2em; }
+    .lv-before li:nth-child(4) span { padding-left: 3.3em; }
+    .lv-before li:not(:first-child) span::before { content: '\21B3'; margin-left: -1.1em; width: 1.1em; display: inline-block; opacity: 0.55; }
+    .lv-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px,2vw,32px);
+      margin-top: clamp(18px,2vw,28px); padding-top: 14px; border-top: 1.5px solid var(--ink);
+    }
+    .lv-stats small { display: block; font: 400 12px/1.3 'Space Grotesk', Arial, sans-serif; color: var(--ink); opacity: 0.7; margin-bottom: 6px; }
+    .lv-stats span { display: flex; align-items: baseline; gap: 10px; font: 600 clamp(26px,2.6vw,38px)/1 'Space Grotesk', Arial, sans-serif; color: var(--ink); letter-spacing: -0.02em; }
+    .lv-stats s { text-decoration: none; font-weight: 400; opacity: 0.4; }
+    .lv-stats i { font-style: normal; font-weight: 400; font-size: 0.55em; opacity: 0.5; }
+    @media (max-width: 700px) {
+      .lv { grid-template-columns: 1fr; }
+    }
   </style>
+<script>
+/* Inside the landing page's case-study panel (an iframe): no site nav, a
+   thin frame around the stage instead of the nav-height band, no
+   scrollbar, and links that leave the page open in the main window rather
+   than inside the panel. Opened on its own, the page is unchanged. */
+if(window.self!==window.top){document.documentElement.classList.add('in-panel');
+  /* Normal scroll at every size: the pinned stage deck is switched off by
+     disabling its media rules, so the stacked layout applies throughout
+     (the deck script follows the stage's computed position on its own). */
+  for(const s of document.styleSheets){let r;try{r=s.cssRules}catch(e){continue}
+    for(const x of r)if(x.media&&/min-height:\s*640px/.test(x.media.mediaText))x.media.mediaText='not all'}
+  /* Tell the panel whether the reader has moved into the study, so its
+     header can fold the facts row away and give the slides the room. */
+  let sc=null;const tell=()=>{const v=scrollY>24;if(v!==sc){sc=v;parent.postMessage({caseScrolled:v},'*')}};
+  addEventListener('scroll',tell,{passive:true});addEventListener('load',tell);
+  /* The landing's green swatches send their colour here. */
+  addEventListener('message',e=>{if(e.data&&e.data.panelGreen)document.documentElement.style.setProperty('--panel-green',e.data.panelGreen)});
+  addEventListener('DOMContentLoaded',()=>document.querySelectorAll('a[href]:not([href^="#"])').forEach(a=>a.target='_top'));
+  /* The facts row moves up into the panel's green header: send it there. */
+  addEventListener('DOMContentLoaded',()=>parent.postMessage({caseMeta:[...document.querySelectorAll('.meta-row>div')]
+    .map(d=>[d.querySelector('.meta-k')?.textContent.trim(),d.querySelector('.meta-v')?.textContent.trim()]).filter(r=>r[0]&&r[1])},'*'))}
+</script>
+<style>
+html.in-panel{--nav-h:20px;scrollbar-width:none}
+html.in-panel::-webkit-scrollbar{display:none}
+html.in-panel #site-nav{display:none}
+/* In the panel the facts row lives in the green header instead, and the
+   position numbers (the hero's 04, each card's 01, 02…) are dropped. */
+html.in-panel .meta-row,html.in-panel .eyebrow-num,html.in-panel .card-n{display:none}
+/* Every slide at least one frame tall, whatever it holds, so each fills
+   the panel's view the way the pinned stage did. */
+html.in-panel .card{min-height:calc(100vh - var(--nav-h) * 2)}
+html.in-panel .deck{padding-top:var(--nav-h);padding-bottom:var(--nav-h)}
+/* Equal-height slides would stretch each picture's frame to the slide,
+   leaving the caption at the bottom; the frame hugs its picture instead,
+   the caption sits just under it, and the pair is centred as one block. */
+html.in-panel .card--shot .card-body{justify-content:center}
+html.in-panel .card--shot .card-body>.shot,html.in-panel .shot-frame{flex:none}
+html.in-panel .shot{gap:10px;align-items:flex-start}
+html.in-panel .shot-cap{text-align:left}
+/* The close-up clip was held at 68% of a frame sized before that 68%
+   applied, so it floated in empty space; in the panel it runs the full
+   width like the other clips. */
+html.in-panel .shot--detail,html.in-panel .shot--detail .shot-frame{width:100%}
+html.in-panel .shot--detail .shot-frame video{width:100%;max-width:100%}
+/* The panel's green behind the slides, so the study sits straight on the
+   panel as Scherben's image does. Cards keep their own colours. */
+html.in-panel,html.in-panel body,html.in-panel #veil,html.in-panel .stage{background:var(--panel-green,#CFE6A0)}
+</style>
+<style>
+/* ── Standalone nav, matched to the landing (index.html) ──────
+   Space Grotesk, size l, the bold, sentence case, on the landing's
+   columns. Inside the panel the nav is hidden anyway. */
+#site-nav{padding:0 32px;
+  font:600 25.4px/1.2 'Space Grotesk','Helvetica Neue',Helvetica,sans-serif;letter-spacing:-.011em;text-transform:none;
+  grid-template-columns:minmax(0,275px) minmax(0,1fr) minmax(0,305px);column-gap:clamp(28px,3.5vw,64px)}
+#site-nav>:nth-child(2),#site-nav>:last-child{justify-self:start}
+@media(min-width:901px){#site-nav{padding-right:calc(32px + 116px)}}
+@media(max-width:1180px){
+  #site-nav{grid-template-columns:minmax(0,275px) minmax(0,1fr) auto}
+  #site-nav>:last-child{justify-self:end}}
+@media(max-width:900px){
+  #site-nav{grid-template-columns:1fr auto auto;column-gap:20px;font-size:21.75px;padding:0 16px}
+  #site-nav>:nth-child(2),#site-nav>:last-child{justify-self:end}}
+</style>
 </head>
 <body>
 
   <div id="veil"></div>
 
   <nav id="site-nav" aria-label="Main">
-    <a href="./#intro">About</a>
-    <a href="./#projects" aria-current="page">Work</a>
-    <a href="./#contact">Contact</a>
+    <a href="index.html">Elshan Azadi</a>
+    <a href="index.html#work">Work</a>
+    <a href="index.html#contact">Contact</a>
   </nav>
 
   <!-- ══════════ DECK ══════════
@@ -634,7 +763,17 @@
   ─────────────────────────────────────────────────────────────── -->
   <div class="wrap deck">
    <div class="stage">
-    <!-- 00 · HERO ──────────────────────────────────────── -->
+    <!-- ══ The story, rewritten (Nov 2026) ══════════════════════
+         Short enough to follow without reading every line: each slide
+         opens with a bold label saying what it is (Problem, Before,
+         Decision, After, Result). The problem is the one green slide;
+         everything that answers it is pink. The two key decisions are
+         spelled out with their reason, because together they are the
+         redesign: without both, it would have been a nicer wrapper
+         around the same maze.
+    ─────────────────────────────────────────────────────────────── -->
+
+    <!-- 00 · HERO · the end result, as the overview ─────────── -->
     <section class="card card--hero">
       <div class="hero-top">
         <div>
@@ -643,14 +782,8 @@
             <span class="eyebrow-tag">Product Design<span>·</span>2026<span>·</span>lilaquadrat</span>
           </div>
           <h1>One Level<br><em>Less</em></h1>
-          <p class="hero-line">Studio had two levels that rendered the same page, and one tile shape standing in for everything on it. Nobody could hold a picture of the product in their head without a person there to explain it. The fix wasn't a feature. <em>I took a level out.</em></p>
+          <p class="hero-line">Studio is a B2B content platform: companies, their projects, and the apps inside each project. I rebuilt how you move through it. Projects come first, and <em>one panel switches project or app from any screen.</em></p>
         </div>
-        <!-- The glimpse. No caption — projects at the top level with the
-             company set as a line on the card is the whole claim, and it
-             reads here without a word of help. -->
-        <img class="hero-shot" src="projects/Studio%20V2/new-glimpse.webp"
-             alt="The rebuilt Studio dashboard: a Favorites row above a row of project cards, each naming the project in large type with its company set quietly beneath it, and a Companies filter beside a New button in the header."
-             width="1900" height="1008">
       </div>
       <div class="card-body">
         <div class="meta-row">
@@ -662,196 +795,60 @@
       </div>
     </section>
 
+    <!-- 00b · OVERVIEW · the end result on its own, as big as the slide
+         allows. No text beyond the label and a caption: the clip is the
+         summary of the whole project. ─────────────────────────── -->
+    <section class="card card--overview">
+      <p class="phase">Overview</p>
+      <figure class="shot overview-shot">
+        <div class="shot-frame">
+          <video muted loop playsinline preload="metadata"
+                 poster="projects/Studio%20V2/studio-after-poster.jpg"
+                 aria-label="The rebuilt Studio: the panel opens over the dashboard and jumps into a project's Customers, switches to another project while staying on Customers, then moves on to its App Store, Team and Media, never going back to the dashboard.">
+            <source src="projects/Studio%20V2/studio-after.mp4" type="video/mp4">
+          </video>
+        </div>
+        <figcaption class="shot-cap">The new Studio · switching project and app from the panel, without leaving the screen</figcaption>
+      </figure>
+    </section>
 
-
-    <!-- 01 · THE HOOK ───────────────────────────────────
-         Two structures side by side, and the count underneath. The
-         argument is the picture: the left column is a ladder you climb,
-         the right one has nothing to climb.
-    ─────────────────────────────────────────────────────── -->
-    <section class="card card--hook" style="--i:0">
+    <!-- 01 · PROBLEM · on the cream-green of the old diagram slide ─────────────────────── -->
+    <section class="card card--shot card--diag card--problem" style="--i:0">
       <div>
-        <div class="card-head"><span class="card-n">01</span><span class="card-tag">The whole change</span></div>
-        <h2 class="statement">Three levels became <em>one</em>.</h2>
+        <p class="phase">Problem</p>
+        <h2 class="statement wide">Every level looked the same, so nobody knew <em>where they were</em>.</h2>
+        <p class="support">Company, project and app were the same flat tile. The company page and the project page both showed a grid called Apps. Only the breadcrumb told you which level you were on.</p>
       </div>
       <div class="card-body">
-        <div class="loop loop--wide">
-          <svg class="loop-desktop" viewBox="0 0 1360 490" role="img" aria-label="Before: three levels — all companies, then a company page holding both Apps and Projects, then a project page holding Apps — and only then the app itself. Crossing from one project's app to another's means climbing all three levels and coming back down. After: one level — a dashboard of projects, then the app — with a switcher that changes project from inside the app without a page change. Clicks fall from seven to three, levels climbed from three to zero, and the app is re-selected once before and never after.">
-            <defs>
-              <marker id="sah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
-              </marker>
-              <marker id="sah-q" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
-              </marker>
-            </defs>
-
-            <!-- ── BEFORE · the ladder ──
-                 Each level is indented under the last, so the shape of
-                 the column is the shape of the problem. -->
-            <g class="dg" style="animation-delay:0ms">
-              <text x="34" y="22" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">BEFORE</text>
-              <text x="625" y="22" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">THREE LEVELS</text>
-              <rect x="0.5" y="34.5" width="659" height="310" rx="5" fill="#fae4e2"/>
-
-              <rect x="34" y="60" width="330" height="54" rx="4" fill="#ede6ca"/>
-              <text x="54" y="83" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 1</text>
-              <text x="54" y="104" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">All companies</text>
-
-              <rect x="64" y="130" width="330" height="54" rx="4" fill="#ede6ca"/>
-              <text x="84" y="153" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 2</text>
-              <text x="84" y="174" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Company · Apps + Projects</text>
-
-              <rect x="94" y="200" width="330" height="54" rx="4" fill="#ede6ca"/>
-              <text x="114" y="223" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 3</text>
-              <text x="114" y="244" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Project · Apps</text>
-
-              <rect x="124" y="270" width="330" height="54" rx="4" fill="#ede6ca"/>
-              <text x="144" y="293" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE APP</text>
-              <text x="144" y="314" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Customers</text>
-            </g>
-
-            <g class="dg-arrow" style="animation-delay:340ms">
-              <line x1="84"  y1="114" x2="84"  y2="126" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
-              <line x1="114" y1="184" x2="114" y2="196" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
-              <line x1="144" y1="254" x2="144" y2="266" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
-            </g>
-
-            <!-- The one thing the left panel has that the right one doesn't:
-                 a distance to travel. Double-headed, so it reads as a span
-                 rather than a direction. -->
-            <g class="dg-conn" opacity="0.62" style="animation-delay:460ms">
-              <line x1="530" y1="74" x2="530" y2="314" stroke="#6a6f4b" stroke-width="1"
-                    stroke-dasharray="3 4" marker-start="url(#sah-q)" marker-end="url(#sah-q)"/>
-              <text x="548" y="190" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">3 levels</text>
-              <text x="548" y="208" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">to cross</text>
-            </g>
-
-            <!-- ── AFTER · nothing to climb ── -->
-            <g class="dg" style="animation-delay:620ms">
-              <text x="734" y="22" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AFTER</text>
-              <text x="1325" y="22" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">ONE LEVEL</text>
-              <rect x="700.5" y="34.5" width="659" height="310" rx="5" fill="#f8d5d1"/>
-
-              <rect x="734" y="90" width="330" height="54" rx="4" fill="#ede6ca"/>
-              <text x="754" y="113" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 1</text>
-              <text x="754" y="134" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Dashboard · Projects</text>
-
-              <rect x="764" y="244" width="330" height="54" rx="4" fill="#ede6ca"/>
-              <text x="784" y="267" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE APP</text>
-              <text x="784" y="288" font-family="Geist, Arial, sans-serif" font-size="17" font-weight="500" fill="rgba(25,23,18,0.82)">Customers</text>
-            </g>
-
-            <g class="dg-conn" opacity="0.62" style="animation-delay:900ms">
-              <line x1="784" y1="144" x2="784" y2="240" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
-              <text x="804" y="184" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">company is a label on the card,</text>
-              <text x="804" y="202" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">and a filter in the header</text>
-            </g>
-
-            <!-- The switcher: a loop that leaves the app and comes back to
-                 it. That it returns to the same box is the whole claim. -->
-            <g class="dg-arrow" style="animation-delay:1040ms">
-              <path d="M 1094 256 C 1215 244, 1215 294, 1098 284" fill="none" stroke="#6a6f4b" stroke-width="1" marker-end="url(#sah)"/>
-              <text x="1160" y="318" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">switch project here</text>
-              <text x="1160" y="336" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">no page change</text>
-            </g>
-
-            <!-- ── THE COUNT ──
-                 Same task, both builds. The before figure is dimmed so the
-                 pair reads left to right as a fall, not as two numbers. -->
-            <g class="dg-band" style="animation-delay:1240ms">
-              <line x1="0" y1="376" x2="1360" y2="376" stroke="#6a6f4b" stroke-width="3" stroke-dasharray="3 6" opacity="0.58"/>
-
-              <text x="227" y="412" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">CLICKS</text>
-              <text x="227" y="460" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="34" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">7</tspan><tspan font-size="21" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">3</tspan></text>
-
-              <text x="680" y="412" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">LEVELS CLIMBED</text>
-              <text x="680" y="460" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="34" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">3</tspan><tspan font-size="21" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">0</tspan></text>
-
-              <text x="1133" y="412" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">THE APP RE-SELECTED</text>
-              <text x="1133" y="460" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="34" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">1</tspan><tspan font-size="21" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">0</tspan></text>
-            </g>
-          </svg>
-
-          <!-- ══ PORTRAIT LAYOUT · under 860px ══════════════════
-               Same two structures, stacked, and the count as three rows
-               instead of three columns.
-          ─────────────────────────────────────────────────────── -->
-          <svg class="loop-mobile" viewBox="0 0 520 950" role="img" aria-label="Before: three levels — all companies, then a company page holding both Apps and Projects, then a project page holding Apps — and only then the app itself. After: one level — a dashboard of projects, then the app — with a switcher that changes project from inside the app without a page change. Clicks fall from seven to three, levels climbed from three to zero, and the app is re-selected once before and never after.">
-            <defs>
-              <marker id="msah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a6f4b"/>
-              </marker>
-            </defs>
-
-            <text x="20" y="18" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">BEFORE</text>
-            <text x="500" y="18" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">THREE LEVELS</text>
-            <rect x="0.5" y="30.5" width="519" height="316" rx="5" fill="#fae4e2"/>
-
-            <rect x="22" y="54" width="330" height="56" rx="4" fill="#ede6ca"/>
-            <text x="40" y="78" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 1</text>
-            <text x="40" y="99" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">All companies</text>
-
-            <rect x="42" y="126" width="330" height="56" rx="4" fill="#ede6ca"/>
-            <text x="60" y="150" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 2</text>
-            <text x="60" y="171" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Company · Apps + Projects</text>
-
-            <rect x="62" y="198" width="330" height="56" rx="4" fill="#ede6ca"/>
-            <text x="80" y="222" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 3</text>
-            <text x="80" y="243" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Project · Apps</text>
-
-            <rect x="82" y="270" width="330" height="56" rx="4" fill="#ede6ca"/>
-            <text x="100" y="294" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE APP</text>
-            <text x="100" y="315" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Customers</text>
-
-            <line x1="60"  y1="110" x2="60"  y2="122" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
-            <line x1="80"  y1="182" x2="80"  y2="194" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
-            <line x1="100" y1="254" x2="100" y2="266" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
-
-            <text x="20" y="386" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">AFTER</text>
-            <text x="500" y="386" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">ONE LEVEL</text>
-            <rect x="0.5" y="398.5" width="519" height="316" rx="5" fill="#f8d5d1"/>
-
-            <rect x="22" y="422" width="330" height="56" rx="4" fill="#ede6ca"/>
-            <text x="40" y="446" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">LEVEL 1</text>
-            <text x="40" y="467" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Dashboard · Projects</text>
-
-            <rect x="42" y="590" width="330" height="56" rx="4" fill="#ede6ca"/>
-            <text x="60" y="614" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="#6a6f4b">THE APP</text>
-            <text x="60" y="635" font-family="Geist, Arial, sans-serif" font-size="16" font-weight="500" fill="rgba(25,23,18,0.82)">Customers</text>
-
-            <g opacity="0.62">
-              <line x1="60" y1="478" x2="60" y2="586" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
-              <text x="80" y="512" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">company is a label</text>
-              <text x="80" y="530" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">on the card, and a filter</text>
-            </g>
-
-            <path d="M 372 604 C 452 594, 452 638, 378 630" fill="none" stroke="#6a6f4b" stroke-width="1" marker-end="url(#msah)"/>
-            <text x="428" y="668" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">switch here</text>
-            <text x="428" y="686" text-anchor="middle" font-family="Geist, Arial, sans-serif" font-size="12" fill="rgba(25,23,18,0.62)">no page change</text>
-
-            <line x1="0" y1="758" x2="520" y2="758" stroke="#6a6f4b" stroke-width="3" stroke-dasharray="3 6" opacity="0.58"/>
-
-            <text x="20" y="806" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">CLICKS</text>
-            <text x="500" y="812" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">7</tspan><tspan font-size="18" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">3</tspan></text>
-
-            <text x="20" y="864" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">LEVELS CLIMBED</text>
-            <text x="500" y="870" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">3</tspan><tspan font-size="18" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">0</tspan></text>
-
-            <text x="20" y="922" font-family="Geist, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="1.8" fill="rgba(25,23,18,0.45)">THE APP RE-SELECTED</text>
-            <text x="500" y="928" text-anchor="end" font-family="Geist, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="-1"><tspan fill="rgba(25,23,18,0.34)">1</tspan><tspan font-size="18" fill="rgba(25,23,18,0.30)">&#160;&#8594;&#160;</tspan><tspan fill="#191712">0</tspan></text>
-          </svg>
+        <div class="shot-row">
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/legacy-root.webp" alt="The legacy root: each company as a heading with plain uppercase tiles beneath it." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">All companies · every tile is a project</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/legacy-company-apps.webp" alt="A legacy company page: a grid headed Apps with five tiles, and below it a grid headed Projects." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">A company · a grid called &ldquo;Apps&rdquo;</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-frame">
+              <img src="projects/Studio%20V2/legacy-project-apps.webp" alt="A legacy project page inside that same company: a grid headed Apps with six tiles and nothing else." loading="lazy">
+            </div>
+            <figcaption class="shot-cap">A project · also a grid called &ldquo;Apps&rdquo;</figcaption>
+          </figure>
         </div>
-        <div class="card-foot">Hand-counted from matched recordings of the same task · no timings, because the legacy build animates page changes the new one doesn't</div>
       </div>
     </section>
 
-    <!-- 02 · THE REVEAL ────────────────────────────────── -->
+    <!-- 02 · BEFORE ──────────────────────────────────────────── -->
     <section class="card card--shot" style="--i:1">
       <div>
-        <div class="card-head"><span class="card-n">02</span><span class="card-tag">The same task, before</span></div>
-        <h2 class="statement">The last click <em>re-opens</em> the app you never left.</h2>
-        <p class="support">You are in one company's Customers. You need the same app in another company's project. There is no way across, only up and back down. <em>Customers → project → company → root → the other company → its project → Customers again.</em></p>
+        <p class="phase">Before</p>
+        <h2 class="statement wide">Seven clicks to open the same app in <em>another project</em>.</h2>
+        <p class="support">Customers → project → company → all companies → the other company → its project → Customers. The last click reopens the app you were already in.</p>
       </div>
       <div class="card-body">
         <figure class="shot">
@@ -862,69 +859,75 @@
               <source src="projects/Studio%20V2/studio-before.mp4" type="video/mp4">
             </video>
           </div>
-          <figcaption class="shot-cap">The legacy shell · the crossing, start to finish</figcaption>
+          <figcaption class="shot-cap">Before · old Studio, the whole route</figcaption>
         </figure>
       </div>
     </section>
 
-    <!-- 03 · THE DIAGNOSIS ─────────────────────────────
-         The credibility card. Three crops at one scale, so the reader
-         can see for themselves that two of these pages are the same
-         page with different tiles missing.
-    ─────────────────────────────────────────────────────── -->
-    <section class="card card--shot card--diag" style="--i:2">
+    <!-- 03 · DECISION 1 · remove a level ─────────────────────── -->
+    <section class="card card--hook" style="--i:2">
       <div>
-        <div class="card-head"><span class="card-n">03</span><span class="card-tag">The diagnosis</span></div>
-        <h2 class="statement">One shape stood in for <em>three</em> different things.</h2>
-        <p class="support">A tile was a company. A tile was a project. A tile was an app. Same size, same colour, uppercase label, no icon, no metadata. And two of the levels answered with a grid headed the same word. The breadcrumb was the only thing on screen that knew where you were, and <em>it was the only thing.</em></p>
+        <p class="phase">Decision 1 · Remove a level</p>
+        <h2 class="statement">Projects first. The company level is <em>gone</em>.</h2>
+        <p class="support">People work inside a project, so the dashboard lists projects. Company became a label on each card and a filter in the header.</p>
       </div>
       <div class="card-body">
-        <div class="shot-row">
-          <figure class="shot">
-            <div class="shot-frame">
-              <img src="projects/Studio%20V2/legacy-root.webp" alt="The legacy root: each company as a heading with plain uppercase tiles beneath it." loading="lazy">
-            </div>
-            <figcaption class="shot-cap">Root · tiles are projects</figcaption>
-          </figure>
-          <figure class="shot">
-            <div class="shot-frame">
-              <img src="projects/Studio%20V2/legacy-company-apps.webp" alt="A legacy company page: a grid headed Apps with five tiles, and below it a grid headed Projects." loading="lazy">
-            </div>
-            <figcaption class="shot-cap">Company · &ldquo;Apps&rdquo;, five tiles</figcaption>
-          </figure>
-          <figure class="shot">
-            <div class="shot-frame">
-              <img src="projects/Studio%20V2/legacy-project-apps.webp" alt="A legacy project page inside that same company: a grid headed Apps with six tiles and nothing else." loading="lazy">
-            </div>
-            <figcaption class="shot-cap">Project · &ldquo;Apps&rdquo;, six tiles</figcaption>
-          </figure>
+        <!-- Before and after as two short lists, ruled like the landing's
+             work list: one solid rule under each header, thin rules between
+             levels. Both columns on the same pale panel. -->
+        <div class="lv">
+          <div class="lv-col lv-before">
+            <div class="lv-head"><b>Before</b><span>Three levels</span></div>
+            <ol class="lv-list">
+              <li><small>Level 1</small><span>All companies</span></li>
+              <li><small>Level 2</small><span>Company · Apps + Projects</span></li>
+              <li><small>Level 3</small><span>Project · Apps</span></li>
+              <li class="lv-app"><small>The app</small><span>Customers</span></li>
+            </ol>
+          </div>
+          <div class="lv-col lv-after">
+            <div class="lv-head"><b>After</b><span>One level</span></div>
+            <ol class="lv-list">
+              <li><small>Level 1</small><span>Dashboard · Projects<em>Company is a label on the card and a filter in the header</em></span></li>
+              <li class="lv-app"><small>The app</small><span>Customers<em>Switch project here, no page change</em></span></li>
+            </ol>
+          </div>
         </div>
-        <div class="card-foot">Four of those tiles are the same four · users worked out their level from which ones were missing</div>
+        <div class="lv-stats">
+          <div><small>Clicks</small><span><s>7</s><i aria-hidden="true">&#8594;</i><b>3</b></span></div>
+          <div><small>Levels climbed</small><span><s>3</s><i aria-hidden="true">&#8594;</i><b>0</b></span></div>
+          <div><small>App re-selected</small><span><s>1</s><i aria-hidden="true">&#8594;</i><b>0</b></span></div>
+        </div>
       </div>
     </section>
 
-    <!-- 04 · CONSTRAINTS · text only ───────────────────── -->
-    <section class="card" style="--i:3">
+    <!-- 04 · DECISION 2 · one global panel ───────────────────── -->
+    <section class="card card--shot" style="--i:3">
       <div>
-        <div class="card-head"><span class="card-n">04</span><span class="card-tag">Constraints, and the bet</span></div>
-        <h2 class="statement wide">No research budget, no feature authority, live customers.</h2>
-        <p class="support">Sole designer. Live throughout, with no migration window to hide behind. The feature set wasn't mine to change. So I didn't touch what Studio could do. <em>I changed where its things live.</em></p>
+        <p class="phase">Decision 2 · One global panel</p>
+        <h2 class="statement wide">Switch project or app from <em>any screen</em>.</h2>
+        <p class="support">One level fewer still leaves a climb. The panel removes it: this project's apps and every other project sit behind one bar at the top of every screen. Pick another project and you stay on the screen you were on. This is why the two decisions only work together.</p>
       </div>
       <div class="card-body">
-        <p class="pull">The problem was never what Studio could do. It was that its <em>structure was invisible</em>.</p>
-        <div class="card-foot">The diagnosis came from the product itself · two levels rendering the same page is a structural fact, not an opinion</div>
+        <figure class="shot shot--detail">
+          <div class="shot-frame">
+            <video muted loop playsinline preload="metadata"
+                   poster="projects/Studio%20V2/studio-global-panel-poster.jpg"
+                   aria-label="Studio's page editor with the global panel at the top: it opens on the Event project's apps as tiles, switches to the project's page list, closes back to the page being edited, and opens again on the apps, all without leaving the editor.">
+              <source src="projects/Studio%20V2/studio-global-panel.mp4" type="video/mp4">
+            </video>
+          </div>
+          <figcaption class="shot-cap">The global panel over the page editor · the project's apps and its pages, one bar away</figcaption>
+        </figure>
       </div>
     </section>
 
-    <!-- 05 · WHAT CHANGED ──────────────────────────────
-         The core claim, and the one worth watching to the end: the
-         header does not change while the data underneath it does.
-    ─────────────────────────────────────────────────────── -->
+    <!-- 05 · AFTER ───────────────────────────────────────────── -->
     <section class="card card--shot" style="--i:4">
       <div>
-        <div class="card-head"><span class="card-n">05</span><span class="card-tag">What changed</span></div>
-        <h2 class="statement">Context <em>survives</em> the switch.</h2>
-        <p class="support">Projects came to the front, because a project is what people actually work in; company became a label on the card and a filter in the header. Apps stopped being a destination: one overlay holds this project's apps and every project, switchable in place. <em>Customers, then another project's Customers, its App Store, its Team, its Media: every jump is one overlay, never a trip back to the dashboard.</em> Switch project and you stay on the screen you were on.</p>
+        <p class="phase">After</p>
+        <h2 class="statement wide">The same task in three clicks, and you never <em>leave Customers</em>.</h2>
+        <p class="support">Open the panel, pick the other project, done. App Store, Team and Media are one more pick each, from the same panel, with no trip back to the dashboard.</p>
       </div>
       <div class="card-body">
         <figure class="shot">
@@ -935,39 +938,16 @@
               <source src="projects/Studio%20V2/studio-after.mp4" type="video/mp4">
             </video>
           </div>
-          <figcaption class="shot-cap">The same crossing, rebuilt · five screens, one overlay, no trip back to the dashboard</figcaption>
+          <figcaption class="shot-cap">After · new Studio, the same route</figcaption>
         </figure>
       </div>
     </section>
 
-    <!-- 06 · THE SWITCHER ──────────────────────────────── -->
+    <!-- 06 · ACROSS STUDIO · captions only ────────────────────── -->
     <section class="card card--shot" style="--i:5">
       <div>
-        <div class="card-head"><span class="card-n">06</span><span class="card-tag">The panel, up close</span></div>
-        <h2 class="statement">Two kinds of navigation, <em>one</em> panel.</h2>
-        <p class="support">An app like Editor has its own navigation, the pages you're working on, and still needs the project's. So the switcher went, and the panel carries both: the app's pages up front, the project's apps folded behind one bar that names where you are. Open it and the pages slide aside to show everything this project has; close it and you're back on the same list. <em>No second menu, no page change, nothing to lose your place in.</em></p>
-      </div>
-      <div class="card-body">
-        <figure class="shot shot--detail">
-          <div class="shot-frame">
-            <video muted loop playsinline preload="metadata"
-                   poster="projects/Studio%20V2/studio-panel-poster.jpg"
-                   aria-label="Inside Editor for the Event project: a list of pages under a purple bar reading Apps · Event. The bar is clicked, the page list slides away and the project's apps appear as tiles, Appstore, Settings, Team, Tracker, Media, Editor and Customers, with an All Projects button. Clicked again, the tiles slide away and the same page list is back.">
-              <source src="projects/Studio%20V2/studio-panel.mp4" type="video/mp4">
-            </video>
-          </div>
-          <figcaption class="shot-cap">Editor's pages up front · the project's apps one click behind the bar</figcaption>
-        </figure>
-        <div class="card-foot">All Projects turns the same panel to the other axis · projects instead of apps, and no page change either way</div>
-      </div>
-    </section>
-
-    <!-- 07 · SURFACE AREA ──────────────────────────────── -->
-    <section class="card card--shot" style="--i:6">
-      <div>
-        <div class="card-head"><span class="card-n">07</span><span class="card-tag">Surface area</span></div>
-        <h2 class="statement wide">The same model, applied across the product.</h2>
-        <p class="support">Detail views became structured records instead of rows. Team gained a real permission model where a tile used to sit with nothing behind it. And where a level genuinely matters, it is now <em>named in words</em> rather than inferred from which tiles are missing.</p>
+        <p class="phase">Across Studio</p>
+        <h2 class="statement wide">The same rules on <em>every screen</em>.</h2>
       </div>
       <div class="card-body">
         <div class="thumbs">
@@ -981,31 +961,30 @@
             <div class="shot-frame">
               <img src="projects/Studio%20V2/team-permissions.webp" alt="A team member's panel listing per-app permissions as checkboxes grouped under Media and Publishing." loading="lazy">
             </div>
-            <figcaption class="shot-cap">Team · real permissions</figcaption>
+            <figcaption class="shot-cap">Team · permissions per app</figcaption>
           </figure>
           <figure class="shot">
             <div class="shot-frame">
               <img src="projects/Studio%20V2/appstore-levels.webp" alt="The App Store, split into Company Level Apps available across all projects, and Project Apps which override company defaults." loading="lazy">
             </div>
-            <figcaption class="shot-cap">App Store · the level, in words</figcaption>
+            <figcaption class="shot-cap">App Store · company and project apps, named</figcaption>
           </figure>
         </div>
-        <div class="card-foot">Dashboard · Projects · Customers · Team · Media · Publish · Lists · Hosting · Settings · App Store</div>
       </div>
     </section>
 
-    <!-- 08 · HOW IT SHIPPED ────────────────────────────── -->
-    <section class="card" style="--i:7">
+    <!-- 07 · RESULT ──────────────────────────────────────────── -->
+    <section class="card" style="--i:6">
       <div>
-        <div class="card-head"><span class="card-n">08</span><span class="card-tag">The idea underneath</span></div>
-        <h2 class="statement wide">Fix the map, and every screen <em>follows</em>.</h2>
-        <p class="support">The old Studio was organised the way it was built: companies, then apps, then whatever project you happened to be in. The new one is organised the way people work. A project holds the work, its apps live inside it, and you can always see which one you're in and jump to the next without going back up. Once that order was right, each screen was a matter of applying it, which is why <em>the structure came before the polish.</em></p>
+        <p class="phase">Result</p>
+        <h2 class="statement wide">Seven clicks became three. Three levels became <em>one</em>.</h2>
+        <p class="support">Counted from matched recordings of the same task in both versions. Shipped to live customers with no downtime.</p>
       </div>
       <div class="card-body">
         <div class="notes">
           <div>
             <div class="meta-k">What I'd measure next</div>
-            <p class="note-v">Time to a first published item. How often support is asked where to find something. And whether people move between apps from the panel, or still route through the dashboard.</p>
+            <p class="note-v">Time to a first published item, how often support gets asked where something is, and whether people switch from the panel or still go back to the dashboard.</p>
           </div>
         </div>
         <a class="next-link" href="designsystem.html">The design system and the workflow behind it <span aria-hidden="true">&#8594;</span></a>
