@@ -124,13 +124,16 @@ html.arriving #word,html.arriving #pen,html.arriving #pen-result{transition:opac
 /* Pale lines and handles over the field, so the drawing sits in the same
    light as the marks; only the words are in ink, the parts you read. */
 #pen{position:fixed;z-index:7;overflow:visible;pointer-events:none;--pen-ink:var(--ink)}
-.pen-box{fill:none;stroke:#ffffe5;stroke-width:.5px;stroke-linecap:square}
+/* The two axes are hidden: the column's own edges do their job, and
+   the field, the curve and the handle dots are left on their own. */
+.pen-box{display:none}
 .pen-curve{fill:none;stroke:#ededed;stroke-width:.5px;stroke-linecap:round}
 /* The arms from the corners to the handles are hidden: only the handle
    heads show, as dots, and they still drag the curve. */
 .pen-arm{display:none}
 .pen-guide{stroke:#949494;stroke-width:1.25px;stroke-dasharray:1.5px 4px;stroke-linecap:round}
-.pen-handle{fill:#ffffe5;stroke:none}
+/* The handle heads in the panel's pistachio. */
+.pen-handle{fill:var(--green);stroke:none}
 .pen-hit{fill:transparent}
 /* The axis words in the work list's label style, as SHIPPED and CASE
    STUDY are set, in ink and a little more open. */
@@ -813,7 +816,7 @@ function penPath(g){const [x1,y1,x2,y2]=EASE,S=1000;g.beginPath();g.moveTo(0,S);
 
 /* Air kept above the box, and room below it for the doing word. */
 const TOP=30,BOT=32;
-let U=1,PAD=0,K=2,mw=0,mh=0,SIDE=0;
+let U=1,UY=1,PAD=0,K=2,mw=0,mh=0,SIDE=0,SH=0;
 /* Up to 900px the dock lives at the foot of the intro rather than fixed to
    the window (see the .intro>.dock rule), so the diagram scrolls with the
    page: placed in page pixels instead of window pixels. */
@@ -824,35 +827,34 @@ function bake(){
   const flow=true;
   const textEl=introEl.querySelector('.intro-text');if(dockEl.parentElement!==textEl)textEl.append(dockEl);
   /* Scrolling, it passes under the nav like the text does, not over it. */
-  for(const e of [cvs,pen,result]){e.style.position=flow?'absolute':'';e.style.zIndex=flow?'4':''}
-  const markEl=document.querySelector('.mark'),colW=markEl.clientWidth,pad=P.cell*2;
-  /* A square a little over a quarter of the left column's width, never
-     smaller than a phone can drag in or larger than reads as a detail. */
-  const pinEl=document.querySelector('.works-pin'),
-    fit=P.fit&&pinEl&&window.colTwoX&&getComputedStyle(pinEl).position==='sticky',
-    colTarget=fit
-      ?colTwoX(pinEl)-(parseFloat(getComputedStyle(pinEl).columnGap)||0)-markEl.getBoundingClientRect().left
-      :colW,
-    /* In the flow it has a line to itself, so it can be big enough to
-       drag with a thumb. */
-    side=Math.round(clamp(colW*.55,140,170)),
-    u=side/1000;
-  U=u;PAD=pad;SIDE=side;
-  W=H=side+pad*2;
+  /* The fill sits behind the text (z -1, still inside the body's blend
+     group, so it adds to the blush as before); the handles and the typed
+     line sit above it, so the dots can be grabbed over the words. */
+  for(const e of [cvs,pen,result]){e.style.position='absolute';e.style.zIndex=e===cvs?'-1':'4'}
+  const markEl=document.querySelector('.mark'),pad=P.cell*2;
+  /* Experiment: the box is the left column. Its y axis runs up the left
+     of the intro, from the first line down past the last; its x axis is the
+     column's width; and it reaches a band below the text, where the fill
+     shows clear of the words. */
+  const ps=textEl.querySelectorAll(':scope>p'),r0=ps[0].getBoundingClientRect(),r1=ps[ps.length-1].getBoundingClientRect(),
+    AX=10,                                        /* the y axis, just left of the text */
+    sw=Math.round(textEl.clientWidth),            /* x axis: the column's width */
+    below=Math.round(clamp(sw*.5,110,170)),       /* the band under the text */
+    sh=Math.round(r1.bottom-r0.top+below),
+    gap=parseFloat(getComputedStyle(dockEl).marginTop)||0,
+    side=sw;
+  U=sw/1000;UY=sh/1000;PAD=pad;SIDE=sw;SH=sh;
+  W=sw+pad*2;H=sh+pad*2;
   cvs.style.width=W+'px';cvs.style.height=H+'px';
-  /* The mark holds the room; the canvas is pinned over it in the
-     bottom-right corner, pushed right by its padding so the box's edge sits
-     on the right gutter, flush with Contact in the nav. */
-  markEl.style.height=(side+TOP+BOT)+'px';
-  const mr=markEl.getBoundingClientRect(),
-    /* Left-hung under the text, with room at its left for the rotated
-       feeling word. */
-    L=mr.left+26-pad+scrollX,T=mr.top+TOP-pad+scrollY;
+  /* The mark now only holds the band below the text (and the doing word). */
+  markEl.style.height=Math.max(0,below-gap+BOT)+'px';
+  const mr=markEl.getBoundingClientRect(),tr=textEl.getBoundingClientRect(),
+    L=tr.left-AX-pad+scrollX,T=r0.top-pad+scrollY;
   cvs.style.left=pen.style.left=L+'px';cvs.style.top=pen.style.top=T+'px';
   pen.setAttribute('width',W);pen.setAttribute('height',H);
-  Object.assign(result.style,{left:L+pad+'px',top:T+pad+'px',width:side+'px',height:side+'px'});
-  result.style.setProperty('--result-size',clamp(side*.076,13,30).toFixed(1)+'px');
-  result.style.setProperty('--result-pad',(side*.08).toFixed(1)+'px');
+  Object.assign(result.style,{left:L+pad+'px',top:T+pad+'px',width:sw+'px',height:sh+'px'});
+  result.style.setProperty('--result-size',clamp(sw*.055,13,18).toFixed(1)+'px');
+  result.style.setProperty('--result-pad',(sw*.05).toFixed(1)+'px');
   dpr=Math.min(2,devicePixelRatio||1);cvs.width=Math.round(W*dpr);cvs.height=Math.round(H*dpr);
   mw=Math.round(W*K);mh=Math.round(H*K);off.width=mw;off.height=mh;
   nx=Math.max(1,Math.round(W/P.cell));cell=W/nx;rows=Math.max(1,Math.round(H/cell));
@@ -861,8 +863,8 @@ function bake(){
   raster();drawHandles();
   const root=document.documentElement.style;
   root.setProperty('--logo-right',(mr.right).toFixed(1));
-  root.setProperty('--logo-mid',(mr.top+TOP+side/2).toFixed(1));
-  root.setProperty('--logo-bottom',(mr.top+TOP+side).toFixed(1));
+  root.setProperty('--logo-mid',(mr.top+sh/2).toFixed(1));
+  root.setProperty('--logo-bottom',(mr.top+sh).toFixed(1));
   dispatchEvent(new Event('logo:layout'));
 }
 
@@ -871,7 +873,7 @@ function bake(){
    lens memory carry on and the field reflows rather than restarting. */
 function raster(){
   octx.setTransform(1,0,0,1,0,0);octx.clearRect(0,0,mw,mh);
-  octx.setTransform(U*K,0,0,U*K,PAD*K,PAD*K);octx.fillStyle='#000';penPath(octx);octx.fill();
+  octx.setTransform(-U*K,0,0,UY*K,(PAD+SIDE)*K,PAD*K);octx.fillStyle='#000';penPath(octx);octx.fill();
   octx.setTransform(1,0,0,1,0,0);
   const d=octx.getImageData(0,0,mw,mh).data,st=mw+1,S=new Float32Array((mw+1)*(mh+1));
   for(let y=0;y<mh;y++){let row=0;for(let x=0;x<mw;x++){row+=d[(y*mw+x)*4+3]/255;S[(y+1)*st+x+1]=S[y*st+x+1]+row}}
@@ -902,13 +904,15 @@ pen.innerHTML=`<path class="pen-box"/><path class="pen-curve"/>
 <g class="pen-knob" data-k="1" tabindex="0" role="button" aria-label="${KNOB_LABEL(2)}"><circle class="pen-hit" r="${HIT}"/><rect class="pen-handle"/></g>
 <g class="pen-slot pen-x" aria-hidden="true"></g><g class="pen-slot pen-y" aria-hidden="true"></g>`;
 const $p=s=>pen.querySelector(s);
-const at=(x,y)=>[PAD+x*SIDE,PAD+(1-y)*SIDE];
+/* Mirrored: x runs right to left, so the curve's steep end and the
+   field's cut edge sit on the left, along the start of the text. */
+const at=(x,y)=>[PAD+(1-x)*SIDE,PAD+(1-y)*SH];
 const set=(e,a)=>{for(const k in a)e.setAttribute(k,a[k])};
 const NS='http://www.w3.org/2000/svg';
 const HS=10;
 function drawHandles(){
   const [x1,y1,x2,y2]=EASE,[ox,oy]=at(0,0),[ex,ey]=at(1,1),[ax,ay]=at(x1,y1),[bx,by]=at(x2,y2);
-  set($p('.pen-box'),{d:`M${PAD} ${PAD}V${PAD+SIDE}H${PAD+SIDE}`});
+  set($p('.pen-box'),{d:`M${PAD} ${PAD}V${PAD+SH}H${PAD+SIDE}`});
   set($p('.pen-curve'),{d:`M${ox} ${oy}C${ax} ${ay} ${bx} ${by} ${ex} ${ey}`});
   const arms=pen.querySelectorAll('.pen-arm');set(arms[0],{x1:ox,y1:oy,x2:ax,y2:ay});set(arms[1],{x1:ex,y1:ey,x2:bx,y2:by});
   const guides=pen.querySelectorAll('.pen-guide');set(guides[0],{x1:ax,y1:ay,x2:ax,y2:oy});set(guides[1],{x1:bx,y1:by,x2:PAD,y2:by});
@@ -916,16 +920,16 @@ function drawHandles(){
     set(g.children[0],{cx:x,cy:y});set(g.children[1],{x:x-HS/2,y:y-HS/2,width:HS,height:HS,transform:`rotate(45 ${x} ${y})`})});
   /* The side words sit where the guides meet the axes, held far enough in
      from the corners that a whole word always fits along the box. */
-  set($p('.pen-x'),{transform:`translate(${clamp(ax,PAD+28,PAD+SIDE-28)} ${PAD+SIDE+20})`});
-  set($p('.pen-y'),{transform:`translate(${PAD-14} ${clamp(by,PAD+32,PAD+SIDE-32)}) rotate(-90)`});
+  set($p('.pen-x'),{transform:`translate(${clamp(ax,PAD+28,PAD+SIDE-28)} ${PAD+SH+20})`});
+  set($p('.pen-y'),{transform:`translate(${PAD-9} ${clamp(by,PAD+32,PAD+SH-32)}) rotate(-90)`});
   /* The line sits low on the fill, unless P2's guide runs through that
      band, when it steps up to sit just above the guide instead. The band
      is two lines tall, so a line that wraps as it types doesn't run into
      the guide halfway. */
   const size=parseFloat(result.style.getPropertyValue('--result-size'))||20,
-    low=SIDE*.06,band=2*1.15*size+8,gy=by-PAD,
-    clash=gy>SIDE-low-band&&gy<SIDE-low+6;
-  result.style.setProperty('--result-low',(clash?SIDE-gy+10:low).toFixed(1)+'px');
+    low=SH*.03,band=2*1.15*size+8,gy=by-PAD,
+    clash=gy>SH-low-band&&gy<SH-low+6;
+  result.style.setProperty('--result-low',(clash?SH-gy+10:low).toFixed(1)+'px');
 }
 
 /* A word swap: the old word slides out and the new one in, 250ms on the
@@ -977,13 +981,13 @@ pen.addEventListener('pointerdown',e=>{const g=e.target.closest('.pen-knob');if(
   dragK=+g.dataset.k;pen.setPointerCapture(e.pointerId);document.body.classList.add('is-penning');e.preventDefault()});
 pen.addEventListener('pointermove',e=>{if(dragK<0)return;
   const b=pen.getBoundingClientRect();
-  place(dragK,(e.clientX-b.left-PAD)/SIDE,1-(e.clientY-b.top-PAD)/SIDE)});
+  place(dragK,1-(e.clientX-b.left-PAD)/SIDE,1-(e.clientY-b.top-PAD)/SH)});
 const drop=()=>{dragK=-1;document.body.classList.remove('is-penning')};
 pen.addEventListener('pointerup',drop);pen.addEventListener('pointercancel',drop);
 pen.addEventListener('dblclick',e=>{if(!e.target.closest('.pen-knob'))return;
   place(0,EASE_HOME[0],EASE_HOME[1])});
 pen.addEventListener('keydown',e=>{const g=e.target.closest('.pen-knob');if(!g)return;
-  const d={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,1],ArrowDown:[0,-1]}[e.key];if(!d)return;
+  const d={ArrowLeft:[1,0],ArrowRight:[-1,0],ArrowUp:[0,1],ArrowDown:[0,-1]}[e.key];if(!d)return;
   e.preventDefault();const k=+g.dataset.k,s=e.shiftKey?.05:.01;
   place(k,EASE[k*2]+d[0]*s,EASE[k*2+1]+d[1]*s)});
 updateWords(false);
